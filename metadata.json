@@ -1,0 +1,12 @@
+{
+  "name": "VIZU Proximity Social",
+  "description": "Proximity-based social discovery app. Experience the Flow, catch the Zaps, stay for the Hush, and discover new Personas using AR and GPS.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
