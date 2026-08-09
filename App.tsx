@@ -30,6 +30,7 @@ export const AppLayout: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const mainRef = React.useRef<HTMLElement>(null);
+  const sidebarRef = React.useRef<HTMLElement>(null);
   const { showToast } = useToast();
   const {
     setUser,
@@ -41,12 +42,32 @@ export const AppLayout: React.FC = () => {
     setIsDarkMode,
   } = useAppState();
 
+  const [ghostRipple, setGhostRipple] = useState(false);
   const [isGhostTransitioning, setIsGhostTransitioning] = useState(false);
   const [hushNotes, setHushNotes] = useState<HushNote[]>(() =>
     parseLocalStorage<HushNote[]>('hush_all_notes', isHushNoteArray, MOCK_HUSH_NOTES)
   );
 
   const currentPage = pathToPage(location.pathname);
+
+  useEffect(() => {
+    if (isGlobalGhostMode) {
+      setGhostRipple(true);
+    }
+  }, [isGlobalGhostMode]);
+
+  const handleMainScroll = () => {
+    if (mainRef.current && sidebarRef.current) {
+      const mainEl = mainRef.current;
+      const sidebarEl = sidebarRef.current;
+      const maxMainScroll = mainEl.scrollHeight - mainEl.clientHeight;
+      const maxSidebarScroll = sidebarEl.scrollHeight - sidebarEl.clientHeight;
+      if (maxMainScroll > 0 && maxSidebarScroll > 0) {
+        const scrollRatio = mainEl.scrollTop / maxMainScroll;
+        sidebarEl.scrollTop = scrollRatio * maxSidebarScroll;
+      }
+    }
+  };
 
   // Focus management on route change: Focus first h1 or h2 heading, or main element
   useEffect(() => {
@@ -151,9 +172,8 @@ export const AppLayout: React.FC = () => {
 
   const getAppBgClass = () => {
     if (isDarkPage) return 'bg-[#062B34]';
-    if (isGlobalGhostMode) return 'bg-[#03171C]';
-    if (isDarkMode) return 'bg-[#0B1319] text-white';
-    return 'bg-[var(--app-bg,#FFF9E6)] text-[var(--text-primary,#0B1720)]';
+    if (isGlobalGhostMode) return 'bg-[#020F14]';
+    return 'bg-[var(--app-bg)] text-white';
   };
 
   const outletContext: AppOutletContext = {
@@ -170,7 +190,16 @@ export const AppLayout: React.FC = () => {
   };
 
   return (
-    <div className={`relative h-screen w-full flex flex-col md:flex-row overflow-hidden transition-all duration-500 ${getAppBgClass()} ${isGhostTransitioning ? 'animate-ghost-trans-blur' : ''}`}>
+    <div className={`relative h-screen w-full flex flex-col md:flex-row overflow-hidden min-h-screen transition-colors duration-500 ${getAppBgClass()} ${isGlobalGhostMode ? 'ghost-mode' : ''} ${isGhostTransitioning ? 'animate-ghost-trans-blur' : ''}`}>
+      {ghostRipple && (
+        <div
+          className="fixed inset-0 z-[999] pointer-events-none flex items-center justify-center overflow-hidden"
+          onAnimationEnd={() => setGhostRipple(false)}
+        >
+          <div className="w-10 h-10 rounded-full bg-[#80FFEC]/30 animate-ping duration-700 scale-[50]" />
+        </div>
+      )}
+
       {/* Skip to Main Content Link for Screen Readers & Keyboard Users */}
       <a
         href="#main-content"
@@ -181,6 +210,7 @@ export const AppLayout: React.FC = () => {
 
       {showNavbar && (
         <DesktopSidebar
+          ref={sidebarRef}
           activePage={currentPage}
           onNavigate={(page) => navigate(pageToPath(page))}
           isGhostActive={isGlobalGhostMode}
@@ -195,6 +225,7 @@ export const AppLayout: React.FC = () => {
           ref={mainRef}
           id="main-content"
           tabIndex={-1}
+          onScroll={handleMainScroll}
           className={`flex-1 flex flex-col overflow-y-auto overflow-x-hidden safe-area-inset outline-none ${getAppBgClass()} ${showNavbar ? 'pb-24 md:pb-6' : ''}`}
         >
           <ErrorBoundary>

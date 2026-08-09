@@ -1,8 +1,8 @@
 package com.vizu.app.repository
 
 import com.vizu.app.model.data.HomeFeedData
-import com.vizu.app.model.network.FakeVizuApiService
-import com.vizu.app.model.network.VizuApiService
+import com.vizu.app.model.network.ApiClient
+import com.vizu.app.model.network.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
  * Handles data fetching, caching, error recovery, and mutation logic.
  */
 class HomeRepository(
-    private val apiService: VizuApiService = FakeVizuApiService()
+    private val apiService: ApiService = ApiClient.apiService
 ) {
     private var cachedData: HomeFeedData? = null
 
@@ -23,7 +23,7 @@ class HomeRepository(
             if (!forceRefresh && cachedData != null) {
                 cachedData!!
             } else {
-                val freshData = apiService.fetchHomeFeed()
+                val freshData = apiService.getHomeFeed(forceRefresh)
                 cachedData = freshData
                 freshData
             }
@@ -35,8 +35,8 @@ class HomeRepository(
      */
     suspend fun toggleZap(postId: String): Result<HomeFeedData> = withContext(Dispatchers.IO) {
         runCatching {
-            apiService.toggleZapPost(postId)
-            val updatedFeed = apiService.fetchHomeFeed()
+            apiService.toggleZap(postId)
+            val updatedFeed = apiService.getHomeFeed(forceRefresh = true)
             cachedData = updatedFeed
             updatedFeed
         }

@@ -4,7 +4,7 @@ import { User } from '../../types';
 
 export const CARD_SKINS = [
   { id: 'default', name: 'Default', bg: 'bg-white', text: 'text-primary', border: 'border-gray-200' },
-  { id: 'holographic', name: 'Holographic', bg: 'bg-gradient-to-br from-purple-400 via-pink-500 to-red-500', text: 'text-white', border: 'border-white/40' },
+  { id: 'holographic', name: 'Holographic', bg: 'bg-gradient-to-br from-[#2EC4B6] via-[#80FFEC] to-[#062B34]', text: 'text-white', border: 'border-white/40' },
   { id: 'neon', name: 'Neon', bg: 'bg-black', text: 'text-green-400', border: 'border-green-500 shadow-[0_0_15px_rgba(34,197,94,0.5)]' },
   { id: 'gold', name: 'Gold', bg: 'bg-gradient-to-br from-yellow-300 via-yellow-500 to-yellow-700', text: 'text-black', border: 'border-yellow-200' },
   { id: 'cyberpunk', name: 'Cyberpunk', bg: 'bg-yellow-400', text: 'text-black', border: 'border-black border-4' },
@@ -50,13 +50,13 @@ export const EditProfilePage: React.FC<EditProfilePageProps> = React.memo(({ use
   };
 
   return (
-    <div className={`min-h-full flex flex-col transition-colors duration-500 ${isGhostMode ? 'bg-[#0A001F] text-white' : 'bg-[var(--app-bg,#FFF9E6)] text-[var(--text-primary,#0B1720)]'}`}>
-      <header className={`p-6 sticky top-0 z-20 shadow-xl transition-colors duration-500 flex items-center justify-between ${isGhostMode ? 'bg-[#150036]' : 'bg-primary text-white'}`}>
+    <div className={`min-h-full flex flex-col transition-colors duration-500 ${isGhostMode ? 'bg-[#020F14] text-white' : 'bg-[var(--app-bg)] text-white'}`}>
+      <header className={`p-6 sticky top-0 z-20 shadow-xl transition-colors duration-500 flex items-center justify-between ${isGhostMode ? 'bg-[#020F14]' : 'bg-[#062B34] text-white'}`}>
         <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-full transition-colors active:scale-90">
           <ArrowLeft size={24} />
         </button>
         <h1 className="text-xl font-bold font-montserrat">Edit Profile</h1>
-        <button onClick={handleSave} className={`p-2 rounded-xl transition-colors ${isGhostMode ? 'text-purple-400 hover:bg-purple-900/20' : 'text-secondary hover:bg-white/10'}`}>
+        <button onClick={handleSave} className={`p-2 rounded-xl transition-colors ${isGhostMode ? 'text-[#80FFEC] hover:bg-white/10' : 'text-[#2EC4B6] hover:bg-white/10'}`}>
           <Save size={24} />
         </button>
       </header>
@@ -73,7 +73,7 @@ export const EditProfilePage: React.FC<EditProfilePageProps> = React.memo(({ use
         {/* Avatar Edit */}
         <div className="flex justify-center -mt-16 relative z-10">
           <div className="relative group" onClick={handleAvatarClick}>
-            <div className={`w-32 h-32 rounded-[2.5rem] p-1 transition-all duration-500 ${isGhostMode ? 'bg-[#0A001F]' : 'bg-[var(--app-bg,#FFF9E6)]'} ${isUploadingAvatar ? 'scale-95' : ''}`}>
+            <div className={`w-32 h-32 rounded-[2.5rem] p-1 transition-all duration-500 ${isGhostMode ? 'bg-[#020F14]' : 'bg-[#062B34]'} ${isUploadingAvatar ? 'scale-95' : ''}`}>
               <img src={avatar} loading="lazy" className={`w-full h-full rounded-[2.3rem] object-cover transition-all duration-500 ${isUploadingAvatar ? 'brightness-50 blur-[2px]' : ''}`} alt="Avatar" />
             </div>
             <div className={`absolute inset-0 flex items-center justify-center transition-opacity cursor-pointer ${isUploadingAvatar ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
@@ -87,54 +87,54 @@ export const EditProfilePage: React.FC<EditProfilePageProps> = React.memo(({ use
         {/* Form Fields */}
         <div className="space-y-6">
           <div className="space-y-2">
-            <label className={`text-[10px] font-black uppercase tracking-widest ml-4 ${isGhostMode ? 'text-purple-400' : 'text-primary/40'}`}>Display Name</label>
-            <div className={`flex items-center gap-3 p-4 rounded-2xl border ${isGhostMode ? 'bg-[#150036] border-purple-500/20' : 'bg-white border-black/5'}`}>
-              <UserIcon size={18} className={isGhostMode ? 'text-purple-500' : 'text-secondary'} />
+            <label className={`text-[10px] font-black uppercase tracking-widest ml-4 ${isGhostMode ? 'text-[#80FFEC]' : 'text-white/40'}`}>Display Name</label>
+            <div className={`flex items-center gap-3 p-4 rounded-2xl border ${isGhostMode ? 'bg-[#031820] border-[#2EC4B6]/20' : 'bg-[#0A2832] border-white/10'}`}>
+              <UserIcon size={18} className={isGhostMode ? 'text-[#80FFEC]' : 'text-[#2EC4B6]'} />
               <input 
                 type="text" 
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                className="flex-1 bg-transparent focus:outline-none text-sm font-bold"
+                className="flex-1 bg-transparent focus:outline-none text-sm font-bold text-white"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className={`text-[10px] font-black uppercase tracking-widest ml-4 ${isGhostMode ? 'text-purple-400' : 'text-primary/40'}`}>Username</label>
-            <div className={`flex items-center gap-3 p-4 rounded-2xl border ${isGhostMode ? 'bg-[#150036] border-purple-500/20' : 'bg-white border-black/5'}`}>
-              <AtSign size={18} className={isGhostMode ? 'text-purple-500' : 'text-secondary'} />
+            <label className={`text-[10px] font-black uppercase tracking-widest ml-4 ${isGhostMode ? 'text-[#80FFEC]' : 'text-white/40'}`}>Username</label>
+            <div className={`flex items-center gap-3 p-4 rounded-2xl border ${isGhostMode ? 'bg-[#031820] border-[#2EC4B6]/20' : 'bg-[#0A2832] border-white/10'}`}>
+              <AtSign size={18} className={isGhostMode ? 'text-[#80FFEC]' : 'text-[#2EC4B6]'} />
               <input 
                 type="text" 
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="flex-1 bg-transparent focus:outline-none text-sm font-bold"
+                className="flex-1 bg-transparent focus:outline-none text-sm font-bold text-white"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className={`text-[10px] font-black uppercase tracking-widest ml-4 ${isGhostMode ? 'text-purple-400' : 'text-primary/40'}`}>Bio</label>
-            <div className={`flex items-start gap-3 p-4 rounded-2xl border ${isGhostMode ? 'bg-[#150036] border-purple-500/20' : 'bg-white border-black/5'}`}>
-              <FileText size={18} className={`mt-1 ${isGhostMode ? 'text-purple-500' : 'text-secondary'}`} />
+            <label className={`text-[10px] font-black uppercase tracking-widest ml-4 ${isGhostMode ? 'text-[#80FFEC]' : 'text-white/40'}`}>Bio</label>
+            <div className={`flex items-start gap-3 p-4 rounded-2xl border ${isGhostMode ? 'bg-[#031820] border-[#2EC4B6]/20' : 'bg-[#0A2832] border-white/10'}`}>
+              <FileText size={18} className={`mt-1 ${isGhostMode ? 'text-[#80FFEC]' : 'text-[#2EC4B6]'}`} />
               <textarea 
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
-                className="flex-1 bg-transparent focus:outline-none text-sm font-medium resize-none h-24"
+                className="flex-1 bg-transparent focus:outline-none text-sm font-medium resize-none h-24 text-white"
                 maxLength={150}
               />
             </div>
-            <p className="text-[9px] text-right opacity-40 font-mono">{bio.length}/150</p>
+            <p className="text-[9px] text-right opacity-40 font-mono text-white">{bio.length}/150</p>
           </div>
         </div>
 
         {/* Profile Card Editor */}
-        <div className="pt-8 border-t border-black/10">
+        <div className="pt-8 border-t border-white/10">
           <div className="flex items-center gap-2 mb-6">
-            <Sparkles size={20} className={isGhostMode ? 'text-purple-400' : 'text-secondary'} />
-            <h3 className="text-lg font-bold font-montserrat">Vista Profile Card</h3>
+            <Sparkles size={20} className={isGhostMode ? 'text-[#80FFEC]' : 'text-[#2EC4B6]'} />
+            <h3 className="text-lg font-bold font-montserrat text-white">Vista Profile Card</h3>
           </div>
           
-          <p className={`text-xs mb-6 ${isGhostMode ? 'text-white/60' : 'text-primary/60'}`}>
+          <p className="text-xs mb-6 text-white/60">
             Customize the floating 3D card that other users see when they discover you on the Vista page.
           </p>
 
@@ -159,7 +159,7 @@ export const EditProfilePage: React.FC<EditProfilePageProps> = React.memo(({ use
 
           {/* Skin Selector */}
           <div className="space-y-3">
-            <label className={`text-[10px] font-black uppercase tracking-widest ml-4 flex items-center gap-2 ${isGhostMode ? 'text-purple-400' : 'text-primary/40'}`}>
+            <label className={`text-[10px] font-black uppercase tracking-widest ml-4 flex items-center gap-2 ${isGhostMode ? 'text-[#80FFEC]' : 'text-white/40'}`}>
               <Palette size={14} /> Card Skin
             </label>
             <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar px-2">

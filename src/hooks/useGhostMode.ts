@@ -1,20 +1,19 @@
-import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAppState } from '../context/AppStateContext';
 import { apiClient } from '../api/client';
 
 export const useGhostMode = () => {
-  const { profile } = useAuth();
-  const [isGhost, setIsGhost] = useState(profile?.ghostModeEnabled ?? false);
+  const { isGlobalGhostMode, setIsGlobalGhostMode } = useAppState();
 
   const toggleGhostMode = async () => {
-    const next = !isGhost;
+    const next = !isGlobalGhostMode;
     try {
       await apiClient.patch('/users/me/ghost-mode', { enabled: next });
     } catch {
       // Fallback local toggle for offline/dev
     }
-    setIsGhost(next);
+    setIsGlobalGhostMode(next);
   };
 
-  return { isGhost, toggleGhostMode };
+  return { isGhost: isGlobalGhostMode, toggleGhostMode };
 };
+

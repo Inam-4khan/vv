@@ -109,7 +109,7 @@ export const StoryCreatorPage: React.FC<StoryCreatorPageProps> = React.memo(({ o
                   onClick={() => setPrivacy('circle')} 
                   className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
                     privacy === 'circle' 
-                      ? 'bg-purple-500 text-white shadow-md' 
+                      ? 'bg-[#2EC4B6] text-[#062B34] shadow-md font-bold' 
                       : 'text-white/45 hover:text-white'
                   }`}
                 >
@@ -122,7 +122,7 @@ export const StoryCreatorPage: React.FC<StoryCreatorPageProps> = React.memo(({ o
                <button onClick={() => setCapturedMedia(null)} className="px-6 py-3 rounded-full bg-white/20 text-white backdrop-blur-md font-bold text-xs uppercase tracking-widest">
                  Retake
                </button>
-               <button onClick={shareStory} className="px-8 py-3 rounded-full bg-secondary text-white font-black uppercase tracking-widest flex items-center gap-2 shadow-lg active:scale-95 transition-transform text-xs">
+               <button onClick={shareStory} className="px-8 py-3 rounded-full bg-[#2EC4B6] text-[#062B34] font-black uppercase tracking-widest flex items-center gap-2 shadow-lg active:scale-95 transition-transform text-xs">
                  <Send size={15} /> Share Story
                </button>
             </div>

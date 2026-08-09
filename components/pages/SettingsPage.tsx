@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ArrowLeft, Bell, Globe, LogOut, ChevronRight, Users, Moon, ShieldCheck, ShieldAlert, UserCheck, Heart, Sun } from 'lucide-react';
+import { ArrowLeft, Bell, Globe, LogOut, ChevronRight, Users, Moon, ShieldCheck, ShieldAlert, UserCheck, Heart, Sun, Ghost } from 'lucide-react';
 
 interface SettingsPageProps {
   onBack: () => void;
@@ -8,6 +8,7 @@ interface SettingsPageProps {
   isGhostMode?: boolean;
   isDarkMode?: boolean;
   onToggleTheme?: () => void;
+  onToggleGhost?: () => void;
 }
 
 export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
@@ -16,6 +17,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
   isGhostMode = false,
   isDarkMode = false,
   onToggleTheme,
+  onToggleGhost,
 }) => {
   const [quietHours, setQuietHours] = useState(false);
   const [ageFiltering, setAgeFiltering] = useState(true);
@@ -28,8 +30,8 @@ export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
   ];
 
   return (
-    <div className={`min-h-full pb-24 transition-colors duration-500 ${isDarkMode ? 'bg-[#0B1319] text-white' : 'bg-[var(--app-bg,#FFF9E6)] text-[var(--text-primary,#0B1720)]'}`}>
-      <header className={`p-6 text-white flex items-center justify-between sticky top-0 z-20 shadow-md transition-colors duration-500 ${isGhostMode ? 'bg-[#062B34]' : 'bg-primary'}`}>
+    <div className="min-h-full pb-24 transition-colors duration-500 bg-[var(--app-bg)] text-white">
+      <header className={`p-6 text-white flex items-center justify-between sticky top-0 z-20 shadow-md transition-colors duration-500 ${isGhostMode ? 'bg-[#020F14]' : 'bg-[#062B34]'}`}>
         <div className="flex items-center gap-4">
           <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-xl transition-all active:scale-90" title="Back"><ArrowLeft size={24} /></button>
           <h1 className="text-xl font-bold font-montserrat tracking-tight">Persona Settings</h1>
@@ -37,7 +39,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
         {onToggleTheme && (
           <button 
             onClick={onToggleTheme}
-            className={`p-2 rounded-xl transition-all ${isDarkMode ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-white/10 text-white hover:bg-white/20'}`}
+            className="p-2 rounded-xl transition-all bg-amber-500/20 text-amber-300 border border-amber-500/30"
             title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
           >
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -48,13 +50,9 @@ export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
       <div className="p-6 space-y-8 animate-fade-in">
         {/* Privacy Controls */}
         <div className="space-y-4">
-          <div className={`p-6 rounded-[2.5rem] shadow-xl border transition-colors ${
-            isDarkMode ? 'bg-[#062B34] border-white/10 text-white' : 'bg-white border-black/5 text-primary'
-          }`}>
+          <div className="p-6 rounded-[2.5rem] shadow-xl border transition-colors bg-[#0A2832] border-white/10 text-white">
             <div className="flex items-center justify-between mb-8">
-               <h3 className={`text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 ${
-                 isDarkMode ? 'text-white/40' : 'text-primary/30'
-               }`}>
+               <h3 className="text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 text-white/40">
                  <ShieldAlert size={14} className="text-[#2EC4B6]" /> Privacy Suite
                </h3>
                <div className="bg-[#2EC4B6]/10 px-3 py-1 rounded-full border border-[#2EC4B6]/20">
@@ -63,6 +61,31 @@ export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
             </div>
             
             <div className="space-y-8">
+              {/* Ghost Mode Toggle */}
+              {onToggleGhost && (
+                <div className="flex items-center justify-between group pb-4 border-b border-white/10">
+                  <div className="flex items-center gap-4">
+                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${isGhostMode ? 'bg-[#80FFEC]/20 text-[#80FFEC] shadow-inner' : 'bg-white/10 text-white/40'}`}>
+                      <Ghost size={24} aria-hidden="true" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-white">Ghost Mode</h4>
+                      <p className="text-[10px] font-medium text-white/50">Invisible to nearby users</p>
+                    </div>
+                  </div>
+                  <button 
+                    type="button"
+                    role="switch"
+                    aria-checked={isGhostMode}
+                    aria-label="Ghost Mode"
+                    onClick={onToggleGhost}
+                    className={`w-12 h-6 rounded-full relative transition-all duration-500 shadow-inner focus:outline-none focus-visible:ring-2 focus-visible:ring-[#80FFEC] ${isGhostMode ? 'bg-[#2EC4B6]' : 'bg-white/20'}`}
+                  >
+                    <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-lg transition-transform duration-500 ${isGhostMode ? 'translate-x-6' : 'translate-x-1'}`} />
+                  </button>
+                </div>
+              )}
+
               {/* Visibility Circles */}
               <div className="space-y-4">
                 <div className="flex items-center gap-4">

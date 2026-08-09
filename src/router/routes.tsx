@@ -93,8 +93,14 @@ const useAppOutletContext = (): AppOutletContext => {
   return ctx;
 };
 
-const WelcomeRoute: React.FC = () => {
+const RootRedirect: React.FC = () => {
+  const { user } = useAppState();
   const { handleStartOnboarding } = useAppOutletContext();
+
+  if (user) {
+    return <Navigate to="/home" replace />;
+  }
+
   return <WelcomePage onGetStarted={handleStartOnboarding} />;
 };
 
@@ -232,13 +238,14 @@ const SettingsRoute: React.FC = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const { setUser, setSplashIndex, isGlobalGhostMode, isDarkMode } = useAppState();
-  const { toggleThemeMode } = useAppOutletContext();
+  const { toggleThemeMode, toggleGhostMode } = useAppOutletContext();
   return (
     <SettingsPage
       onBack={() => navigate('/persona')}
       isGhostMode={isGlobalGhostMode}
       isDarkMode={isDarkMode}
       onToggleTheme={toggleThemeMode}
+      onToggleGhost={toggleGhostMode}
       onLogout={() => {
         setUser(null);
         navigate('/');
@@ -321,7 +328,7 @@ export const router = createBrowserRouter([
     element: <AppLayout />,
     errorElement: <NotFoundPage />,
     children: [
-      { index: true, element: <WelcomeRoute /> },
+      { index: true, element: <RootRedirect /> },
       { path: 'auth/login', element: <LoginRoute /> },
       { path: 'auth/signup', element: <SignupRoute /> },
       { path: 'splash', element: <SplashRoute /> },

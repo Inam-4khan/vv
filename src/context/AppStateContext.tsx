@@ -1,6 +1,14 @@
+/**
+ * AppStateContext handles global application UI state including current active page,
+ * active user profile, theme settings (dark mode), ghost mode toggle, and story selection.
+ *
+ * Separation of Concerns:
+ * - AppStateContext: Application-wide UI state, navigation view state, and user preference toggles.
+ * - AuthContext: Low-level session tokens, OAuth / JWT credential state, and Auth API calls.
+ */
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
 import { Page, User } from '../../types';
-import { MOCK_USERS } from '../../constants';
+import { getDevUser } from '../utils/devHelpers';
 
 export interface AppState {
   currentPage: Page;
@@ -32,7 +40,7 @@ const getInitialGhostMode = (): boolean => {
 
 export const initialState: AppState = {
   currentPage: 'launch',
-  user: MOCK_USERS[0] ?? null,
+  user: getDevUser(),
   isLoading: false,
   splashIndex: 0,
   isGlobalGhostMode: getInitialGhostMode(),

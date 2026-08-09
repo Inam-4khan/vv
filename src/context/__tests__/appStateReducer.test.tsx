@@ -8,7 +8,7 @@ import {
   useAppState,
 } from '../AppStateContext';
 import { User } from '../../../types';
-import { MOCK_USERS } from '../../../constants';
+import { getDevUser } from '../../utils/devHelpers';
 
 describe('appStateReducer unit tests', () => {
   it('should return initial state by default', () => {
@@ -83,7 +83,7 @@ describe('AppStateProvider integration tests', () => {
     const { result } = renderHook(() => useAppState(), { wrapper });
 
     expect(result.current.currentPage).toBe('launch');
-    expect(result.current.user).toEqual(MOCK_USERS[0]);
+    expect(result.current.user).toEqual(getDevUser());
 
     // Navigate to 'hush'
     act(() => {

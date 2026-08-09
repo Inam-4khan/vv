@@ -31,7 +31,7 @@ export const VistaPage: React.FC<{ isGhostMode: boolean }> = React.memo(({ isGho
   }, [mode]);
 
   return (
-    <div className={`h-full relative overflow-hidden transition-all duration-500 ${isGhostMode ? 'bg-[#0A001F]' : 'bg-[#062B34]'}`}>
+    <div className={`h-full relative overflow-hidden transition-all duration-500 ${isGhostMode ? 'bg-[#020F14]' : 'bg-[#062B34]'}`}>
       {mode === 'ar' ? (
         <div className="h-full w-full relative">
           <video 
@@ -110,7 +110,7 @@ export const VistaPage: React.FC<{ isGhostMode: boolean }> = React.memo(({ isGho
           )}
         </div>
       ) : (
-        <div className={`h-full w-full relative overflow-hidden flex flex-col transition-all duration-500 ${isGhostMode ? 'bg-[#0A001F]' : 'bg-[#062B34]'}`}>
+        <div className={`h-full w-full relative overflow-hidden flex flex-col transition-all duration-500 ${isGhostMode ? 'bg-[#020F14]' : 'bg-[#062B34]'}`}>
            {/* Futuristic Header bar on Map with Glassmorphic HUD */}
            <div className="absolute top-4 left-4 right-4 z-40">
              <GlassCard isDarkMode={true} className="p-4 flex justify-between items-center whitespace-nowrap">

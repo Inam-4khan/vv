@@ -11,14 +11,14 @@ interface DesktopSidebarProps {
   onToggleTheme?: () => void;
 }
 
-export const DesktopSidebar: React.FC<DesktopSidebarProps> = React.memo(({
+export const DesktopSidebar = React.forwardRef<HTMLElement, DesktopSidebarProps>(({
   activePage,
   onNavigate,
   isGhostActive = false,
   onToggleGhost,
   isDarkMode = false,
   onToggleTheme,
-}) => {
+}, ref) => {
   const navItems = [
     { id: 'home' as Page, icon: Home, label: 'Flow' },
     { id: 'explore' as Page, icon: Compass, label: 'Explore' },
@@ -29,9 +29,10 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = React.memo(({
 
   return (
     <aside
-      className={`hidden md:flex flex-col justify-between w-64 lg:w-72 h-screen sticky top-0 border-r shrink-0 p-6 z-40 transition-colors duration-500 ${
+      ref={ref}
+      className={`hidden md:flex flex-col justify-between w-64 lg:w-72 h-screen sticky top-0 border-r shrink-0 p-6 z-40 transition-colors duration-500 overflow-y-auto ${
         isGhostActive
-          ? 'bg-[#03171C] text-[#F1FAEE] border-[#2EC4B6]/20'
+          ? 'bg-[#020F14] text-[#F1FAEE] border-[#80FFEC]/15'
           : 'bg-[#062B34] text-white border-white/10'
       }`}
     >
@@ -153,3 +154,5 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = React.memo(({
     </aside>
   );
 });
+
+DesktopSidebar.displayName = 'DesktopSidebar';

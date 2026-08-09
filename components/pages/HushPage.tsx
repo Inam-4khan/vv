@@ -195,7 +195,7 @@ const SwipeableHushNoteItem: React.FC<SwipeableHushNoteItemProps> = ({
           }}
           className={`absolute -top-2 -right-2 p-1 rounded-full border shadow-md transition-all active:scale-75 ${
             isGhostMode 
-              ? 'bg-purple-950 text-purple-300 border-purple-500/40 hover:bg-purple-800' 
+              ? 'bg-[#031820] text-[#80FFEC] border-[#2EC4B6]/30 hover:bg-[#2EC4B6]/80' 
               : 'bg-white text-gray-400 border-black/10 hover:text-red-500 hover:bg-red-50'
           }`}
           title="Dismiss whisper"
@@ -435,8 +435,8 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
   }
 
   return (
-    <div className={`min-h-full transition-all duration-700 pb-24 px-4 ${isGhostMode ? 'bg-[#03171C] text-[#F1FAEE]' : 'bg-[var(--app-bg,#FFF9E6)] text-[var(--text-primary,#0B1720)]'}`}>
-      <header className={`-mx-4 px-4 py-5 text-white sticky top-0 z-30 shadow-md transition-colors duration-500 ${isGhostMode ? 'bg-[#062B34]' : 'bg-primary'}`}>
+    <div className={`min-h-full transition-all duration-700 pb-24 px-4 ${isGhostMode ? 'bg-[#020F14] text-[#F1FAEE]' : 'bg-[var(--app-bg)] text-white'}`}>
+      <header className={`-mx-4 px-4 py-5 text-white sticky top-0 z-30 shadow-md transition-colors duration-500 ${isGhostMode ? 'bg-[#020F14]' : 'bg-[#062B34]'}`}>
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-black font-montserrat tracking-tight">Hush</h1>
           <div className="flex items-center gap-2">
@@ -585,7 +585,7 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
             }`}
           >
             <div className="relative">
-              <img src={user.avatar} loading="lazy" className={`w-14 h-14 rounded-2xl border-2 transition-colors group-hover:border-[#2EC4B6] ${isGhostMode ? 'border-[#03171C]' : 'border-[var(--app-bg,#FFF9E6)]'}`} alt="" />
+              <img src={user.avatar} loading="lazy" className={`w-14 h-14 rounded-2xl border-2 transition-colors group-hover:border-[#2EC4B6] ${isGhostMode ? 'border-[#020F14]' : 'border-[#062B34]'}`} alt="" />
               <div className={`absolute bottom-0 right-0 w-3.5 h-3.5 border-2 border-white rounded-full ${user.status === 'online' ? 'bg-green-500' : 'bg-gray-400'}`}></div>
             </div>
             <div className="flex-1 min-w-0">
@@ -874,7 +874,7 @@ const HushChatView: React.FC<{ user: User; onBack: () => void }> = ({ user, onBa
   };
 
   return (
-    <div className="h-full flex flex-col transition-colors duration-500 bg-[var(--app-bg,#FFF9E6)]">
+    <div className="h-full flex flex-col transition-colors duration-500 bg-[var(--app-bg)] text-white">
       <header className="p-6 text-white flex items-center justify-between shadow-xl transition-colors duration-500 bg-primary">
          <div className="flex items-center gap-4">
            <button onClick={onBack} className="p-1 active:scale-90 transition-transform"><ArrowLeft size={24} /></button>

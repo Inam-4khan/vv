@@ -2,7 +2,7 @@ package com.vizu.app
 
 import app.cash.turbine.test
 import com.vizu.app.model.data.HomeFeedData
-import com.vizu.app.model.network.VizuApiService
+import com.vizu.app.model.network.*
 import com.vizu.app.repository.HomeRepository
 import com.vizu.app.viewmodel.HomeViewModel
 import com.vizu.app.viewmodel.UiState
@@ -33,7 +33,7 @@ class HomeViewModelTest {
 
     @Test
     fun `loadHomeData transitions through Loading then Success state`() = runTest {
-        val repository = HomeRepository()
+        val repository = HomeRepository(apiService = FakeVizuApiService())
         val viewModel = HomeViewModel(repository)
 
         viewModel.uiState.test {
@@ -57,14 +57,18 @@ class HomeViewModelTest {
 
     @Test
     fun `loadHomeData sets Error state when repository throws exception`() = runTest {
-        val failingApiService = object : VizuApiService {
-            override suspend fun fetchHomeFeed(): HomeFeedData {
+        val failingApiService = object : ApiService {
+            override suspend fun login(request: LoginRequest): LoginResponse = throw NotImplementedError()
+
+            override suspend fun getHomeFeed(forceRefresh: Boolean): HomeFeedData {
                 throw IOException("Failed to connect to Vizu network server")
             }
 
-            override suspend fun toggleZapPost(postId: String): Boolean {
-                return false
-            }
+            override suspend fun toggleZap(postId: String): ZapResponse = throw NotImplementedError()
+
+            override suspend fun getCurrentUserProfile(): UserProfileDto = throw NotImplementedError()
+
+            override suspend fun updateProfile(profileUpdate: UserProfileDto): UserProfileDto = throw NotImplementedError()
         }
 
         val repository = HomeRepository(apiService = failingApiService)
@@ -90,7 +94,7 @@ class HomeViewModelTest {
 
     @Test
     fun `toggleZap updates zapped state on target post`() = runTest {
-        val repository = HomeRepository()
+        val repository = HomeRepository(apiService = FakeVizuApiService())
         val viewModel = HomeViewModel(repository)
         testScheduler.advanceUntilIdle()
 
@@ -107,4 +111,3 @@ class HomeViewModelTest {
         assertEquals(!targetPost.isZapped, updatedPost.isZapped)
     }
 }
-

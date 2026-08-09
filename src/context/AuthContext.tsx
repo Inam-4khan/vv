@@ -1,3 +1,11 @@
+/**
+ * AuthContext handles authentication sessions, JWT tokens, login credentials,
+ * and authentication API workflows.
+ *
+ * Separation of Concerns:
+ * - AuthContext: Low-level session tokens, OAuth / JWT credential state, and Auth API calls.
+ * - AppStateContext: Application-wide UI state (active view, theme, ghost mode, active user profile).
+ */
 import React, { createContext, useContext, useState, ReactNode, useCallback, useRef, useEffect } from 'react';
 import { AuthUser, AppUser } from '../types/auth.types';
 

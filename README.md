@@ -1,9 +1,16 @@
 # Vizu Monorepo
 
-![Web CI Status](https://github.com/vizu-app/vizu/actions/workflows/web-ci.yml/badge.svg)
+![CI Status](https://github.com/vizu-app/vizu/actions/workflows/ci.yml/badge.svg)
 ![Android CI Status](https://github.com/vizu-app/vizu/actions/workflows/android-ci.yml/badge.svg)
 
 Vizu is a spatial social platform delivering real-time connection feeds, AR vista interactions, persona management, and encrypted Hush whispers.
+
+---
+
+## ⚙️ Prerequisites & Setup
+
+- **Node.js**: Node 20+ required.
+- **Package Manager**: Use **npm** (`npm install`). **Do not use bun or yarn**. CI runs `npm ci` strictly with `package-lock.json`.
 
 ---
 
@@ -11,7 +18,7 @@ Vizu is a spatial social platform delivering real-time connection feeds, AR vist
 
 This monorepo utilizes GitHub Actions for continuous integration across both Web and Android platforms:
 
-### 1. Web CI (`.github/workflows/web-ci.yml`)
+### 1. Web CI (`.github/workflows/ci.yml`)
 - **Triggers**: On `push` and `pull_request` to `main` when files in `src/`, `components/`, or configuration files change.
 - **Environment**: `ubuntu-latest` with Node.js 20.
 - **Tasks**:
@@ -36,7 +43,7 @@ This monorepo utilizes GitHub Actions for continuous integration across both Web
 
 ### Web Platform
 ```bash
-# Install dependencies
+# Install dependencies (Node 20+, npm only)
 npm install
 
 # Run development server

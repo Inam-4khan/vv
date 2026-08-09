@@ -1,12 +1,11 @@
 /// <reference types="vitest" />
 import path from 'path';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { VitePWA } from 'vite-plugin-pwa';
 
-export default defineConfig(({ mode }) => {
-    const env = loadEnv(mode, '.', '');
+export default defineConfig(() => {
     return {
       server: {
         port: 3000,
@@ -64,10 +63,6 @@ export default defineConfig(({ mode }) => {
           },
         }),
       ],
-      define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
-      },
       resolve: {
         alias: {
           '@': path.resolve(__dirname, '.'),
@@ -80,7 +75,7 @@ export default defineConfig(({ mode }) => {
               'vendor-react': ['react', 'react-dom', 'react-router-dom'],
               'vendor-motion': ['motion'],
               'vendor-icons': ['lucide-react'],
-              'vendor-ai': ['@google/genai', 'axios'],
+              'vendor-axios': ['axios'],
             },
           },
         },

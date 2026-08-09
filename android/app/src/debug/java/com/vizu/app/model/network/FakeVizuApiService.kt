@@ -7,17 +7,9 @@ import com.vizu.app.model.data.VizuPost
 import kotlinx.coroutines.delay
 
 /**
- * Service interface for Vizu backend API communications.
+ * Mock implementation of ApiService simulating network delay and realistic fake payload for debug builds.
  */
-interface VizuApiService {
-    suspend fun fetchHomeFeed(): HomeFeedData
-    suspend fun toggleZapPost(postId: String): Boolean
-}
-
-/**
- * Mock implementation of VizuApiService simulating network delay and realistic fake payload.
- */
-class FakeVizuApiService : VizuApiService {
+class FakeVizuApiService : ApiService {
 
     private val mockStories = listOf(
         StoryHighlight("st_1", "Kai_Vista", null, hasUnseen = true, isGhost = false),
@@ -71,8 +63,17 @@ class FakeVizuApiService : VizuApiService {
         )
     )
 
-    override suspend fun fetchHomeFeed(): HomeFeedData {
-        // Simulate network latency
+    override suspend fun login(request: LoginRequest): LoginResponse {
+        delay(300)
+        return LoginResponse(
+            token = "fake_jwt_token_12345",
+            userId = "usr_alex",
+            username = request.username,
+            persona = "Alex Rivers"
+        )
+    }
+
+    override suspend fun getHomeFeed(forceRefresh: Boolean): HomeFeedData {
         delay(600)
         return HomeFeedData(
             userPersonaName = "Alex Rivers",
@@ -82,7 +83,7 @@ class FakeVizuApiService : VizuApiService {
         )
     }
 
-    override suspend fun toggleZapPost(postId: String): Boolean {
+    override suspend fun toggleZap(postId: String): ZapResponse {
         delay(200)
         val index = mockPosts.indexOfFirst { it.id == postId }
         if (index != -1) {
@@ -90,8 +91,24 @@ class FakeVizuApiService : VizuApiService {
             val nextZapped = !item.isZapped
             val nextCount = if (nextZapped) item.zapCount + 1 else (item.zapCount - 1).coerceAtLeast(0)
             mockPosts[index] = item.copy(isZapped = nextZapped, zapCount = nextCount)
-            return nextZapped
+            return ZapResponse(postId = postId, isZapped = nextZapped, totalZaps = nextCount)
         }
-        return false
+        return ZapResponse(postId = postId, isZapped = false, totalZaps = 0)
+    }
+
+    override suspend fun getCurrentUserProfile(): UserProfileDto {
+        delay(300)
+        return UserProfileDto(
+            id = "usr_alex",
+            username = "alex_rivers",
+            displayName = "Alex Rivers",
+            bio = "Exploring spatial AR & hush whisper networks.",
+            ghostMode = false
+        )
+    }
+
+    override suspend fun updateProfile(profileUpdate: UserProfileDto): UserProfileDto {
+        delay(300)
+        return profileUpdate
     }
 }
