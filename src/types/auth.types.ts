@@ -23,17 +23,3 @@ export interface TokenPair {
   accessToken: string;
 }
 
-export interface AuthContextType {
-  user: AuthUser | null;
-  profile: AppUser | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  accessToken: string | null;
-  login: (email: string, password: string) => Promise<void>;
-  loginWithGoogle?: (googleToken: string) => Promise<void>;
-  logout: () => Promise<void>;
-  refreshToken?: () => Promise<boolean>;
-  verifyEmail?: (code: string) => Promise<void>;
-  setupTwoFactor?: () => Promise<{ qrCodeUrl: string; secret: string }>;
-  verifyTwoFactor?: (code: string) => Promise<void>;
-}

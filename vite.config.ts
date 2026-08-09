@@ -84,7 +84,10 @@ export default defineConfig(() => {
         globals: true,
         environment: 'jsdom',
         setupFiles: ['./src/test/setup.ts'],
-        include: ['**/*.test.{js,jsx,ts,tsx}']
+        include: ['**/*.test.{js,jsx,ts,tsx}'],
+        env: {
+          VITE_DEV_AUTO_LOGIN: 'false',
+        },
       }
     };
 });

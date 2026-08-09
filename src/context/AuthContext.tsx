@@ -21,7 +21,7 @@ export interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   accessToken: string | null;
-  login: (credentialsOrUser: any, password?: string) => Promise<void> | void;
+  login: (credentialsOrUser: { id: string; email: string; username: string } | string, password?: string) => Promise<void> | void;
   loginWithGoogle?: (googleToken: string) => Promise<void>;
   logout: () => Promise<void> | void;
   refreshToken?: () => Promise<boolean>;
@@ -45,7 +45,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isLoading, setIsLoading] = useState(false);
   const refreshTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const login = useCallback(async (credentialsOrUser: any, password?: string) => {
+  const login = useCallback(async (credentialsOrUser: { id: string; email: string; username: string } | string, password?: string) => {
     setIsLoading(true);
     try {
       if (typeof credentialsOrUser === 'object' && credentialsOrUser !== null) {

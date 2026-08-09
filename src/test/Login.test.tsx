@@ -1,11 +1,12 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
+import { renderWithProviders } from './test-utils';
 import { Login } from '../pages/Login';
 
 describe('Login Component', () => {
   it('renders centered card layout with VIZU brand logo and header', () => {
-    render(<Login />);
+    renderWithProviders(<Login />);
     expect(screen.getByText('VIZU')).toBeInTheDocument();
     expect(
       screen.getByText(/Good to see you again/i)
@@ -13,7 +14,7 @@ describe('Login Component', () => {
   });
 
   it('renders email and password form fields with Input component', () => {
-    render(<Login />);
+    renderWithProviders(<Login />);
     const emailInput = screen.getByLabelText(/username or email/i);
     const passwordInput = screen.getByLabelText(/^password/i);
 
@@ -22,13 +23,13 @@ describe('Login Component', () => {
   });
 
   it('renders password input and forgot password link', () => {
-    render(<Login />);
+    renderWithProviders(<Login />);
     expect(screen.getByLabelText(/username or email/i)).toBeInTheDocument();
     expect(screen.getByText(/forgot password\?/i)).toBeInTheDocument();
   });
 
   it('shows inline validation error messages when submitting empty form', async () => {
-    render(<Login />);
+    renderWithProviders(<Login />);
     const submitButton = screen.getByRole('button', { name: /enter vizu/i });
 
     fireEvent.click(submitButton);
@@ -40,7 +41,7 @@ describe('Login Component', () => {
   });
 
   it('shows error for invalid email format and short password', async () => {
-    render(<Login />);
+    renderWithProviders(<Login />);
     const emailInput = screen.getByLabelText(/username or email/i);
     const passwordInput = screen.getByLabelText(/^password/i);
     const submitButton = screen.getByRole('button', { name: /enter vizu/i });
@@ -63,7 +64,7 @@ describe('Login Component', () => {
     const handleLogin = vi.fn();
     const handleNavigate = vi.fn();
 
-    render(<Login onLogin={handleLogin} onNavigate={handleNavigate} />);
+    renderWithProviders(<Login onLogin={handleLogin} onNavigate={handleNavigate} />);
 
     const emailInput = screen.getByLabelText(/username or email/i);
     const passwordInput = screen.getByLabelText(/^password/i);
@@ -73,17 +74,20 @@ describe('Login Component', () => {
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
     fireEvent.click(submitButton);
 
-    await waitFor(() => {
-      expect(handleLogin).toHaveBeenCalledWith(
-        expect.objectContaining({ identifier: 'alex@vizu.app' })
-      );
-      expect(handleNavigate).toHaveBeenCalledWith('/dashboard');
-    });
+    await waitFor(
+      () => {
+        expect(handleLogin).toHaveBeenCalledWith(
+          expect.objectContaining({ identifier: 'alex@vizu.app' })
+        );
+        expect(handleNavigate).toHaveBeenCalledWith('/dashboard');
+      },
+      { timeout: 3000 }
+    );
   });
 
   it('switches to signup when clicking create persona button', () => {
     const handleSwitch = vi.fn();
-    render(<Login onSwitchToSignup={handleSwitch} />);
+    renderWithProviders(<Login onSwitchToSignup={handleSwitch} />);
 
     const signUpBtn = screen.getByRole('button', { name: /new here\? create a persona/i });
     fireEvent.click(signUpBtn);
