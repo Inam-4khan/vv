@@ -25,3 +25,15 @@ bun.lock
 *.njsproj
 *.sln
 *.sw?
+# Web Dependencies and Builds
+node_modules/
+dist/
+build/
+.env
+
+# Android Build Artifacts
+android/build/
+android/app/build/
+android/.gradle/
+*.apk
+*.aab
