@@ -10,6 +10,7 @@ import { PageTransition } from './src/components/common/PageTransition';
 import { ErrorBoundary } from './src/components/common/ErrorBoundary';
 import { InstallPrompt } from './src/components/common/InstallPrompt';
 import { useAppState } from './src/context/AppStateContext';
+import { useAuth } from './src/context/AuthContext';
 import { parseLocalStorage, setLocalStorage, isHushNoteArray } from './src/utils/storage';
 import { pathToPage, pageToPath } from './src/router/routes';
 
@@ -42,19 +43,40 @@ export const AppLayout: React.FC = () => {
     setIsDarkMode,
   } = useAppState();
 
-  const [ghostRipple, setGhostRipple] = useState(false);
   const [isGhostTransitioning, setIsGhostTransitioning] = useState(false);
-  const [hushNotes, setHushNotes] = useState<HushNote[]>(() =>
-    parseLocalStorage<HushNote[]>('hush_all_notes', isHushNoteArray, MOCK_HUSH_NOTES)
-  );
+  
+  const [hushNotes, setHushNotes] = useState<HushNote[]>([]);
+  const { accessToken } = useAuth();
+  
+  useEffect(() => {
+    const fetchNotes = async () => {
+      if (!accessToken) return;
+      try {
+        const res = await fetch('/api/notes', {
+          headers: { 'Authorization': `Bearer ${accessToken}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const formattedNotes = data.map(n => ({
+            id: String(n.id),
+            userId: String(n.userUid),
+            username: n.userName,
+            avatar: n.userAvatar,
+            text: n.text,
+            music: n.musicTitle ? { title: n.musicTitle, artist: n.musicArtist } : undefined,
+            timestamp: new Date(n.createdAt).toLocaleTimeString()
+          }));
+          setHushNotes(formattedNotes);
+        }
+      } catch (e) {
+        console.error('Failed to fetch notes:', e);
+      }
+    };
+    fetchNotes();
+  }, [accessToken]);
+  
 
   const currentPage = pathToPage(location.pathname);
-
-  useEffect(() => {
-    if (isGlobalGhostMode) {
-      setGhostRipple(true);
-    }
-  }, [isGlobalGhostMode]);
 
   const handleMainScroll = () => {
     if (mainRef.current && sidebarRef.current) {
@@ -84,14 +106,34 @@ export const AppLayout: React.FC = () => {
     }
   }, [location.pathname]);
 
-  const handleAddHushNote = (newNote: HushNote) => {
-    setHushNotes(prev => {
-      const updated = [newNote, ...prev];
-      setLocalStorage('hush_all_notes', updated);
-      return updated;
-    });
+  
+  const handleAddHushNote = async (newNote: HushNote) => {
+    // Add optimistically
+    setHushNotes(prev => [newNote, ...prev]);
     showToast('Secret whisper note published!', 'success');
+    
+    if (accessToken) {
+      try {
+        await fetch('/api/notes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          body: JSON.stringify({
+            text: newNote.text,
+            lat: 0,
+            lng: 0,
+            musicTitle: newNote.music?.title,
+            musicArtist: newNote.music?.artist
+          })
+        });
+      } catch (e) {
+        console.error('Failed to save note:', e);
+      }
+    }
   };
+
 
   useEffect(() => {
     if (location.pathname !== '/launch') {
@@ -171,8 +213,8 @@ export const AppLayout: React.FC = () => {
   const isDarkPage = ['launch', 'initial', 'loading'].includes(currentPage) || location.pathname === '/launch' || location.pathname === '/initial' || location.pathname === '/loading';
 
   const getAppBgClass = () => {
-    if (isDarkPage) return 'bg-[#062B34] text-[#F1FAEE]';
-    if (isGlobalGhostMode) return 'bg-[#03171C] text-[#F1FAEE]';
+    if (isDarkPage) return 'bg-[var(--app-primary)] text-[#F1FAEE]';
+    if (isGlobalGhostMode) return 'bg-[var(--app-bg-ghost)] text-[#F1FAEE]';
     return 'bg-[var(--app-bg)] text-[var(--text-primary)]';
   };
 
@@ -191,19 +233,11 @@ export const AppLayout: React.FC = () => {
 
   return (
     <div className={`relative h-screen w-full flex flex-col md:flex-row overflow-hidden min-h-screen transition-colors duration-500 ${getAppBgClass()} ${isGlobalGhostMode ? 'ghost-mode' : ''} ${isGhostTransitioning ? 'animate-ghost-trans-blur' : ''}`}>
-      {ghostRipple && (
-        <div
-          className="fixed inset-0 z-[999] pointer-events-none flex items-center justify-center overflow-hidden"
-          onAnimationEnd={() => setGhostRipple(false)}
-        >
-          <div className="w-10 h-10 rounded-full bg-[#80FFEC]/30 animate-ping duration-700 scale-[50]" />
-        </div>
-      )}
 
       {/* Skip to Main Content Link for Screen Readers & Keyboard Users */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[500] focus:px-4 focus:py-2 focus:bg-[#2EC4B6] focus:text-[#062B34] focus:font-black focus:rounded-xl focus:shadow-2xl focus:outline-none focus:ring-2 focus:ring-white"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[500] focus:px-4 focus:py-2 focus:bg-[var(--app-accent)] focus:text-[var(--app-primary)] focus:font-black focus:rounded-xl focus:shadow-2xl focus:outline-none focus:ring-2 focus:ring-white"
       >
         Skip to main content
       </a>

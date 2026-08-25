@@ -1,99 +1,85 @@
-/**
- * AuthContext handles authentication sessions, JWT tokens, login credentials,
- * and authentication API workflows.
- *
- * Separation of Concerns:
- * - AuthContext: Low-level session tokens, OAuth / JWT credential state, and Auth API calls.
- * - AppStateContext: Application-wide UI state (active view, theme, ghost mode, active user profile).
- */
-import React, { createContext, useContext, useState, ReactNode, useCallback, useRef, useEffect } from 'react';
-import { AuthUser, AppUser } from '../types/auth.types';
-
-export interface User {
-  id: string;
-  email: string;
-  username: string;
-}
+import React, { createContext, useContext, useState, ReactNode, useCallback, useEffect } from 'react';
+import { auth, googleAuthProvider } from '../lib/firebase.ts';
+import { signInWithPopup, onAuthStateChanged, signOut, User as FirebaseUser } from 'firebase/auth';
+import { User, AuthUser, AppUser } from '../types/auth.types.ts';
 
 export interface AuthContextType {
-  user: User | AuthUser | null;
-  profile: AppUser | null;
+  user: any;
+  profile: any;
   isAuthenticated: boolean;
   isLoading: boolean;
   accessToken: string | null;
-  login: (credentialsOrUser: { id: string; email: string; username: string } | string, password?: string) => Promise<void> | void;
-  loginWithGoogle?: (googleToken: string) => Promise<void>;
-  logout: () => Promise<void> | void;
-  refreshToken?: () => Promise<boolean>;
-  verifyEmail?: (code: string) => Promise<void>;
-  setupTwoFactor?: () => Promise<{ qrCodeUrl: string; secret: string }>;
-  verifyTwoFactor?: (code: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 let inMemoryAccessToken: string | null = null;
-
 export const getAccessToken = () => inMemoryAccessToken;
-export const setAccessToken = (token: string | null) => {
-  inMemoryAccessToken = token;
-};
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | AuthUser | null>(null);
-  const [profile, setProfile] = useState<AppUser | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const refreshTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const login = useCallback(async (credentialsOrUser: { id: string; email: string; username: string } | string, password?: string) => {
-    setIsLoading(true);
-    try {
-      if (typeof credentialsOrUser === 'object' && credentialsOrUser !== null) {
-        // Direct user object login (for mock / test compatibility)
-        setUser(credentialsOrUser);
-        setAccessToken('in_memory_session_token_' + Date.now());
-      } else if (typeof credentialsOrUser === 'string') {
-        const usernameOrEmail = credentialsOrUser;
-        const pwd = password || '';
-        if (!pwd) {
-          throw new Error('Password is required');
-        }
-        const newUser: User = {
-          id: 'usr_' + Date.now(),
-          email: usernameOrEmail.includes('@') ? usernameOrEmail : `${usernameOrEmail}@vizu.app`,
-          username: usernameOrEmail.split('@')[0] ?? usernameOrEmail,
-        };
-        setUser(newUser);
-        setAccessToken('in_memory_session_token_' + Date.now());
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const logout = useCallback(() => {
-    setAccessToken(null);
-    setUser(null);
-    setProfile(null);
-    if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
-  }, []);
+  const [user, setUser] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const timer = refreshTimerRef.current;
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        const token = await firebaseUser.getIdToken();
+        inMemoryAccessToken = token;
+        
+        try {
+          // Sync with our backend
+          const res = await fetch('/api/auth/sync', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          const dbUser = await res.json();
+          setUser(firebaseUser);
+          setProfile(dbUser);
+        } catch (e) {
+          console.error("Sync error", e);
+        }
+      } else {
+        setUser(null);
+        setProfile(null);
+        inMemoryAccessToken = null;
+      }
+      setIsLoading(false);
+    });
+    
+    return unsubscribe;
   }, []);
+
+  const loginWithGoogle = async () => {
+    try {
+      setIsLoading(true);
+      await signInWithPopup(auth, googleAuthProvider);
+    } catch (error) {
+      console.error("Login failed", error);
+      setIsLoading(false);
+    }
+  };
+
+  const logout = async () => {
+    await signOut(auth);
+    inMemoryAccessToken = null;
+    setUser(null);
+    setProfile(null);
+  };
 
   return (
     <AuthContext.Provider
       value={{
         user,
         profile,
-        isAuthenticated: !!user,
+        isAuthenticated: !!user && !!profile,
         isLoading,
         accessToken: inMemoryAccessToken,
-        login,
+        loginWithGoogle,
         logout,
       }}
     >
@@ -109,4 +95,3 @@ export const useAuth = (): AuthContextType => {
   }
   return context;
 };
-

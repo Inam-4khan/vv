@@ -28,13 +28,13 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variantClasses = {
     solid:
-      'bg-[#2EC4B6] hover:bg-[#80FFEC] text-[#062B34] font-black shadow-[0_4px_15px_rgba(46,196,182,0.4)] active:scale-95',
+      'bg-[var(--app-accent)] hover:bg-[var(--app-accent-light)] text-[var(--app-primary)] font-black shadow-[0_4px_15px_rgba(46,196,182,0.4)] active:scale-95',
     glass:
-      'bg-[#062B34]/60 backdrop-blur-[14px] text-[#F1FAEE] border border-[#80FFEC]/40 hover:border-[#80FFEC] active:scale-95',
+      'bg-[color-mix(in_srgb,var(--app-primary)_60%,transparent)] backdrop-blur-[14px] text-[#F1FAEE] border border-[color-mix(in_srgb,var(--app-accent-light)_40%,transparent)] hover:border-[var(--app-accent-light)] active:scale-95',
     ghost:
       'bg-transparent hover:bg-white/10 text-[#F1FAEE] border border-transparent hover:border-white/10 active:scale-95',
     primary:
-      'bg-[#062B34] hover:bg-[#0C3B46] text-[#F1FAEE] shadow-md active:scale-95',
+      'bg-[var(--app-primary)] hover:bg-[#0C3B46] text-[#F1FAEE] shadow-md active:scale-95',
     secondary:
       'bg-white/10 hover:bg-white/20 text-[#F1FAEE] border border-white/10 active:scale-95',
     danger:

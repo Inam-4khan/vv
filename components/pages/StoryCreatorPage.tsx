@@ -65,25 +65,25 @@ export const StoryCreatorPage: React.FC<StoryCreatorPageProps> = React.memo(({ o
         
         {/* Camera Controls */}
         <div className="absolute top-0 left-0 w-full p-6 flex justify-between items-start z-10 safe-area-inset-top">
-           <button onClick={onBack} aria-label="Close story creator" className="p-2 rounded-full bg-black/40 text-white backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2EC4B6]">
+           <button onClick={onBack} aria-label="Close story creator" className="p-2 rounded-full bg-black/40 text-white backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)]">
              <X size={24} aria-hidden="true" />
            </button>
         </div>
         
         {!capturedMedia ? (
           <div className="absolute bottom-10 left-0 w-full flex justify-center items-center gap-8 safe-area-inset-bottom">
-             <button aria-label="Upload photo from gallery" className="p-4 rounded-full bg-white/10 text-white backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2EC4B6]">
+             <button aria-label="Upload photo from gallery" className="p-4 rounded-full bg-white/10 text-white backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)]">
                <ImageIcon size={24} aria-hidden="true" />
              </button>
              <button 
                type="button"
                onClick={takePicture}
                aria-label="Take picture"
-               className="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center bg-white/20 active:scale-95 transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2EC4B6]"
+               className="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center bg-white/20 active:scale-95 transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)]"
              >
                <div className="w-16 h-16 rounded-full bg-white" />
              </button>
-             <button aria-label="Flip camera" className="p-4 rounded-full bg-white/10 text-white backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2EC4B6]">
+             <button aria-label="Flip camera" className="p-4 rounded-full bg-white/10 text-white backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)]">
                <RefreshCw size={24} aria-hidden="true" />
              </button>
           </div>
@@ -98,7 +98,7 @@ export const StoryCreatorPage: React.FC<StoryCreatorPageProps> = React.memo(({ o
                   onClick={() => setPrivacy('public')} 
                   className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
                     privacy === 'public' 
-                      ? 'bg-[#2EC4B6] text-white shadow-md' 
+                      ? 'bg-[var(--app-accent)] text-white shadow-md' 
                       : 'text-white/45 hover:text-white'
                   }`}
                 >
@@ -109,7 +109,7 @@ export const StoryCreatorPage: React.FC<StoryCreatorPageProps> = React.memo(({ o
                   onClick={() => setPrivacy('circle')} 
                   className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
                     privacy === 'circle' 
-                      ? 'bg-[#2EC4B6] text-[#062B34] shadow-md font-bold' 
+                      ? 'bg-[var(--app-accent)] text-[var(--app-primary)] shadow-md font-bold' 
                       : 'text-white/45 hover:text-white'
                   }`}
                 >
@@ -122,7 +122,7 @@ export const StoryCreatorPage: React.FC<StoryCreatorPageProps> = React.memo(({ o
                <button onClick={() => setCapturedMedia(null)} className="px-6 py-3 rounded-full bg-white/20 text-white backdrop-blur-md font-bold text-xs uppercase tracking-widest">
                  Retake
                </button>
-               <button onClick={shareStory} className="px-8 py-3 rounded-full bg-[#2EC4B6] text-[#062B34] font-black uppercase tracking-widest flex items-center gap-2 shadow-lg active:scale-95 transition-transform text-xs">
+               <button onClick={shareStory} className="px-8 py-3 rounded-full bg-[var(--app-accent)] text-[var(--app-primary)] font-black uppercase tracking-widest flex items-center gap-2 shadow-lg active:scale-95 transition-transform text-xs">
                  <Send size={15} /> Share Story
                </button>
             </div>

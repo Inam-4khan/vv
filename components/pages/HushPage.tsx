@@ -33,29 +33,29 @@ const getNoteStyleVariants = (note: HushNote, index: number, isGhostMode: boolea
     return {
       tierLabel: 'Fresh • Near',
       bubbleBg: isGhostMode 
-        ? 'bg-gradient-to-br from-[#0C3B46] via-[#062B34] to-[#0C3B46] border-[#80FFEC]/50 text-white shadow-lg shadow-[#2EC4B6]/20 ring-1 ring-[#80FFEC]/40' 
+        ? 'bg-gradient-to-br from-[#0C3B46] via-[var(--app-primary)] to-[#0C3B46] border-[color-mix(in_srgb,var(--app-accent-light)_50%,transparent)] text-white shadow-lg shadow-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] ring-1 ring-[color-mix(in_srgb,var(--app-accent-light)_40%,transparent)]' 
         : 'bg-gradient-to-br from-amber-100 via-rose-50 to-orange-100 border-amber-300/70 text-primary shadow-lg shadow-amber-500/10 ring-1 ring-amber-300/40',
-      badgeBg: isGhostMode ? 'bg-[#2EC4B6]/30 text-[#80FFEC]' : 'bg-amber-500/20 text-amber-900',
-      tagIconColor: isGhostMode ? 'text-[#80FFEC]' : 'text-amber-600',
+      badgeBg: isGhostMode ? 'bg-[color-mix(in_srgb,var(--app-accent)_30%,transparent)] text-[var(--app-accent-light)]' : 'bg-amber-500/20 text-amber-900',
+      tagIconColor: isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-amber-600',
       proximityStr: `${distanceKm}km • Just now`
     };
   } else if (isMidRange) {
     return {
       tierLabel: 'Mid Range',
       bubbleBg: isGhostMode 
-        ? 'bg-gradient-to-br from-[#062B34] via-[#03171C] to-[#0C3B46] border-[#2EC4B6]/30 text-[#F1FAEE] shadow-md shadow-[#062B34]/40' 
-        : 'bg-gradient-to-br from-[#2EC4B6]/10 via-sky-50 to-white border-[#2EC4B6]/20 text-primary shadow-md shadow-[#2EC4B6]/5',
-      badgeBg: isGhostMode ? 'bg-[#062B34] text-[#80FFEC]' : 'bg-[#2EC4B6]/10 text-[#20878E]',
-      tagIconColor: isGhostMode ? 'text-[#2EC4B6]' : 'text-[#2EC4B6]',
+        ? 'bg-gradient-to-br from-[var(--app-primary)] via-[var(--app-bg-ghost)] to-[#0C3B46] border-[color-mix(in_srgb,var(--app-accent)_30%,transparent)] text-[#F1FAEE] shadow-md shadow-[color-mix(in_srgb,var(--app-primary)_40%,transparent)]' 
+        : 'bg-gradient-to-br from-[color-mix(in_srgb,var(--app-accent)_10%,transparent)] via-sky-50 to-white border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] text-primary shadow-md shadow-[color-mix(in_srgb,var(--app-accent)_5%,transparent)]',
+      badgeBg: isGhostMode ? 'bg-[var(--app-primary)] text-[var(--app-accent-light)]' : 'bg-[color-mix(in_srgb,var(--app-accent)_10%,transparent)] text-[#20878E]',
+      tagIconColor: isGhostMode ? 'text-[var(--app-accent)]' : 'text-[var(--app-accent)]',
       proximityStr: `${distanceKm}km • ${ageMinutes}m ago`
     };
   } else {
     return {
       tierLabel: 'Distant',
       bubbleBg: isGhostMode 
-        ? 'bg-gradient-to-br from-[#03171C] via-[#062B34] to-[#03171C] border-[#2EC4B6]/20 text-[#8AADB5] shadow-inner' 
+        ? 'bg-gradient-to-br from-[var(--app-bg-ghost)] via-[var(--app-primary)] to-[var(--app-bg-ghost)] border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] text-[#8AADB5] shadow-inner' 
         : 'bg-gradient-to-br from-slate-100/90 via-gray-50 to-slate-100/80 border-slate-200/80 text-primary/70 shadow-sm',
-      badgeBg: isGhostMode ? 'bg-[#03171C] text-[#8AADB5]' : 'bg-slate-200/60 text-slate-600',
+      badgeBg: isGhostMode ? 'bg-[var(--app-bg-ghost)] text-[#8AADB5]' : 'bg-slate-200/60 text-slate-600',
       tagIconColor: isGhostMode ? 'text-[#8AADB5]' : 'text-slate-400',
       proximityStr: `${distanceKm}km • ${ageMinutes}m ago`
     };
@@ -85,13 +85,13 @@ const SwipeableHushNoteItem: React.FC<SwipeableHushNoteItemProps> = ({
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, scale: 0.8, y: 15 }}
+      initial={{ opacity: 0, scale: 0.9, x: -30 }}
       animate={{ 
         opacity: isDismissing ? 0 : 1, 
-        scale: isDismissing ? 0.5 : 1, 
-        y: isDismissing ? -40 : 0 
+        scale: isDismissing ? 0.8 : 1, 
+        x: isDismissing ? -40 : 0 
       }}
-      exit={{ opacity: 0, scale: 0.5, y: -40 }}
+      exit={{ opacity: 0, scale: 0.8, x: -40 }}
       transition={{ type: 'spring', stiffness: 400, damping: 25 }}
       className="flex flex-col items-center gap-2 shrink-0 relative"
     >
@@ -137,7 +137,7 @@ const SwipeableHushNoteItem: React.FC<SwipeableHushNoteItemProps> = ({
       >
         {/* Avatar Ring */}
         <div className={`w-16 h-16 rounded-3xl border-2 shadow-md overflow-hidden relative ${
-          isGhostMode ? 'border-[#2EC4B6]/30 bg-[#062B34]' : 'border-white bg-white'
+          isGhostMode ? 'border-[color-mix(in_srgb,var(--app-accent)_30%,transparent)] bg-[var(--app-primary)]' : 'border-white bg-white'
         }`}>
           <img
             src={note.avatar}
@@ -164,11 +164,14 @@ const SwipeableHushNoteItem: React.FC<SwipeableHushNoteItemProps> = ({
               : styleVariant.bubbleBg
           }`}
         >
-          {/* Proximity / Freshness Tag */}
+          {/* Proximity / Freshness Tag & E2E Encrypted Lock */}
           <div className="flex items-center justify-between gap-1 mb-0.5">
             <span className={`text-[7px] font-mono font-bold uppercase tracking-tighter flex items-center gap-0.5 ${styleVariant.tagIconColor}`}>
               <MapPin size={7} />
               <span>{styleVariant.proximityStr}</span>
+            </span>
+            <span className="text-[7px] font-mono flex items-center opacity-50" title="End-to-End Encrypted">
+              <Lock size={7} />
             </span>
           </div>
 
@@ -195,7 +198,7 @@ const SwipeableHushNoteItem: React.FC<SwipeableHushNoteItemProps> = ({
           }}
           className={`absolute -top-2 -right-2 p-1 rounded-full border shadow-md transition-all active:scale-75 ${
             isGhostMode 
-              ? 'bg-[#03171C] text-[#80FFEC] border-[#2EC4B6]/30 hover:bg-[#2EC4B6]/80' 
+              ? 'bg-[var(--app-bg-ghost)] text-[var(--app-accent-light)] border-[color-mix(in_srgb,var(--app-accent)_30%,transparent)] hover:bg-[color-mix(in_srgb,var(--app-accent)_80%,transparent)]' 
               : 'bg-white text-gray-400 border-black/10 hover:text-red-500 hover:bg-red-50'
           }`}
           title="Dismiss whisper"
@@ -249,16 +252,16 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
   const [timerDuration, setTimerDuration] = useState<number | null>(null); // duration in seconds
   const [_tick, setTick] = useState(0);
 
-  // Connection management
+  // Connection & offline management
   const [isOnline, setIsOnline] = useState<boolean>(typeof navigator !== 'undefined' ? navigator.onLine : true);
-  const [_isOfflineSimulated, setIsOfflineSimulated] = useState<boolean>(false);
   const [queuedNotesState, setQueuedNotesState] = useState<HushNote[]>([]);
 
   // Gestural touch drag states for modal dismissal
   const [modalStartY, setModalStartY] = useState<number | null>(null);
   const [modalCurrentY, setModalCurrentY] = useState<number | null>(null);
 
-  const currentOnlineStatus = isOnline && !isOfflineSimulated;
+  const isOffline = !isOnline;
+  const currentOnlineStatus = !isOffline;
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -435,8 +438,8 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
   }
 
   return (
-    <div className={`min-h-full transition-all duration-700 pb-24 px-4 ${isGhostMode ? 'bg-[#03171C] text-[#F1FAEE]' : 'bg-[var(--app-bg,#FFF9E6)] text-[var(--text-primary,#0B1720)]'}`}>
-      <header className={`-mx-4 px-4 py-5 text-white sticky top-0 z-30 shadow-md transition-colors duration-500 ${isGhostMode ? 'bg-[#03171C]' : 'bg-[#062B34]'}`}>
+    <div className={`min-h-full transition-all duration-700 pb-24 px-4 ${isGhostMode ? 'bg-[var(--app-bg-ghost)] text-[#F1FAEE]' : 'bg-[var(--app-bg,var(--app-bg))] text-[var(--text-primary,var(--text-primary))]'}`}>
+      <header className={`-mx-4 px-4 py-5 text-white sticky top-0 z-30 shadow-md transition-colors duration-500 ${isGhostMode ? 'bg-[var(--app-bg-ghost)]' : 'bg-[var(--app-primary)]'}`}>
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-black font-montserrat tracking-tight">Hush</h1>
           <div className="flex items-center gap-2">
@@ -457,8 +460,8 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
               }}
               className={`px-3 py-1.5 rounded-xl transition-all active:scale-90 flex items-center justify-center gap-1.5 border ${
                 isVaultOpen 
-                  ? (isGhostMode ? 'bg-[#2EC4B6] text-[#062B34] border-[#80FFEC] shadow-lg shadow-[#2EC4B6]/50 font-black' : 'bg-secondary text-white border-secondary shadow-md')
-                  : (isGhostMode ? 'bg-white/10 text-[#80FFEC] border-white/10 hover:text-white' : 'bg-white/10 text-white/80 border-white/10 hover:text-white')
+                  ? (isGhostMode ? 'bg-[var(--app-accent)] text-[var(--app-primary)] border-[var(--app-accent-light)] shadow-lg shadow-[color-mix(in_srgb,var(--app-accent)_50%,transparent)] font-black' : 'bg-secondary text-white border-secondary shadow-md')
+                  : (isGhostMode ? 'bg-white/10 text-[var(--app-accent-light)] border-white/10 hover:text-white' : 'bg-white/10 text-white/80 border-white/10 hover:text-white')
               }`}
               title="Vaulted Secret Whispers"
             >
@@ -467,7 +470,7 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
             </button>
             <button 
               onClick={onCameraOpen}
-              className={`p-2 rounded-xl transition-all active:scale-90 flex items-center justify-center border border-white/10 ${isGhostMode ? 'bg-white/10 text-[#80FFEC] hover:text-white' : 'bg-white/10 text-white/80 hover:text-white'}`}
+              className={`p-2 rounded-xl transition-all active:scale-90 flex items-center justify-center border border-white/10 ${isGhostMode ? 'bg-white/10 text-[var(--app-accent-light)] hover:text-white' : 'bg-white/10 text-white/80 hover:text-white'}`}
               title="Snap"
             >
               <Camera size={18} />
@@ -494,7 +497,7 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
                 setIsNoteModalOpen(true);
                 if (navigator.vibrate) navigator.vibrate(15);
               }}
-              className={`relative w-16 h-16 rounded-3xl border-2 border-dashed flex items-center justify-center active:scale-90 transition-all shadow-sm ${isGhostMode ? 'bg-white/5 border-[#2EC4B6]/40 text-[#80FFEC]' : 'bg-white border-secondary/40 text-secondary'}`}
+              className={`relative w-16 h-16 rounded-3xl border-2 border-dashed flex items-center justify-center active:scale-90 transition-all shadow-sm ${isGhostMode ? 'bg-white/5 border-[color-mix(in_srgb,var(--app-accent)_40%,transparent)] text-[var(--app-accent-light)]' : 'bg-white border-secondary/40 text-secondary'}`}
             >
               <Plus size={24} />
             </button>
@@ -548,7 +551,7 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
       {isVaultOpen && (
         <div className="px-4 pt-8 animate-fade-in">
            <div className="flex items-center justify-between px-2 mb-4">
-              <h3 className={`text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 ${isGhostMode ? 'text-[#80FFEC]' : 'text-primary/40'}`}>
+              <h3 className={`text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-primary/40'}`}>
                  <ShieldCheck size={14} className="animate-pulse" /> {isGhostMode ? 'Unlocked Vault' : 'Secret Archives'}
               </h3>
               {!isGhostMode && <button onClick={() => setIsVaultOpen(false)} className={`text-[8px] font-black uppercase tracking-widest hover:opacity-100 opacity-40 ${isGhostMode ? 'text-white' : 'text-primary'}`}>Close Vault</button>}
@@ -560,17 +563,17 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
                   key={`hidden-${user.id}`}
                   onClick={() => setSelectedUser(user)}
                   aria-label={`Open chat with Shadow Persona @${user.username}`}
-                  className={`w-full text-left p-4 rounded-[2.5rem] flex items-center gap-4 transition-all cursor-pointer shadow-lg border focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2EC4B6] ${isGhostMode ? 'bg-[#062B34] border-[#2EC4B6]/30 hover:bg-[#0C3B46] shadow-[#2EC4B6]/10' : 'bg-white border-black/5 hover:border-primary/10'}`}
+                  className={`w-full text-left p-4 rounded-[2.5rem] flex items-center gap-4 transition-all cursor-pointer shadow-lg border focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)] ${isGhostMode ? 'bg-[var(--app-primary)] border-[color-mix(in_srgb,var(--app-accent)_30%,transparent)] hover:bg-[#0C3B46] shadow-[color-mix(in_srgb,var(--app-accent)_10%,transparent)]' : 'bg-white border-black/5 hover:border-primary/10'}`}
                 >
                    <div className="w-12 h-12 rounded-2xl border overflow-hidden relative shrink-0">
                       <img src={user.avatar} loading="lazy" className={`w-full h-full object-cover ${isGhostMode ? 'grayscale brightness-125' : ''}`} alt="" />
-                      <div className={`absolute inset-0 ${isGhostMode ? 'bg-[#2EC4B6]/10' : 'bg-primary/5'}`} />
+                      <div className={`absolute inset-0 ${isGhostMode ? 'bg-[color-mix(in_srgb,var(--app-accent)_10%,transparent)]' : 'bg-primary/5'}`} />
                    </div>
                    <div className="flex-1 min-w-0">
                       <h4 className={`text-sm font-bold ${isGhostMode ? 'text-white' : 'text-primary'}`}>Shadow Persona</h4>
-                      <p className={`text-[10px] font-black uppercase tracking-widest ${isGhostMode ? 'text-[#80FFEC]' : 'text-primary/40'}`}>Ephemeral Trace • Open</p>
+                      <p className={`text-[10px] font-black uppercase tracking-widest ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-primary/40'}`}>Ephemeral Trace • Open</p>
                    </div>
-                   <div className={`p-2 rounded-xl shrink-0 ${isGhostMode ? 'bg-[#2EC4B6]/20 text-[#80FFEC]' : 'bg-primary/5 text-primary/40'}`}>
+                   <div className={`p-2 rounded-xl shrink-0 ${isGhostMode ? 'bg-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] text-[var(--app-accent-light)]' : 'bg-primary/5 text-primary/40'}`}>
                     <Archive size={16} aria-hidden="true" />
                    </div>
                 </button>
@@ -582,20 +585,23 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
       {/* Regular Chat List */}
       <div className="p-4 space-y-4">
         <h3 className={`px-2 text-[10px] font-black uppercase tracking-[0.3em] mb-2 ${isGhostMode ? 'text-white/40' : 'text-primary/30'}`}>Active Whispers</h3>
-        {MOCK_USERS.map((user) => (
-          <button 
+        {MOCK_USERS.map((user, idx) => (
+          <motion.button 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: idx * 0.1, type: "spring", stiffness: 400, damping: 25 }}
             type="button"
             key={user.id} 
             onClick={() => setSelectedUser(user)}
             aria-label={`Open chat with ${user.displayName}`}
-            className={`w-full text-left p-4 rounded-[2.5rem] flex items-center gap-4 border shadow-sm active:scale-[0.98] transition-all cursor-pointer group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2EC4B6] ${
+            className={`w-full text-left p-4 rounded-[2.5rem] flex items-center gap-4 border shadow-sm active:scale-[0.98] transition-all cursor-pointer group focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)] ${
               isGhostMode 
-                ? 'bg-[#062B34] border-[#2EC4B6]/20 hover:border-[#2EC4B6]/40 hover:bg-[#0C3B46]' 
+                ? 'bg-[var(--app-primary)] border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] hover:border-[color-mix(in_srgb,var(--app-accent)_40%,transparent)] hover:bg-[#0C3B46]' 
                 : 'bg-white border-black/5 hover:border-primary/20'
             }`}
           >
             <div className="relative">
-              <img src={user.avatar} loading="lazy" className={`w-14 h-14 rounded-2xl border-2 transition-colors group-hover:border-[#2EC4B6] ${isGhostMode ? 'border-[#03171C]' : 'border-[#062B34]'}`} alt="" />
+              <img src={user.avatar} loading="lazy" className={`w-14 h-14 rounded-2xl border-2 transition-colors group-hover:border-[var(--app-accent)] ${isGhostMode ? 'border-[var(--app-bg-ghost)]' : 'border-[var(--app-primary)]'}`} alt="" />
               <div className={`absolute bottom-0 right-0 w-3.5 h-3.5 border-2 border-white rounded-full ${user.status === 'online' ? 'bg-green-500' : 'bg-gray-400'}`}></div>
             </div>
             <div className="flex-1 min-w-0">
@@ -614,7 +620,7 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
                 </div>
               </div>
             </div>
-          </button>
+          </motion.button>
         ))}
       </div>
 
@@ -726,11 +732,11 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
       {quickReplyNote && (
         <div className="fixed inset-0 z-[220] flex items-end sm:items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fade-in">
           <div className={`w-full max-w-sm rounded-[2.5rem] p-6 shadow-2xl animate-scale-up border transition-colors ${
-            isGhostMode ? 'bg-[#062B34] text-white border-[#2EC4B6]/30' : 'bg-white text-primary border-black/5'
+            isGhostMode ? 'bg-[var(--app-primary)] text-white border-[color-mix(in_srgb,var(--app-accent)_30%,transparent)]' : 'bg-white text-primary border-black/5'
           }`}>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <span className={`p-2 rounded-xl ${isGhostMode ? 'bg-[#2EC4B6]/20 text-[#80FFEC]' : 'bg-secondary/10 text-secondary'}`}>
+                <span className={`p-2 rounded-xl ${isGhostMode ? 'bg-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] text-[var(--app-accent-light)]' : 'bg-secondary/10 text-secondary'}`}>
                   <Zap size={16} />
                 </span>
                 <div>
@@ -748,7 +754,7 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
 
             {/* Target Note Preview */}
             <div className={`p-3.5 rounded-2xl border mb-4 flex items-center gap-3 ${
-              isGhostMode ? 'bg-[#03171C] border-[#2EC4B6]/20' : 'bg-primary/5 border-primary/5'
+              isGhostMode ? 'bg-[var(--app-bg-ghost)] border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)]' : 'bg-primary/5 border-primary/5'
             }`}>
               <img src={quickReplyNote.avatar} loading="lazy" className="w-10 h-10 rounded-xl object-cover shrink-0 border border-secondary/20" alt="" />
               <div className="min-w-0 flex-1">
@@ -769,7 +775,7 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
                   }}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all active:scale-90 ${
                     isGhostMode 
-                      ? 'bg-[#0C3B46] border-[#2EC4B6]/20 text-[#80FFEC] hover:bg-[#2EC4B6]/30' 
+                      ? 'bg-[#0C3B46] border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] text-[var(--app-accent-light)] hover:bg-[color-mix(in_srgb,var(--app-accent)_30%,transparent)]' 
                       : 'bg-gray-100 border-black/5 text-primary/80 hover:bg-gray-200'
                   }`}
                 >
@@ -788,7 +794,7 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
                   placeholder={`Whisper reply to @${quickReplyNote.username}...`}
                   className={`w-full py-3.5 pl-4 pr-12 rounded-2xl text-xs focus:outline-none border transition-all ${
                     isGhostMode 
-                      ? 'bg-white/5 border-[#2EC4B6]/20 text-white placeholder:text-white/30 focus:border-[#80FFEC]' 
+                      ? 'bg-white/5 border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] text-white placeholder:text-white/30 focus:border-[var(--app-accent-light)]' 
                       : 'bg-primary/5 border-primary/10 text-primary placeholder:text-primary/30 focus:border-secondary'
                   }`}
                   maxLength={120}
@@ -804,7 +810,7 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
                   disabled={!quickReplyText.trim()}
                   className={`absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-xl transition-all ${
                     quickReplyText.trim() 
-                      ? (isGhostMode ? 'bg-[#2EC4B6] text-[#062B34] font-black shadow-md active:scale-90' : 'bg-secondary text-white shadow-md active:scale-90') 
+                      ? (isGhostMode ? 'bg-[var(--app-accent)] text-[var(--app-primary)] font-black shadow-md active:scale-90' : 'bg-secondary text-white shadow-md active:scale-90') 
                       : 'opacity-30 pointer-events-none'
                   }`}
                 >
@@ -884,7 +890,7 @@ const HushChatView: React.FC<{ user: User; onBack: () => void }> = ({ user, onBa
   };
 
   return (
-    <div className="h-full flex flex-col transition-colors duration-500 bg-[var(--app-bg)] text-white">
+    <div className="h-full flex flex-col transition-colors duration-500 bg-[var(--app-bg)] text-[var(--text-primary)]">
       <header className="p-6 text-white flex items-center justify-between shadow-xl transition-colors duration-500 bg-primary">
          <div className="flex items-center gap-4">
            <button onClick={onBack} className="p-1 active:scale-90 transition-transform"><ArrowLeft size={24} /></button>

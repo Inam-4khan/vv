@@ -22,8 +22,8 @@ export const Navbar: React.FC<NavbarProps> = React.memo(({ activePage, onNavigat
         aria-label="Mobile Bottom Navigation"
         className={`pointer-events-auto px-4 py-3 flex justify-around items-center transition-all duration-500 rounded-[2.5rem] shadow-2xl border ${
           isGhostActive 
-            ? 'bg-[#062B34] text-[#80FFEC] border-[#2EC4B6]/30' 
-            : 'bg-[#062B34] text-white border-white/5'
+            ? 'bg-[var(--app-primary)] text-[var(--app-accent-light)] border-[color-mix(in_srgb,var(--app-accent)_30%,transparent)]' 
+            : 'bg-[var(--app-primary)] text-white border-white/5'
         }`}
       >
         <span className="sr-only" aria-live="polite">
@@ -47,10 +47,10 @@ export const Navbar: React.FC<NavbarProps> = React.memo(({ activePage, onNavigat
                 }}
                 aria-label={`Navigate to ${item.label}`}
                 aria-current="page"
-                className={`nav-button flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-full transition-all duration-300 transform scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#80FFEC] focus-visible:ring-offset-2 focus-visible:ring-offset-[#062B34] ${
+                className={`nav-button flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-full transition-all duration-300 transform scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent-light)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--app-primary)] ${
                   isGhostActive 
-                    ? 'bg-[#2EC4B6] text-[#062B34] font-black shadow-md' 
-                    : 'bg-white/10 text-[#FFF9E6]'
+                    ? 'bg-[var(--app-accent)] text-[var(--app-primary)] font-black shadow-md' 
+                    : 'bg-white/10 text-[var(--app-bg)]'
                 }`}
               >
                 <Icon size={20} strokeWidth={3} fill="currentColor" aria-hidden="true" />
@@ -70,8 +70,8 @@ export const Navbar: React.FC<NavbarProps> = React.memo(({ activePage, onNavigat
                 }
               }}
               aria-label={`Navigate to ${item.label}`}
-              className={`nav-button flex flex-col items-center justify-center gap-0.5 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#80FFEC] focus-visible:ring-offset-2 focus-visible:ring-offset-[#062B34] rounded-full p-2 ${
-                isGhostActive ? 'text-[#8AADB5] hover:text-[#80FFEC]' : 'text-white/60 hover:text-white'
+              className={`nav-button flex flex-col items-center justify-center gap-0.5 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent-light)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--app-primary)] rounded-full p-2 ${
+                isGhostActive ? 'text-[#8AADB5] hover:text-[var(--app-accent-light)]' : 'text-white/60 hover:text-white'
               }`}
             >
               <Icon size={20} strokeWidth={2} aria-hidden="true" />

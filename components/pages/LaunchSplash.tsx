@@ -4,12 +4,12 @@ import { BrandLogo } from '../common/BrandLogo';
 
 export const LaunchSplash: React.FC = () => {
   return (
-    <div className="w-full h-full min-h-full flex-1 flex flex-col items-center justify-center bg-[#062B34] overflow-hidden">
+    <div className="w-full h-full min-h-full flex-1 flex flex-col items-center justify-center bg-[var(--app-primary)] overflow-hidden">
       <div className="flex items-center gap-6">
         <div className="animate-logo-entrance">
-          <BrandLogo size={100} color="#FFF9E6" className="drop-shadow-[0_0_15px_rgba(255,249,230,0.5)]" />
+          <BrandLogo size={100} color="var(--app-bg)" className="drop-shadow-[0_0_15px_rgba(255,249,230,0.5)]" />
         </div>
-        <h1 className="text-7xl font-black tracking-[-0.08em] text-[#FFF9E6] font-montserrat select-none animate-text-entrance opacity-0">
+        <h1 className="text-7xl font-black tracking-[-0.08em] text-[var(--app-bg)] font-montserrat select-none animate-text-entrance opacity-0">
           VIZU
         </h1>
       </div>

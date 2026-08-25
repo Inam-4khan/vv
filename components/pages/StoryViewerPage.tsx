@@ -203,7 +203,7 @@ export const StoryViewerPage: React.FC<StoryViewerPageProps> = React.memo(({ sto
                 }}
                 className={`flex items-center gap-1 py-1.5 px-3 rounded-full text-[9px] font-black uppercase tracking-wider transition-all border ${
                   isAutoplay 
-                    ? 'bg-[#2EC4B6]/90 border-[#2EC4B6]/20 text-white shadow-glow shadow-[#2EC4B6]/10' 
+                    ? 'bg-[color-mix(in_srgb,var(--app-accent)_90%,transparent)] border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] text-white shadow-glow shadow-[color-mix(in_srgb,var(--app-accent)_10%,transparent)]' 
                     : 'bg-white/10 border-white/10 text-white/70'
                 }`}
                 title="Toggle Autoplay"

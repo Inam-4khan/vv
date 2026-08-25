@@ -21,9 +21,9 @@ const getToastStyle = (type: ToastType) => {
   switch (type) {
     case 'success':
       return {
-        bg: 'bg-[#062B34] text-white border-[#2EC4B6]/60 shadow-[0_8px_25px_rgba(46,196,182,0.35)]',
-        badgeBg: 'bg-[#2EC4B6]/20 text-[#80FFEC]',
-        icon: <CheckCircle2 className="w-5 h-5 text-[#2EC4B6] shrink-0" />,
+        bg: 'bg-[var(--app-primary)] text-white border-[color-mix(in_srgb,var(--app-accent)_60%,transparent)] shadow-[0_8px_25px_rgba(46,196,182,0.35)]',
+        badgeBg: 'bg-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] text-[var(--app-accent-light)]',
+        icon: <CheckCircle2 className="w-5 h-5 text-[var(--app-accent)] shrink-0" />,
       };
     case 'error':
       return {
@@ -40,9 +40,9 @@ const getToastStyle = (type: ToastType) => {
     case 'info':
     default:
       return {
-        bg: 'bg-[#062B34] text-white border-[#80FFEC]/40 shadow-[0_8px_25px_rgba(6,43,52,0.5)]',
-        badgeBg: 'bg-[#80FFEC]/20 text-[#80FFEC]',
-        icon: <Info className="w-5 h-5 text-[#80FFEC] shrink-0" />,
+        bg: 'bg-[var(--app-primary)] text-white border-[color-mix(in_srgb,var(--app-accent-light)_40%,transparent)] shadow-[0_8px_25px_rgba(6,43,52,0.5)]',
+        badgeBg: 'bg-[color-mix(in_srgb,var(--app-accent-light)_20%,transparent)] text-[var(--app-accent-light)]',
+        icon: <Info className="w-5 h-5 text-[var(--app-accent-light)] shrink-0" />,
       };
   }
 };

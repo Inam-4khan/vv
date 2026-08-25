@@ -13,15 +13,15 @@ export const NotFoundPage: React.FC = () => {
   return (
     <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 text-center text-white">
       <div className={`relative p-6 rounded-3xl mb-6 ${
-        isGhost ? 'bg-[#03171C] border border-[#2EC4B6]/20' : 'bg-[#0A2832] border border-white/10'
+        isGhost ? 'bg-[var(--app-bg-ghost)] border border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)]' : 'bg-[var(--app-bg-surface)] border border-white/10'
       }`}>
         <div className="relative flex items-center justify-center">
           <div className={`w-20 h-20 rounded-full flex items-center justify-center ${
-            isGhost ? 'bg-[#2EC4B6]/20 text-[#80FFEC]' : 'bg-[#2EC4B6]/10 text-[#2EC4B6]'
+            isGhost ? 'bg-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] text-[var(--app-accent-light)]' : 'bg-[color-mix(in_srgb,var(--app-accent)_10%,transparent)] text-[var(--app-accent)]'
           }`}>
             {isGhost ? <Ghost size={40} className="animate-pulse" /> : <Compass size={40} className="animate-spin-slow" />}
           </div>
-          <div className="absolute -top-1 -right-1 p-2 rounded-full bg-[#2EC4B6] text-[#062B34] shadow-lg">
+          <div className="absolute -top-1 -right-1 p-2 rounded-full bg-[var(--app-accent)] text-[var(--app-primary)] shadow-lg">
             <Sparkles size={16} />
           </div>
         </div>
@@ -37,7 +37,7 @@ export const NotFoundPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-xs">
         <button
           onClick={() => navigate('/home')}
-          className="w-full py-3.5 px-5 rounded-2xl font-black text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md bg-[#2EC4B6] hover:bg-[#2EC4B6]/90 text-[#062B34]"
+          className="w-full py-3.5 px-5 rounded-2xl font-black text-sm flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md bg-[var(--app-accent)] hover:bg-[color-mix(in_srgb,var(--app-accent)_90%,transparent)] text-[var(--app-primary)]"
         >
           <Home size={18} />
           Return to Flow
@@ -47,7 +47,7 @@ export const NotFoundPage: React.FC = () => {
           onClick={() => navigate(-1)}
           className={`w-full py-3.5 px-5 rounded-2xl font-extrabold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 ${
             isGhost
-              ? 'bg-[#2EC4B6]/20 hover:bg-[#2EC4B6]/30 text-[#80FFEC] border border-[#2EC4B6]/30'
+              ? 'bg-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] hover:bg-[color-mix(in_srgb,var(--app-accent)_30%,transparent)] text-[var(--app-accent-light)] border border-[color-mix(in_srgb,var(--app-accent)_30%,transparent)]'
               : 'bg-white/10 hover:bg-white/15 text-white'
           }`}
         >

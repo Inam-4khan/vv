@@ -7,7 +7,7 @@ interface BrandLogoProps {
   color?: string;
 }
 
-export const BrandLogo: React.FC<BrandLogoProps> = ({ className = '', size = 100, color = '#062B34' }) => {
+export const BrandLogo: React.FC<BrandLogoProps> = ({ className = '', size = 100, color = 'var(--app-primary)' }) => {
   return (
     <svg 
       width={size} 

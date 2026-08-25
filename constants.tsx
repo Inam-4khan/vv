@@ -128,7 +128,7 @@ export const SPLASH_SCREENS = [
     title: "Flow",
     subtitle: "(home scroll page)",
     text: "Find your rhythm in the Flow—where the best content lives.",
-    color: "#062B34"
+    color: "var(--app-primary)"
   },
   {
     title: "Zaps",
@@ -140,7 +140,7 @@ export const SPLASH_SCREENS = [
     title: "Vista",
     subtitle: "(camera function)",
     text: "See clearly. Capture your world through Vista.",
-    color: "#062B34"
+    color: "var(--app-primary)"
   },
   {
     title: "Hush",
@@ -152,6 +152,6 @@ export const SPLASH_SCREENS = [
     title: "Persona",
     subtitle: "(profile)",
     text: "Be yourself. Polish your Persona for the world to see.",
-    color: "#062B34"
+    color: "var(--app-primary)"
   }
 ];

@@ -12,7 +12,7 @@ interface SwitchAccountPageProps {
 
 export const SwitchAccountPage: React.FC<SwitchAccountPageProps> = React.memo(({ currentUser, onSelect, onBack }) => {
   return (
-    <div className="min-h-full bg-[var(--app-bg,#FFF9E6)] text-[var(--text-primary,#0B1720)] animate-fade-in flex flex-col">
+    <div className="min-h-full bg-[var(--app-bg,var(--app-bg))] text-[var(--text-primary,var(--text-primary))] animate-fade-in flex flex-col">
       <header className="p-6 bg-primary text-white flex items-center gap-4 sticky top-0 z-10">
         <button onClick={onBack} className="p-1 hover:bg-white/10 rounded-full transition-colors">
           <ArrowLeft size={24} />
@@ -37,7 +37,7 @@ export const SwitchAccountPage: React.FC<SwitchAccountPageProps> = React.memo(({
                 }`}
               >
                 <div className="relative">
-                  <img src={user.avatar} loading="lazy" className="w-14 h-14 rounded-2xl border-2 border-[var(--app-bg,#FFF9E6)] shadow-inner" alt="" />
+                  <img src={user.avatar} loading="lazy" className="w-14 h-14 rounded-2xl border-2 border-[var(--app-bg,var(--app-bg))] shadow-inner" alt="" />
                   {isCurrent && (
                     <div className="absolute -bottom-1 -right-1 bg-secondary text-white p-1 rounded-full border-2 border-white shadow-md">
                       <Check size={12} />

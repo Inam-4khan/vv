@@ -31,7 +31,7 @@ export const VistaPage: React.FC<{ isGhostMode: boolean }> = React.memo(({ isGho
   }, [mode]);
 
   return (
-    <div className={`h-full relative overflow-hidden transition-all duration-500 ${isGhostMode ? 'bg-[#03171C]' : 'bg-[#062B34]'}`}>
+    <div className={`h-full relative overflow-hidden transition-all duration-500 ${isGhostMode ? 'bg-[var(--app-bg-ghost)]' : 'bg-[var(--app-primary)]'}`}>
       {mode === 'ar' ? (
         <div className="h-full w-full relative">
           <video 
@@ -45,7 +45,7 @@ export const VistaPage: React.FC<{ isGhostMode: boolean }> = React.memo(({ isGho
           <div className="absolute top-4 left-0 right-0 z-40 px-4 sm:px-6 pointer-events-none">
             <GlassCard isDarkMode={true} className="p-3.5 flex items-center justify-between pointer-events-auto">
               <div className="flex items-center gap-2.5">
-                <GlassBadge label="LIVE AR" active={true} icon={<Radio size={12} className="text-[#80FFEC]" />} />
+                <GlassBadge label="LIVE AR" active={true} icon={<Radio size={12} className="text-[var(--app-accent-light)]" />} />
                 <span className="text-[10px] font-mono text-[#8AADB5] hidden sm:inline">60 FPS • 37.7749° N, 122.4194° W</span>
               </div>
 
@@ -56,7 +56,7 @@ export const VistaPage: React.FC<{ isGhostMode: boolean }> = React.memo(({ isGho
                     onClick={() => setActiveFilter(filter)}
                     className={`px-2.5 py-1 rounded-xl text-[9px] font-mono uppercase tracking-wider transition-all ${
                       activeFilter === filter
-                        ? 'bg-[#2EC4B6] text-[#062B34] font-black'
+                        ? 'bg-[var(--app-accent)] text-[var(--app-primary)] font-black'
                         : 'bg-white/5 text-[#8AADB5] hover:text-[#F1FAEE]'
                     }`}
                   >
@@ -84,8 +84,8 @@ export const VistaPage: React.FC<{ isGhostMode: boolean }> = React.memo(({ isGho
                     >
                       {/* Avatar with Rim Ring */}
                       <div className="relative w-16 h-16 mx-auto mb-3">
-                        <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-[#80FFEC] to-[#2EC4B6] opacity-75 blur-xs animate-pulse" />
-                        <img src={user.avatar} className="relative w-full h-full rounded-full object-cover border-2 border-[#80FFEC]" alt="Avatar" />
+                        <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-[var(--app-accent-light)] to-[var(--app-accent)] opacity-75 blur-xs animate-pulse" />
+                        <img src={user.avatar} className="relative w-full h-full rounded-full object-cover border-2 border-[var(--app-accent-light)]" alt="Avatar" />
                       </div>
 
                       <h4 className="text-base font-black text-[#F1FAEE] leading-tight mb-0.5">{user.displayName}</h4>
@@ -110,7 +110,7 @@ export const VistaPage: React.FC<{ isGhostMode: boolean }> = React.memo(({ isGho
           )}
         </div>
       ) : (
-        <div className={`h-full w-full relative overflow-hidden flex flex-col transition-all duration-500 ${isGhostMode ? 'bg-[#03171C]' : 'bg-[#062B34]'}`}>
+        <div className={`h-full w-full relative overflow-hidden flex flex-col transition-all duration-500 ${isGhostMode ? 'bg-[var(--app-bg-ghost)]' : 'bg-[var(--app-primary)]'}`}>
            {/* Futuristic Header bar on Map with Glassmorphic HUD */}
            <div className="absolute top-4 left-4 right-4 z-40">
              <GlassCard isDarkMode={true} className="p-4 flex justify-between items-center whitespace-nowrap">
@@ -122,29 +122,29 @@ export const VistaPage: React.FC<{ isGhostMode: boolean }> = React.memo(({ isGho
            </div>
 
            {/* Live Map Mesh Visual Overlay grid */}
-           <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #80FFEC 1.5px, transparent 1.5px)', backgroundSize: '28px 28px' }} />
+           <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, var(--app-accent-light) 1.5px, transparent 1.5px)', backgroundSize: '28px 28px' }} />
 
            {/* Pulse rings from Radar Center */}
            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-             <div className="w-24 h-24 rounded-full border border-[#80FFEC]/20 animate-radar-pulse-1 absolute" />
-             <div className="w-48 h-48 rounded-full border border-[#80FFEC]/20 animate-radar-pulse-2 absolute" />
-             <div className="w-72 h-72 rounded-full border border-[#80FFEC]/15 animate-radar-pulse-3 absolute" />
-             <div className="w-96 h-96 rounded-full border border-[#80FFEC]/10 absolute" />
+             <div className="w-24 h-24 rounded-full border border-[color-mix(in_srgb,var(--app-accent-light)_20%,transparent)] animate-radar-pulse-1 absolute" />
+             <div className="w-48 h-48 rounded-full border border-[color-mix(in_srgb,var(--app-accent-light)_20%,transparent)] animate-radar-pulse-2 absolute" />
+             <div className="w-72 h-72 rounded-full border border-[color-mix(in_srgb,var(--app-accent-light)_15%,transparent)] animate-radar-pulse-3 absolute" />
+             <div className="w-96 h-96 rounded-full border border-[color-mix(in_srgb,var(--app-accent-light)_10%,transparent)] absolute" />
              
              {/* Crosshairs */}
-             <div className="w-full h-[1px] bg-[#80FFEC]/10 absolute" />
-             <div className="h-full w-[1px] bg-[#80FFEC]/10 absolute" />
+             <div className="w-full h-[1px] bg-[color-mix(in_srgb,var(--app-accent-light)_10%,transparent)] absolute" />
+             <div className="h-full w-[1px] bg-[color-mix(in_srgb,var(--app-accent-light)_10%,transparent)] absolute" />
            </div>
 
            {/* Self Locator (Center) */}
            <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center">
              <div className="relative">
-               <div className="w-10 h-10 rounded-full bg-[#2EC4B6] border-2 border-[#80FFEC] overflow-hidden shadow-[0_0_20px_rgba(128,255,236,0.6)]">
+               <div className="w-10 h-10 rounded-full bg-[var(--app-accent)] border-2 border-[var(--app-accent-light)] overflow-hidden shadow-[0_0_20px_rgba(128,255,236,0.6)]">
                  <img src="https://picsum.photos/seed/user_me/100" className="w-full h-full object-cover" alt="Me" />
                </div>
-               <div className="absolute -inset-2 bg-[#80FFEC]/40 rounded-full animate-ping -z-10" />
+               <div className="absolute -inset-2 bg-[color-mix(in_srgb,var(--app-accent-light)_40%,transparent)] rounded-full animate-ping -z-10" />
              </div>
-             <span className="text-[8px] font-black uppercase text-[#80FFEC] tracking-[0.2em] mt-1.5 bg-[#062B34]/80 backdrop-blur-md px-2 py-0.5 rounded-full border border-[#80FFEC]/30">Me</span>
+             <span className="text-[8px] font-black uppercase text-[var(--app-accent-light)] tracking-[0.2em] mt-1.5 bg-[color-mix(in_srgb,var(--app-primary)_80%,transparent)] backdrop-blur-md px-2 py-0.5 rounded-full border border-[color-mix(in_srgb,var(--app-accent-light)_30%,transparent)]">Me</span>
            </div>
 
            {/* Nearby active user coordinates */}
@@ -164,8 +164,8 @@ export const VistaPage: React.FC<{ isGhostMode: boolean }> = React.memo(({ isGho
                className="absolute z-30 -translate-x-1/2 -translate-y-1/2 cursor-pointer group active:scale-90 transition-transform"
              >
                <div className="relative">
-                 <div className="absolute -inset-3 rounded-full animate-ping opacity-35 bg-[#80FFEC]" />
-                 <div className="w-10 h-10 rounded-2xl border-2 border-[#80FFEC] transition-all p-0.5 bg-[#062B34] shadow-[0_0_15px_rgba(128,255,236,0.4)]">
+                 <div className="absolute -inset-3 rounded-full animate-ping opacity-35 bg-[var(--app-accent-light)]" />
+                 <div className="w-10 h-10 rounded-2xl border-2 border-[var(--app-accent-light)] transition-all p-0.5 bg-[var(--app-primary)] shadow-[0_0_15px_rgba(128,255,236,0.4)]">
                    <img src={user.avatar} className="w-full h-full rounded-2xl object-cover" alt="" />
                  </div>
                </div>
@@ -176,13 +176,13 @@ export const VistaPage: React.FC<{ isGhostMode: boolean }> = React.memo(({ isGho
            {selectedUserOnMap && (
              <div className="absolute top-[62%] left-1/2 -translate-x-1/2 z-50 w-[240px]">
                <GlassCard isDarkMode={true} className="p-4 flex items-center gap-3">
-                 <div className="w-10 h-10 rounded-xl overflow-hidden shadow-inner border border-[#80FFEC]/40 shrink-0">
+                 <div className="w-10 h-10 rounded-xl overflow-hidden shadow-inner border border-[color-mix(in_srgb,var(--app-accent-light)_40%,transparent)] shrink-0">
                    <img src={selectedUserOnMap.avatar} className="w-full h-full object-cover" alt="" />
                  </div>
                  <div className="flex-1 min-w-0">
                    <h4 className="text-xs font-black truncate text-[#F1FAEE]">{selectedUserOnMap.name}</h4>
                    <p className="text-[9px] text-[#8AADB5] font-mono uppercase">@{selectedUserOnMap.username}</p>
-                   <span className="text-[9px] font-black uppercase text-[#80FFEC]">● {selectedUserOnMap.distance} away</span>
+                   <span className="text-[9px] font-black uppercase text-[var(--app-accent-light)]">● {selectedUserOnMap.distance} away</span>
                  </div>
                  <GlassButton 
                    variant="solid" 
@@ -220,7 +220,7 @@ export const VistaPage: React.FC<{ isGhostMode: boolean }> = React.memo(({ isGho
           <button 
             onClick={() => setMode('ar')} 
             className={`px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${
-              mode === 'ar' ? 'bg-[#2EC4B6] text-[#062B34] shadow-lg font-black' : 'text-[#8AADB5] hover:text-[#F1FAEE]'
+              mode === 'ar' ? 'bg-[var(--app-accent)] text-[var(--app-primary)] shadow-lg font-black' : 'text-[#8AADB5] hover:text-[#F1FAEE]'
             }`}
           >
             Vista
@@ -228,7 +228,7 @@ export const VistaPage: React.FC<{ isGhostMode: boolean }> = React.memo(({ isGho
           <button 
             onClick={() => setMode('map')} 
             className={`px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${
-              mode === 'map' ? 'bg-[#2EC4B6] text-[#062B34] shadow-lg font-black' : 'text-[#8AADB5] hover:text-[#F1FAEE]'
+              mode === 'map' ? 'bg-[var(--app-accent)] text-[var(--app-primary)] shadow-lg font-black' : 'text-[#8AADB5] hover:text-[#F1FAEE]'
             }`}
           >
             Map

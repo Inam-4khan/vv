@@ -44,7 +44,7 @@ export const Input: React.FC<InputProps> = ({
       {label && (
         <label
           htmlFor={inputId}
-          className="block text-xs font-semibold uppercase tracking-wider text-[#062B34]/80 dark:text-white/80"
+          className="block text-xs font-semibold uppercase tracking-wider text-[color-mix(in_srgb,var(--app-primary)_80%,transparent)] dark:text-white/80"
         >
           {label} {required && <span className="text-rose-500">*</span>}
         </label>
@@ -70,12 +70,12 @@ export const Input: React.FC<InputProps> = ({
           autoComplete={autoComplete}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? `${inputId}-error` : undefined}
-          className={`w-full rounded-2xl border-2 bg-white/80 dark:bg-[#0F2229]/80 px-4 py-3 text-sm text-[#062B34] dark:text-white placeholder:text-slate-400 transition-all duration-200 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 ${
+          className={`w-full rounded-2xl border-2 bg-white/80 dark:bg-[#0F2229]/80 px-4 py-3 text-sm text-[var(--app-primary)] dark:text-white placeholder:text-slate-400 transition-all duration-200 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 ${
             Icon ? 'pl-11' : ''
           } ${rightElement ? 'pr-11' : ''} ${
             error
               ? 'border-rose-500 focus:border-rose-600 focus:ring-2 focus:ring-rose-500/20'
-              : 'border-[#062B34]/15 dark:border-white/10 focus:border-[#2EC4B6] focus:ring-2 focus:ring-[#2EC4B6]/20'
+              : 'border-[color-mix(in_srgb,var(--app-primary)_15%,transparent)] dark:border-white/10 focus:border-[var(--app-accent)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--app-accent)_20%,transparent)]'
           } ${className}`}
           {...props}
         />

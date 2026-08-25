@@ -30,8 +30,8 @@ export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
   ];
 
   return (
-    <div className="min-h-full pb-24 transition-colors duration-500 bg-[var(--app-bg)] text-white">
-      <header className={`p-6 text-white flex items-center justify-between sticky top-0 z-20 shadow-md transition-colors duration-500 ${isGhostMode ? 'bg-[#03171C]' : 'bg-[#062B34]'}`}>
+    <div className="min-h-full pb-24 transition-colors duration-500 bg-[var(--app-bg)] text-[var(--text-primary)]">
+      <header className={`p-6 text-white flex items-center justify-between sticky top-0 z-20 shadow-md transition-colors duration-500 ${isGhostMode ? 'bg-[var(--app-bg-ghost)]' : 'bg-[var(--app-primary)]'}`}>
         <div className="flex items-center gap-4">
           <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-xl transition-all active:scale-90" title="Back"><ArrowLeft size={24} /></button>
           <h1 className="text-xl font-bold font-montserrat tracking-tight">Persona Settings</h1>
@@ -50,13 +50,13 @@ export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
       <div className="p-6 space-y-8 animate-fade-in">
         {/* Privacy Controls */}
         <div className="space-y-4">
-          <div className="p-6 rounded-[2.5rem] shadow-xl border transition-colors bg-[#0A2832] border-white/10 text-white">
+          <div className="p-6 rounded-[2.5rem] shadow-xl border transition-colors bg-[var(--app-bg-surface)] border-black/5 dark:border-white/10 text-primary dark:text-white">
             <div className="flex items-center justify-between mb-8">
-               <h3 className="text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 text-white/40">
-                 <ShieldAlert size={14} className="text-[#2EC4B6]" /> Privacy Suite
+               <h3 className="text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2 text-primary/40 dark:text-white/40">
+                 <ShieldAlert size={14} className="text-[var(--app-accent)]" /> Privacy Suite
                </h3>
-               <div className="bg-[#2EC4B6]/10 px-3 py-1 rounded-full border border-[#2EC4B6]/20">
-                  <span className="text-[8px] font-black text-[#80FFEC] uppercase tracking-widest">Enhanced</span>
+               <div className="bg-[color-mix(in_srgb,var(--app-accent)_10%,transparent)] px-3 py-1 rounded-full border border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)]">
+                  <span className="text-[8px] font-black text-[var(--app-accent-light)] uppercase tracking-widest">Enhanced</span>
                </div>
             </div>
             
@@ -65,12 +65,12 @@ export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
               {onToggleGhost && (
                 <div className="flex items-center justify-between group pb-4 border-b border-white/10">
                   <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${isGhostMode ? 'bg-[#80FFEC]/20 text-[#80FFEC] shadow-inner' : 'bg-white/10 text-white/40'}`}>
+                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${isGhostMode ? 'bg-[color-mix(in_srgb,var(--app-accent-light)_20%,transparent)] text-[var(--app-accent-light)] shadow-inner' : 'bg-white/10 text-primary/40 dark:text-white/40'}`}>
                       <Ghost size={24} aria-hidden="true" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-white">Ghost Mode</h4>
-                      <p className="text-[10px] font-medium text-white/50">Invisible to nearby users</p>
+                      <h4 className="text-sm font-bold text-primary dark:text-white">Ghost Mode</h4>
+                      <p className="text-[10px] font-medium text-primary/50 dark:text-white/50">Invisible to nearby users</p>
                     </div>
                   </div>
                   <button 
@@ -79,7 +79,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
                     aria-checked={isGhostMode}
                     aria-label="Ghost Mode"
                     onClick={onToggleGhost}
-                    className={`w-12 h-6 rounded-full relative transition-all duration-500 shadow-inner focus:outline-none focus-visible:ring-2 focus-visible:ring-[#80FFEC] ${isGhostMode ? 'bg-[#2EC4B6]' : 'bg-white/20'}`}
+                    className={`w-12 h-6 rounded-full relative transition-all duration-500 shadow-inner focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent-light)] ${isGhostMode ? 'bg-[var(--app-accent)]' : 'bg-white/20'}`}
                   >
                     <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-lg transition-transform duration-500 ${isGhostMode ? 'translate-x-6' : 'translate-x-1'}`} />
                   </button>
@@ -94,7 +94,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
                   </div>
                   <div className="flex-1">
                     <h4 className="text-sm font-bold">Visibility Circle</h4>
-                    <p className={`text-[10px] font-medium ${isDarkMode ? 'text-white/50' : 'text-primary/40'}`}>Who can find you in Vista?</p>
+                    <p className={`text-[10px] font-medium ${isDarkMode ? 'text-primary/50 dark:text-white/50' : 'text-primary/40'}`}>Who can find you in Vista?</p>
                   </div>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
@@ -106,7 +106,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
                         activeCircle === circle 
                         ? 'bg-blue-600 text-white border-blue-600 shadow-md scale-105' 
                         : isDarkMode
-                        ? 'bg-white/5 text-white/50 border-white/10 hover:bg-white/10'
+                        ? 'bg-white/5 text-primary/50 dark:text-white/50 border-white/10 hover:bg-white/10'
                         : 'bg-primary/5 text-primary/30 border-transparent hover:bg-primary/10'
                       }`}
                     >
@@ -126,7 +126,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
                   </div>
                   <div>
                     <h4 className="text-sm font-bold">Quiet Hours</h4>
-                    <p className={`text-[10px] font-medium ${isDarkMode ? 'text-white/50' : 'text-primary/40'}`}>Hide persona from 10 PM - 7 AM</p>
+                    <p className={`text-[10px] font-medium ${isDarkMode ? 'text-primary/50 dark:text-white/50' : 'text-primary/40'}`}>Hide persona from 10 PM - 7 AM</p>
                   </div>
                 </div>
                 <button 
@@ -135,7 +135,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
                   aria-checked={quietHours}
                   aria-label="Quiet Hours"
                   onClick={() => setQuietHours(!quietHours)}
-                  className={`w-12 h-6 rounded-full relative transition-all duration-500 shadow-inner focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2EC4B6] ${quietHours ? 'bg-orange-600' : 'bg-gray-200'}`}
+                  className={`w-12 h-6 rounded-full relative transition-all duration-500 shadow-inner focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)] ${quietHours ? 'bg-orange-600' : 'bg-gray-200'}`}
                 >
                   <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-lg transition-transform duration-500 ${quietHours ? 'translate-x-6' : 'translate-x-1'}`} />
                 </button>
@@ -149,7 +149,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
                   </div>
                   <div>
                     <h4 className="text-sm font-bold">Persona Filter</h4>
-                    <p className={`text-[10px] font-medium ${isDarkMode ? 'text-white/50' : 'text-primary/40'}`}>Auto-filter explicit proximity cards</p>
+                    <p className={`text-[10px] font-medium ${isDarkMode ? 'text-primary/50 dark:text-white/50' : 'text-primary/40'}`}>Auto-filter explicit proximity cards</p>
                   </div>
                 </div>
                 <button 
@@ -158,7 +158,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
                   aria-checked={ageFiltering}
                   aria-label="Persona Filter"
                   onClick={() => setAgeFiltering(!ageFiltering)}
-                  className={`w-12 h-6 rounded-full relative transition-all duration-500 shadow-inner focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2EC4B6] ${ageFiltering ? 'bg-secondary' : 'bg-gray-200'}`}
+                  className={`w-12 h-6 rounded-full relative transition-all duration-500 shadow-inner focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)] ${ageFiltering ? 'bg-secondary' : 'bg-gray-200'}`}
                 >
                   <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-lg transition-transform duration-500 ${ageFiltering ? 'translate-x-6' : 'translate-x-1'}`} />
                 </button>
@@ -173,7 +173,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
             <div key={section.title} className="animate-fade-in" style={{ animationDelay: `${0.2 + idx * 0.1}s` }}>
               <div className="flex items-center gap-2 mb-4 px-4">
                 <section.icon size={16} className="text-secondary" />
-                <h4 className={`text-[10px] font-black uppercase tracking-[0.3em] ${isDarkMode ? 'text-white/40' : 'text-primary/30'}`}>{section.title}</h4>
+                <h4 className={`text-[10px] font-black uppercase tracking-[0.3em] ${isDarkMode ? 'text-primary/40 dark:text-white/40' : 'text-primary/30'}`}>{section.title}</h4>
               </div>
               <div className={`rounded-[2.5rem] overflow-hidden border shadow-lg transition-colors ${
                 isDarkMode ? 'bg-[#15222D] border-white/10 text-white' : 'bg-white border-black/5 text-primary'

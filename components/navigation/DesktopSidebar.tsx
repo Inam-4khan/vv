@@ -32,8 +32,8 @@ export const DesktopSidebar = React.forwardRef<HTMLElement, DesktopSidebarProps>
       ref={ref}
       className={`hidden md:flex flex-col justify-between w-64 lg:w-72 h-screen sticky top-0 border-r shrink-0 p-6 z-40 transition-colors duration-500 overflow-y-auto ${
         isGhostActive
-          ? 'bg-[#03171C] text-[#F1FAEE] border-[#80FFEC]/15'
-          : 'bg-[#062B34] text-white border-white/10'
+          ? 'bg-[var(--app-bg-ghost)] text-[#F1FAEE] border-[color-mix(in_srgb,var(--app-accent-light)_15%,transparent)]'
+          : 'bg-[var(--app-primary)] text-white border-white/10'
       }`}
     >
       {/* App Brand Logo Header */}
@@ -45,7 +45,7 @@ export const DesktopSidebar = React.forwardRef<HTMLElement, DesktopSidebarProps>
           className="w-full text-left cursor-pointer flex items-center gap-3 px-2 pt-2 group focus:outline-none"
         >
           <div className={`p-2 rounded-2xl transition-all duration-300 ${
-            isGhostActive ? 'bg-[#2EC4B6]/20 text-[#80FFEC]' : 'bg-white/10 text-[#FFF9E6]'
+            isGhostActive ? 'bg-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] text-[var(--app-accent-light)]' : 'bg-white/10 text-[var(--app-bg)]'
           }`}>
             <Sparkles size={24} className="group-hover:rotate-12 transition-transform duration-300" aria-hidden="true" />
           </div>
@@ -73,11 +73,11 @@ export const DesktopSidebar = React.forwardRef<HTMLElement, DesktopSidebarProps>
                 }}
                 aria-label={`Navigate to ${item.label}`}
                 aria-current={isActive ? 'page' : undefined}
-                className={`w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-sm font-bold tracking-tight transition-all duration-200 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2EC4B6] ${
+                className={`w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-sm font-bold tracking-tight transition-all duration-200 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)] ${
                   isActive
                     ? isGhostActive
-                      ? 'bg-[#2EC4B6] text-[#062B34] font-black shadow-md'
-                      : 'bg-white/15 text-[#FFF9E6] border border-white/10 shadow-md'
+                      ? 'bg-[var(--app-accent)] text-[var(--app-primary)] font-black shadow-md'
+                      : 'bg-white/15 text-[var(--app-bg)] border border-white/10 shadow-md'
                     : isGhostActive
                     ? 'text-[#8AADB5] hover:text-[#F1FAEE] hover:bg-[#0C3B46]'
                     : 'text-white/60 hover:text-white hover:bg-white/5'
@@ -88,7 +88,7 @@ export const DesktopSidebar = React.forwardRef<HTMLElement, DesktopSidebarProps>
                   strokeWidth={isActive ? 2.5 : 2}
                   aria-hidden="true"
                   className={`transition-transform duration-200 group-hover:scale-110 ${
-                    isActive ? (isGhostActive ? 'text-[#062B34]' : 'text-[#2EC4B6]') : ''
+                    isActive ? (isGhostActive ? 'text-[var(--app-primary)]' : 'text-[var(--app-accent)]') : ''
                   }`}
                 />
                 <span>{item.label}</span>
@@ -106,18 +106,18 @@ export const DesktopSidebar = React.forwardRef<HTMLElement, DesktopSidebarProps>
             onClick={onToggleGhost}
             aria-pressed={isGhostActive}
             aria-label={`Toggle Ghost Mode, currently ${isGhostActive ? 'on' : 'off'}`}
-            className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl text-xs font-bold transition-all border focus:outline-none focus-visible:ring-2 focus-visible:ring-[#80FFEC] focus-visible:ring-offset-2 focus-visible:ring-offset-[#062B34] ${
+            className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl text-xs font-bold transition-all border focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent-light)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--app-primary)] ${
               isGhostActive
-                ? 'bg-[#062B34] text-[#80FFEC] border-[#2EC4B6]/40 shadow-inner'
+                ? 'bg-[var(--app-primary)] text-[var(--app-accent-light)] border-[color-mix(in_srgb,var(--app-accent)_40%,transparent)] shadow-inner'
                 : 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10'
             }`}
           >
             <div className="flex items-center gap-2.5">
-              <Ghost size={18} aria-hidden="true" className={isGhostActive ? 'text-[#80FFEC] animate-pulse' : 'text-white/50'} />
+              <Ghost size={18} aria-hidden="true" className={isGhostActive ? 'text-[var(--app-accent-light)] animate-pulse' : 'text-white/50'} />
               <span>Ghost Mode</span>
             </div>
             <span className={`px-2 py-0.5 rounded-full text-[9px] uppercase font-mono ${
-              isGhostActive ? 'bg-[#2EC4B6]/30 text-[#80FFEC]' : 'bg-white/10 text-white/40'
+              isGhostActive ? 'bg-[color-mix(in_srgb,var(--app-accent)_30%,transparent)] text-[var(--app-accent-light)]' : 'bg-white/10 text-white/40'
             }`}>
               {isGhostActive ? 'ON' : 'OFF'}
             </span>
@@ -133,7 +133,7 @@ export const DesktopSidebar = React.forwardRef<HTMLElement, DesktopSidebarProps>
             onClick={onToggleTheme}
             aria-pressed={isDarkMode}
             aria-label={`Toggle Theme Mode, currently ${isDarkMode ? 'dark' : 'light'}`}
-            className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl text-xs font-bold transition-all border focus:outline-none focus-visible:ring-2 focus-visible:ring-[#80FFEC] focus-visible:ring-offset-2 focus-visible:ring-offset-[#062B34] ${
+            className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl text-xs font-bold transition-all border focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent-light)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--app-primary)] ${
               isDarkMode
                 ? 'bg-amber-500/20 text-amber-300 border-amber-500/30'
                 : 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10'

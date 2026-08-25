@@ -8,7 +8,7 @@ describe('Button Component', () => {
     render(<Button>Click Me</Button>);
     const button = screen.getByRole('button', { name: /click me/i });
     expect(button).toBeInTheDocument();
-    expect(button).toHaveClass('bg-[#2EC4B6]');
+    expect(button).toHaveClass('bg-[var(--app-accent)]');
   });
 
   it('renders correctly with each variant', () => {

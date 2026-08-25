@@ -12,17 +12,17 @@ export const VizuErrorFallback: React.FC<VizuErrorFallbackProps> = ({ error, res
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#062B34] text-white flex flex-col items-center justify-center p-6 relative overflow-hidden font-sans">
+    <div className="min-h-screen w-full bg-[var(--app-primary)] text-white flex flex-col items-center justify-center p-6 relative overflow-hidden font-sans">
       {/* Background Decorative Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#2EC4B6]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[color-mix(in_srgb,var(--app-accent)_10%,transparent)] rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative z-10 max-w-md w-full bg-[#03171C]/90 border border-[#2EC4B6]/30 rounded-[2.5rem] p-8 shadow-2xl backdrop-blur-xl flex flex-col items-center text-center animate-fade-in">
+      <div className="relative z-10 max-w-md w-full bg-[color-mix(in_srgb,var(--app-bg-ghost)_90%,transparent)] border border-[color-mix(in_srgb,var(--app-accent)_30%,transparent)] rounded-[2.5rem] p-8 shadow-2xl backdrop-blur-xl flex flex-col items-center text-center animate-fade-in">
         {/* Ghost Icon Badge */}
-        <div className="w-20 h-20 rounded-3xl bg-[#2EC4B6]/20 border border-[#2EC4B6]/40 flex items-center justify-center mb-6 shadow-lg shadow-[#2EC4B6]/10">
-          <Ghost size={40} className="text-[#80FFEC] animate-bounce" />
+        <div className="w-20 h-20 rounded-3xl bg-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] border border-[color-mix(in_srgb,var(--app-accent)_40%,transparent)] flex items-center justify-center mb-6 shadow-lg shadow-[color-mix(in_srgb,var(--app-accent)_10%,transparent)]">
+          <Ghost size={40} className="text-[var(--app-accent-light)] animate-bounce" />
         </div>
 
-        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#80FFEC] mb-2">
+        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--app-accent-light)] mb-2">
           Vizu System Alert
         </p>
 
@@ -38,7 +38,7 @@ export const VizuErrorFallback: React.FC<VizuErrorFallbackProps> = ({ error, res
           {reset && (
             <button
               onClick={reset}
-              className="w-full flex-1 flex items-center justify-center gap-2 py-3.5 px-5 rounded-2xl bg-[#2EC4B6] hover:bg-[#80FFEC] text-[#062B34] font-black text-xs uppercase tracking-wider transition-all shadow-lg active:scale-95 cursor-pointer"
+              className="w-full flex-1 flex items-center justify-center gap-2 py-3.5 px-5 rounded-2xl bg-[var(--app-accent)] hover:bg-[var(--app-accent-light)] text-[var(--app-primary)] font-black text-xs uppercase tracking-wider transition-all shadow-lg active:scale-95 cursor-pointer"
             >
               <RefreshCw size={16} />
               Try Again

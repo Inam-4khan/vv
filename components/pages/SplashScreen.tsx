@@ -13,7 +13,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ index, onNext }) => 
     title: 'Vizu',
     subtitle: 'Vibe. Vision. Vista.',
     text: 'Experience social flow with privacy at its core.',
-    color: '#0B1720',
+    color: 'var(--text-primary)',
   };
 
   return (
@@ -43,7 +43,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ index, onNext }) => 
         
         <button
           onClick={onNext}
-          className="bg-[#2EC4B6] text-white p-5 rounded-full transition-all active:scale-90 shadow-xl hover:brightness-110"
+          className="bg-[var(--app-accent)] text-white p-5 rounded-full transition-all active:scale-90 shadow-xl hover:brightness-110"
         >
           <ChevronRight size={28} />
         </button>
