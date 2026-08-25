@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { User } from '../../types';
-import { Settings, Grid, Bookmark, Play, Edit3, Share2, Users, Ghost, Shield, Lock, Globe, Zap, Heart, Star, MoreHorizontal, Archive, Trash2, Eye, Clock, MessageSquare, X, Send, Sun, Moon } from 'lucide-react';
+import { Settings, Grid, Bookmark, Play, Share2, Ghost, Lock, Globe, Heart, Star, MoreHorizontal, Archive, Trash2, Eye, Clock, MessageSquare, X, Send } from 'lucide-react';
 import { HushNote } from '../../types';
 import { OptimizedImg } from '../common/OptimizedImg';
 
@@ -21,8 +21,8 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
   user, 
   isGhostMode, 
   onToggleGhost, 
-  isDarkMode = false,
-  onToggleTheme,
+  isDarkMode: _isDarkMode = false,
+  onToggleTheme: _onToggleTheme,
   onSettings, 
   onConnections, 
   onEditProfile 
@@ -58,7 +58,7 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
     setSelectedArchivedStory(null);
   };
 
-  const handleShareStoryAsPost = (story: any) => {
+  const handleShareStoryAsPost = (_story: { id: string }) => {
     alert("Shared archived story as active post!");
     setSelectedArchivedStory(null);
   };
@@ -133,11 +133,11 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
   }
 
   return (
-    <div className={`min-h-full pb-24 transition-all duration-700 ${isGhostMode ? 'bg-[#020F14] text-[#F1FAEE]' : 'bg-[var(--app-bg)] text-white'}`}>
-      <header className={`p-6 flex justify-between items-center transition-colors duration-500 ${isGhostMode ? 'bg-[#020F14] shadow-lg shadow-[#2EC4B6]/10' : 'bg-[#062B34] text-white'}`}>
+    <div className={`min-h-full pb-24 transition-all duration-700 ${isGhostMode ? 'bg-[#03171C] text-[#F1FAEE]' : 'bg-[var(--app-bg,#FFF9E6)] text-[var(--text-primary,#0B1720)]'}`}>
+      <header className={`p-6 flex justify-between items-center transition-colors duration-500 ${isGhostMode ? 'bg-[#03171C] shadow-lg shadow-[#2EC4B6]/10' : 'bg-[#062B34] text-white'}`}>
         <h1 className="text-xl font-bold font-montserrat">Persona</h1>
         <div className="flex items-center gap-2">
-          <button onClick={handleToggleGhostWithHaptic} className={`p-2 rounded-xl transition-all ${isGhostMode ? 'bg-[#2EC4B6] text-[#062B34] shadow-glow' : 'bg-white/10'}`} title="Ghost Mode"><Ghost size={22} /></button>
+          <button onClick={handleToggleGhostWithHaptic} className={`p-2 rounded-xl transition-all ${isGhostMode ? 'bg-[#80FFEC] text-[#03171C] shadow-glow' : 'bg-white/10'}`} title="Ghost Mode"><Ghost size={22} /></button>
           <button onClick={onSettings} className="p-2 hover:bg-white/10 rounded-xl transition-all" title="Settings"><Settings size={22} /></button>
         </div>
       </header>
@@ -156,12 +156,12 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
               <div className={`p-1.5 rounded-[3rem] transition-all duration-500 ${isGhostMode ? 'bg-[#2EC4B6] shadow-[0_0_30px_rgba(46,196,182,0.4)]' : 'bg-[#0A2832] shadow-2xl shadow-[#062B34]/20'}`}>
                  <OptimizedImg src={user.avatar} alt={user.displayName} width={128} height={128} loading="lazy" className="w-32 h-32 rounded-[2.8rem] border-4 border-transparent object-cover group-hover:scale-105 transition-transform" />
               </div>
-              <div className={`absolute -bottom-1 -right-1 w-8 h-8 rounded-full border-4 flex items-center justify-center ${isGhostMode ? 'bg-[#2EC4B6] border-[#020F14]' : 'bg-[#2EC4B6] border-[#062B34]'}`}>
+              <div className={`absolute -bottom-1 -right-1 w-8 h-8 rounded-full border-4 flex items-center justify-center ${isGhostMode ? 'bg-[#2EC4B6] border-[#03171C]' : 'bg-[#2EC4B6] border-[#062B34]'}`}>
                  <Star size={12} className="text-[#062B34]" fill="currentColor" />
               </div>
             </div>
             <div className="flex gap-2 mb-2">
-               <button className={`p-3.5 rounded-2xl shadow-lg transition-all active:scale-90 ${isGhostMode ? 'bg-[#031820] text-[#80FFEC] border border-[#2EC4B6]/20' : 'bg-[#0A2832] text-white'}`}><Share2 size={20} /></button>
+               <button className={`p-3.5 rounded-2xl shadow-lg transition-all active:scale-90 ${isGhostMode ? 'bg-[#03171C] text-[#80FFEC] border border-[#2EC4B6]/20' : 'bg-[#0A2832] text-white'}`}><Share2 size={20} /></button>
                <button onClick={onEditProfile} className={`px-8 py-3.5 rounded-2xl shadow-xl font-black text-xs uppercase tracking-widest transition-all active:scale-95 ${isGhostMode ? 'bg-[#2EC4B6] text-[#062B34]' : 'bg-[#2EC4B6] text-[#062B34]'}`}>Edit</button>
             </div>
           </div>
@@ -189,7 +189,7 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
 
             {/* Account Status Toggle */}
             {!isGhostMode && (
-              <div className={`p-6 rounded-[2.5rem] border mb-6 transition-colors ${isGhostMode ? 'bg-[#031820] border-[#2EC4B6]/20' : 'bg-[#0A2832] border-white/10 shadow-sm'}`}>
+              <div className={`p-6 rounded-[2.5rem] border mb-6 transition-colors ${isGhostMode ? 'bg-[#03171C] border-[#2EC4B6]/20' : 'bg-[#0A2832] border-white/10 shadow-sm'}`}>
                  <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${isPrivate ? 'bg-red-500/10 text-red-500' : 'bg-green-500/10 text-green-500'}`}>
@@ -250,7 +250,7 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
                   key={story.id} 
                   onClick={() => setSelectedArchivedStory(story)}
                   className={`aspect-[9/16] relative overflow-hidden rounded-[2rem] border cursor-pointer hover:scale-[1.02] active:scale-98 transition-all group ${
-                    isGhostMode ? 'border-[#2EC4B6]/20 shadow-glow shadow-[#2EC4B6]/5 bg-[#031820]' : 'border-white/10 shadow-md bg-[#0A2832]'
+                    isGhostMode ? 'border-[#2EC4B6]/20 shadow-glow shadow-[#2EC4B6]/5 bg-[#03171C]' : 'border-white/10 shadow-md bg-[#0A2832]'
                   }`}
                 >
                   <OptimizedImg src={story.imageUrl} alt="Archived story" width={200} height={350} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -449,7 +449,7 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
         </div>
       )}
       <style>{`
-        .shadow-glow { box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+        .shadow-glow { box-shadow: 0 0 20px rgba(128, 255, 236, 0.4); }
       `}</style>
     </div>
   );

@@ -32,7 +32,7 @@ export const DesktopSidebar = React.forwardRef<HTMLElement, DesktopSidebarProps>
       ref={ref}
       className={`hidden md:flex flex-col justify-between w-64 lg:w-72 h-screen sticky top-0 border-r shrink-0 p-6 z-40 transition-colors duration-500 overflow-y-auto ${
         isGhostActive
-          ? 'bg-[#020F14] text-[#F1FAEE] border-[#80FFEC]/15'
+          ? 'bg-[#03171C] text-[#F1FAEE] border-[#80FFEC]/15'
           : 'bg-[#062B34] text-white border-white/10'
       }`}
     >

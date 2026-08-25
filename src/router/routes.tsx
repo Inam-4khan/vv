@@ -93,6 +93,11 @@ const useAppOutletContext = (): AppOutletContext => {
   return ctx;
 };
 
+const WelcomeRoute: React.FC = () => {
+  const { handleStartOnboarding } = useAppOutletContext();
+  return <WelcomePage onGetStarted={handleStartOnboarding} />;
+};
+
 const RootRedirect: React.FC = () => {
   const { user } = useAppState();
   const { handleStartOnboarding } = useAppOutletContext();
@@ -329,6 +334,7 @@ export const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       { index: true, element: <RootRedirect /> },
+      { path: 'welcome', element: <WelcomeRoute /> },
       { path: 'auth/login', element: <LoginRoute /> },
       { path: 'auth/signup', element: <SignupRoute /> },
       { path: 'splash', element: <SplashRoute /> },

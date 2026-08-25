@@ -18,41 +18,47 @@ export const WelcomePage: React.FC<WelcomePageProps> = React.memo(({ onGetStarte
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-between py-20 px-8 text-center bg-[var(--app-bg,#FFF9E6)] text-[var(--text-primary,#0B1720)] animate-fade-in h-full">
-      <div className="flex flex-col items-center mt-10">
-        <BrandLogo size={60} color="#062B34" className="mb-4" />
-        <h1 className="text-4xl font-bold tracking-tighter text-primary font-montserrat">
-          VIZU
-        </h1>
-        <p className="text-primary/60 text-[10px] uppercase tracking-[0.4em] font-medium mt-1">
-          Proximity Social
-        </p>
-      </div>
+    <div className="min-h-full w-full flex-1 flex flex-col items-center justify-center p-8 text-center bg-[#FFF9E6] text-[#062B34] select-none">
+      <div className="flex flex-col items-center justify-center max-w-sm w-full mx-auto space-y-8">
+        
+        {/* Logo & Header */}
+        <div className="flex flex-col items-center">
+          <BrandLogo size={52} color="#062B34" className="mb-5" />
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-[#062B34] font-montserrat">
+            VIZU
+          </h1>
+          <p className="text-[10px] sm:text-[11px] font-bold text-[#062B34] uppercase tracking-[0.38em] mt-2">
+            PROXIMITY SOCIAL
+          </p>
+          <p className="text-sm font-light italic text-[#062B34]/80 mt-2 font-serif">
+            Discover who's nearby. Experience the flow.
+          </p>
+        </div>
 
-      <div className="w-full max-w-xs space-y-8">
-        <p className="text-primary/70 font-light text-sm italic font-lexend">
-          Discover who's nearby. Experience the flow.
-        </p>
+        {/* CTA Button & Footer Disclaimer */}
+        <div className="w-full max-w-xs space-y-4 pt-2">
+          <button
+            onClick={handleClick}
+            disabled={isLoading}
+            className="w-full bg-[#2EC4B6] text-white py-3.5 px-6 rounded-2xl font-extrabold text-base shadow-lg shadow-[#2EC4B6]/30 hover:bg-[#20878E] active:scale-98 transition-all flex items-center justify-center gap-2 disabled:opacity-90 cursor-pointer"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 size={18} className="animate-spin" />
+                <span>Get Started</span>
+              </>
+            ) : (
+              'Get Started'
+            )}
+          </button>
 
-        <button
-          onClick={handleClick}
-          disabled={isLoading}
-          className="w-full bg-[#2EC4B6] text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:brightness-105 active:scale-95 transition-all transform flex items-center justify-center gap-2.5 disabled:opacity-90"
-        >
-          {isLoading ? (
-            <>
-              <Loader2 size={20} className="animate-spin" />
-              <span>Getting Started...</span>
-            </>
-          ) : (
-            'Get Started'
-          )}
-        </button>
-      </div>
-      
-      <div className="text-[8px] font-bold text-primary/30 uppercase tracking-[0.2em]">
-        Privacy Protected • No Face Rec
+          <div className="text-[9px] font-extrabold text-[#062B34]/70 uppercase tracking-[0.2em] pt-1">
+            PRIVACY PROTECTED • NO FACE REC
+          </div>
+        </div>
+
       </div>
     </div>
   );
 });
+

@@ -2,25 +2,39 @@
 
 /* CSS Variables for Vizu Theme Palette */
 :root {
-  --app-bg:         #062B34;
-  --app-bg-surface: #0A2832;
-  --app-bg-surface2:#0D3340;
-  --app-bg-ghost:   #020F14;
-  --text-primary:   #FFFFFF;
+  --app-bg:         #FFF9E6;
+  --app-bg-surface: #FFFDF5;
+  --app-bg-surface2:#FFF8E1;
+  --app-bg-ghost:   #03171C;
+  --text-primary:   #0B1720;
   --app-primary:    #062B34;
   --app-secondary:  #20878E;
   --app-accent:     #2EC4B6;
   --app-accent-light:#80FFEC;
-  --app-border:     rgba(46,196,182,0.12);
-  --app-text-muted: rgba(255,255,255,0.35);
+  --app-border:     rgba(46,196,182,0.15);
+  --app-text-muted: rgba(11,23,32,0.5);
+}
+
+.dark {
+  --app-bg:         #062B34;
+  --app-bg-surface: #0A2832;
+  --app-bg-surface2:#0D3340;
+  --app-bg-ghost:   #03171C;
+  --text-primary:   #F1FAEE;
+  --app-primary:    #062B34;
+  --app-secondary:  #20878E;
+  --app-accent:     #2EC4B6;
+  --app-accent-light:#80FFEC;
+  --app-border:     rgba(46,196,182,0.15);
+  --app-text-muted: rgba(255,255,255,0.45);
 }
 
 .ghost-mode {
-  --app-bg:         #020F14;
-  --app-bg-surface: #041018;
-  --app-bg-surface2:#061520;
+  --app-bg:         #03171C;
+  --app-bg-surface: #062B34;
+  --app-bg-surface2:#0C3B46;
   --app-accent:     #80FFEC;
-  --app-border:     rgba(128,255,236,0.15);
+  --app-border:     rgba(128,255,236,0.20);
 }
 
 html, body, #root {

@@ -13,7 +13,7 @@ export const NotFoundPage: React.FC = () => {
   return (
     <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 text-center text-white">
       <div className={`relative p-6 rounded-3xl mb-6 ${
-        isGhost ? 'bg-[#020F14] border border-[#2EC4B6]/20' : 'bg-[#031820] border border-white/10'
+        isGhost ? 'bg-[#03171C] border border-[#2EC4B6]/20' : 'bg-[#0A2832] border border-white/10'
       }`}>
         <div className="relative flex items-center justify-center">
           <div className={`w-20 h-20 rounded-full flex items-center justify-center ${

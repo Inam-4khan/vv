@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ArrowLeft, Search, MapPin, Compass, Filter, Ghost, ShieldCheck, Tag, Star, Plus, Image, Headphones, Video } from 'lucide-react';
+import { ArrowLeft, Search, MapPin, Compass, Filter, Tag, Star, Plus, Image, Headphones, Video } from 'lucide-react';
 import { MOCK_USERS } from '../../constants';
 
 interface ExplorePageProps {
@@ -12,8 +12,8 @@ export const ExplorePage: React.FC<ExplorePageProps> = React.memo(({ onBack, isG
   const [activeTab, setActiveTab] = useState<'all' | 'people' | 'spots'>('all');
 
   return (
-    <div className={`min-h-full flex flex-col transition-colors duration-500 ${isGhostMode ? 'bg-[#020F14] text-white' : 'bg-[var(--app-bg)] text-white'}`}>
-      <header className={`p-6 text-white sticky top-0 z-20 shadow-xl transition-colors duration-500 ${isGhostMode ? 'bg-[#020F14]' : 'bg-[#062B34]'}`}>
+    <div className={`min-h-full flex flex-col transition-colors duration-500 ${isGhostMode ? 'bg-[#03171C] text-[#F1FAEE]' : 'bg-[var(--app-bg,#FFF9E6)] text-[var(--text-primary,#0B1720)]'}`}>
+      <header className={`p-6 text-white sticky top-0 z-20 shadow-xl transition-colors duration-500 ${isGhostMode ? 'bg-[#03171C]' : 'bg-[#062B34]'}`}>
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-4">
             <button 
@@ -39,6 +39,23 @@ export const ExplorePage: React.FC<ExplorePageProps> = React.memo(({ onBack, isG
              <Filter size={18} />
           </button>
         </div>
+
+        {/* Tab Filters */}
+        <div className="flex items-center gap-2 mt-4">
+          {(['all', 'people', 'spots'] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider transition-all ${
+                activeTab === tab
+                  ? 'bg-[#2EC4B6] text-[#062B34]'
+                  : 'bg-white/10 text-white/60 hover:text-white'
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
       </header>
 
       <div className="p-6 space-y-8 flex-1 overflow-y-auto no-scrollbar">
@@ -46,19 +63,19 @@ export const ExplorePage: React.FC<ExplorePageProps> = React.memo(({ onBack, isG
         <section className="animate-fade-in">
           <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-4 px-1 text-white/40">Media Discovery</h3>
           <div className="grid grid-cols-3 gap-3">
-            <button className={`flex flex-col items-center gap-4 p-5 rounded-[2.5rem] border transition-all active:scale-95 shadow-sm ${isGhostMode ? 'bg-[#031820] border-[#2EC4B6]/10 text-white hover:border-[#2EC4B6]/30' : 'bg-[#0A2832] border-white/10 text-white hover:border-[#2EC4B6]/20'}`}>
+            <button className={`flex flex-col items-center gap-4 p-5 rounded-[2.5rem] border transition-all active:scale-95 shadow-sm ${isGhostMode ? 'bg-[#03171C] border-[#2EC4B6]/10 text-white hover:border-[#2EC4B6]/30' : 'bg-[#0A2832] border-white/10 text-white hover:border-[#2EC4B6]/20'}`}>
               <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg ${isGhostMode ? 'bg-[#2EC4B6]/10 text-[#80FFEC]' : 'bg-[#2EC4B6]/10 text-[#2EC4B6]'}`}>
                 <Image size={28} />
               </div>
               <span className="text-[10px] font-black uppercase tracking-widest">Pictures</span>
             </button>
-            <button className={`flex flex-col items-center gap-4 p-5 rounded-[2.5rem] border transition-all active:scale-95 shadow-sm ${isGhostMode ? 'bg-[#031820] border-[#2EC4B6]/10 text-white hover:border-[#2EC4B6]/30' : 'bg-[#0A2832] border-white/10 text-white hover:border-[#2EC4B6]/20'}`}>
+            <button className={`flex flex-col items-center gap-4 p-5 rounded-[2.5rem] border transition-all active:scale-95 shadow-sm ${isGhostMode ? 'bg-[#03171C] border-[#2EC4B6]/10 text-white hover:border-[#2EC4B6]/30' : 'bg-[#0A2832] border-white/10 text-white hover:border-[#2EC4B6]/20'}`}>
               <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg ${isGhostMode ? 'bg-[#2EC4B6]/10 text-[#80FFEC]' : 'bg-primary/10 text-primary'}`}>
                 <Video size={28} />
               </div>
               <span className="text-[10px] font-black uppercase tracking-widest text-center leading-tight">Short<br/>Videos</span>
             </button>
-            <button className={`flex flex-col items-center gap-4 p-5 rounded-[2.5rem] border transition-all active:scale-95 shadow-sm ${isGhostMode ? 'bg-[#031820] border-[#2EC4B6]/10 text-white hover:border-[#2EC4B6]/30' : 'bg-[#0A2832] border-white/10 text-white hover:border-[#2EC4B6]/20'}`}>
+            <button className={`flex flex-col items-center gap-4 p-5 rounded-[2.5rem] border transition-all active:scale-95 shadow-sm ${isGhostMode ? 'bg-[#03171C] border-[#2EC4B6]/10 text-white hover:border-[#2EC4B6]/30' : 'bg-[#0A2832] border-white/10 text-white hover:border-[#2EC4B6]/20'}`}>
               <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg ${isGhostMode ? 'bg-[#2EC4B6]/10 text-[#80FFEC]' : 'bg-orange-500/10 text-orange-500'}`}>
                 <Headphones size={28} />
               </div>
@@ -123,10 +140,10 @@ export const ExplorePage: React.FC<ExplorePageProps> = React.memo(({ onBack, isG
               {MOCK_USERS.map((user) => (
                 <div key={user.id} className="flex flex-col items-center gap-3 shrink-0 group cursor-pointer transition-all active:scale-95">
                   <div className="relative">
-                    <div className={`w-28 h-28 rounded-[2.5rem] p-0.5 shadow-xl transition-all group-hover:scale-105 group-hover:-rotate-3 overflow-hidden border relative ${isGhostMode ? 'bg-[#031820] border-[#2EC4B6]/20' : 'bg-[#0A2832] border-white/10'}`}>
+                    <div className={`w-28 h-28 rounded-[2.5rem] p-0.5 shadow-xl transition-all group-hover:scale-105 group-hover:-rotate-3 overflow-hidden border relative ${isGhostMode ? 'bg-[#03171C] border-[#2EC4B6]/20' : 'bg-[#0A2832] border-white/10'}`}>
                        <img src={user.avatar} loading="lazy" className={`w-full h-full object-cover rounded-[2.3rem] ${isGhostMode ? 'grayscale opacity-70' : ''}`} alt="" />
                        
-                       <div className={`absolute inset-x-0 bottom-0 p-1.5 backdrop-blur-md flex flex-wrap gap-1 justify-center border-t ${isGhostMode ? 'bg-[#031820]/70 border-[#2EC4B6]/20' : 'bg-[#0A2832]/70 border-white/10'}`}>
+                       <div className={`absolute inset-x-0 bottom-0 p-1.5 backdrop-blur-md flex flex-wrap gap-1 justify-center border-t ${isGhostMode ? 'bg-[#03171C]/70 border-[#2EC4B6]/20' : 'bg-[#0A2832]/70 border-white/10'}`}>
                          {user.interests?.slice(0, 2).map(int => (
                              <span key={int} className={`text-[7px] font-black px-2 py-0.5 rounded-full uppercase tracking-tighter shadow-sm ${isGhostMode ? 'bg-[#2EC4B6] text-[#062B34]' : 'bg-[#2EC4B6] text-[#062B34]'}`}>{int}</span>
                          ))}

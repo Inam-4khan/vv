@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Video, RefreshCw, Send, ArrowLeft, Image as ImageIcon } from 'lucide-react';
+import { X, RefreshCw, Send, Image as ImageIcon } from 'lucide-react';
 
 interface StoryCreatorPageProps {
   onBack: () => void;
   isGhostMode: boolean;
 }
 
-export const StoryCreatorPage: React.FC<StoryCreatorPageProps> = React.memo(({ onBack, isGhostMode }) => {
+export const StoryCreatorPage: React.FC<StoryCreatorPageProps> = React.memo(({ onBack, isGhostMode: _isGhostMode }) => {
   const [capturedMedia, setCapturedMedia] = useState<string | null>(null);
   const [privacy, setPrivacy] = useState<'public' | 'circle'>('public');
   const videoRef = useRef<HTMLVideoElement>(null);

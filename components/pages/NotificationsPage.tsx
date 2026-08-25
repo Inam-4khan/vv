@@ -65,8 +65,8 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = React.memo(({
   ];
 
   return (
-    <div className={`min-h-full flex flex-col transition-colors duration-500 ${isGhostMode ? 'bg-[#020F14] text-white' : 'bg-[var(--app-bg)] text-white'}`}>
-      <header className={`p-6 text-white sticky top-0 z-20 shadow-xl transition-colors duration-500 ${isGhostMode ? 'bg-[#020F14]' : 'bg-[#062B34]'}`}>
+    <div className={`min-h-full flex flex-col transition-colors duration-500 ${isGhostMode ? 'bg-[#03171C] text-[#F1FAEE]' : 'bg-[var(--app-bg,#FFF9E6)] text-[var(--text-primary,#0B1720)]'}`}>
+      <header className={`p-6 text-white sticky top-0 z-20 shadow-xl transition-colors duration-500 ${isGhostMode ? 'bg-[#03171C]' : 'bg-[#062B34]'}`}>
         <div className="flex items-center gap-4 mb-6">
           <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-full transition-colors active:scale-90">
             <ArrowLeft size={24} />
@@ -100,7 +100,7 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = React.memo(({
             {notifications.map((notif) => (
               <div 
                 key={notif.id}
-                className={`p-4 rounded-[2rem] border flex items-start gap-4 transition-all hover:scale-[1.01] ${isGhostMode ? 'bg-[#031820] border-[#2EC4B6]/10' : 'bg-[#0A2832] border-white/10 shadow-sm'}`}
+                className={`p-4 rounded-[2rem] border flex items-start gap-4 transition-all hover:scale-[1.01] ${isGhostMode ? 'bg-[#03171C] border-[#2EC4B6]/10' : 'bg-[#0A2832] border-white/10 shadow-sm'}`}
               >
                 <div className="relative">
                   <img src={notif.user?.avatar} loading="lazy" className={`w-12 h-12 rounded-2xl border-2 ${isGhostMode ? 'border-[#2EC4B6]/20 grayscale opacity-70' : 'border-[#062B34]'}`} alt="" />
@@ -130,7 +130,7 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = React.memo(({
               requests.map((req) => (
                 <div 
                   key={req.id}
-                  className={`p-5 rounded-[2.5rem] border flex flex-col gap-4 transition-all ${isGhostMode ? 'bg-[#031820] border-[#2EC4B6]/10 shadow-none' : 'bg-[#0A2832] border-white/10 shadow-xl'}`}
+                  className={`p-5 rounded-[2.5rem] border flex flex-col gap-4 transition-all ${isGhostMode ? 'bg-[#03171C] border-[#2EC4B6]/10 shadow-none' : 'bg-[#0A2832] border-white/10 shadow-xl'}`}
                 >
                   <div className="flex items-center gap-4">
                     <div className="relative">
@@ -185,7 +185,7 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = React.memo(({
                   key={sug.id} 
                   className={`p-4 rounded-[2rem] border flex items-center justify-between gap-3 transition-all ${
                     isGhostMode 
-                      ? 'bg-[#031820] border-[#2EC4B6]/10 hover:border-[#2EC4B6]/20' 
+                      ? 'bg-[#03171C] border-[#2EC4B6]/10 hover:border-[#2EC4B6]/20' 
                       : 'bg-[#0A2832] border-white/10 shadow-md'
                   }`}
                 >

@@ -1,14 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Video, RefreshCw, Send, Check, ArrowLeft } from 'lucide-react';
+import { Video, RefreshCw, Send, Check, ArrowLeft } from 'lucide-react';
 import { MOCK_USERS } from '../../constants';
-import { User } from '../../types';
 
 interface HushCameraPageProps {
   onBack: () => void;
   isGhostMode: boolean;
 }
 
-export const HushCameraPage: React.FC<HushCameraPageProps> = React.memo(({ onBack, isGhostMode }) => {
+export const HushCameraPage: React.FC<HushCameraPageProps> = React.memo(({ onBack, isGhostMode: _isGhostMode }) => {
   const [capturedMedia, setCapturedMedia] = useState<string | null>(null);
   const [showRecipients, setShowRecipients] = useState(false);
   const [selectedRecipients, setSelectedRecipients] = useState<string[]>([]);

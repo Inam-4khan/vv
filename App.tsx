@@ -171,9 +171,9 @@ export const AppLayout: React.FC = () => {
   const isDarkPage = ['launch', 'initial', 'loading'].includes(currentPage) || location.pathname === '/launch' || location.pathname === '/initial' || location.pathname === '/loading';
 
   const getAppBgClass = () => {
-    if (isDarkPage) return 'bg-[#062B34]';
-    if (isGlobalGhostMode) return 'bg-[#020F14]';
-    return 'bg-[var(--app-bg)] text-white';
+    if (isDarkPage) return 'bg-[#062B34] text-[#F1FAEE]';
+    if (isGlobalGhostMode) return 'bg-[#03171C] text-[#F1FAEE]';
+    return 'bg-[var(--app-bg)] text-[var(--text-primary)]';
   };
 
   const outletContext: AppOutletContext = {

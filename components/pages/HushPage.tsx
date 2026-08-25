@@ -1,9 +1,9 @@
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Search, Plus, Music, X, Send, EyeOff, Mic, Camera, Video, ArrowLeft, Clock, Eye, Play, Pause, SkipForward, Zap, Lock, ShieldAlert, Headphones, ShieldCheck, Flame, Archive, Ghost, Sparkles, Check, ChevronDown, Circle, RefreshCw, Trash2, RotateCcw, MapPin } from 'lucide-react';
-import { motion, AnimatePresence, useMotionValue, useTransform } from 'motion/react';
-import { MOCK_USERS, MOCK_HUSH_NOTES } from '../../constants';
-import { User, Message, HushNote } from '../../types';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Search, Plus, Music, X, Send, Mic, Camera, ArrowLeft, Clock, Play, Pause, SkipForward, Zap, Lock, Headphones, ShieldCheck, Archive, Sparkles, Check, RefreshCw, Trash2, RotateCcw, MapPin } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { MOCK_USERS } from '../../constants';
+import { User, HushNote } from '../../types';
 
 interface HushPageProps {
   isGhostMode: boolean;
@@ -44,9 +44,9 @@ const getNoteStyleVariants = (note: HushNote, index: number, isGhostMode: boolea
       tierLabel: 'Mid Range',
       bubbleBg: isGhostMode 
         ? 'bg-gradient-to-br from-[#062B34] via-[#03171C] to-[#0C3B46] border-[#2EC4B6]/30 text-[#F1FAEE] shadow-md shadow-[#062B34]/40' 
-        : 'bg-gradient-to-br from-indigo-50/90 via-sky-50 to-white border-indigo-200/60 text-primary shadow-md shadow-indigo-500/5',
-      badgeBg: isGhostMode ? 'bg-[#062B34] text-[#80FFEC]' : 'bg-indigo-500/10 text-indigo-800',
-      tagIconColor: isGhostMode ? 'text-[#2EC4B6]' : 'text-indigo-500',
+        : 'bg-gradient-to-br from-[#2EC4B6]/10 via-sky-50 to-white border-[#2EC4B6]/20 text-primary shadow-md shadow-[#2EC4B6]/5',
+      badgeBg: isGhostMode ? 'bg-[#062B34] text-[#80FFEC]' : 'bg-[#2EC4B6]/10 text-[#20878E]',
+      tagIconColor: isGhostMode ? 'text-[#2EC4B6]' : 'text-[#2EC4B6]',
       proximityStr: `${distanceKm}km • ${ageMinutes}m ago`
     };
   } else {
@@ -195,7 +195,7 @@ const SwipeableHushNoteItem: React.FC<SwipeableHushNoteItemProps> = ({
           }}
           className={`absolute -top-2 -right-2 p-1 rounded-full border shadow-md transition-all active:scale-75 ${
             isGhostMode 
-              ? 'bg-[#031820] text-[#80FFEC] border-[#2EC4B6]/30 hover:bg-[#2EC4B6]/80' 
+              ? 'bg-[#03171C] text-[#80FFEC] border-[#2EC4B6]/30 hover:bg-[#2EC4B6]/80' 
               : 'bg-white text-gray-400 border-black/10 hover:text-red-500 hover:bg-red-50'
           }`}
           title="Dismiss whisper"
@@ -247,11 +247,11 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
   };
 
   const [timerDuration, setTimerDuration] = useState<number | null>(null); // duration in seconds
-  const [tick, setTick] = useState(0);
+  const [_tick, setTick] = useState(0);
 
   // Connection management
   const [isOnline, setIsOnline] = useState<boolean>(typeof navigator !== 'undefined' ? navigator.onLine : true);
-  const [isOfflineSimulated, setIsOfflineSimulated] = useState<boolean>(false);
+  const [_isOfflineSimulated, setIsOfflineSimulated] = useState<boolean>(false);
   const [queuedNotesState, setQueuedNotesState] = useState<HushNote[]>([]);
 
   // Gestural touch drag states for modal dismissal
@@ -283,7 +283,7 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
     };
   }, []);
 
-  const syncOfflineQueue = () => {
+  const syncOfflineQueue = useCallback(() => {
     const queue = localStorage.getItem('hush_offline_queue');
     if (queue) {
       try {
@@ -305,13 +305,13 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
         console.error(e);
       }
     }
-  };
+  }, [onAddNote]);
 
   useEffect(() => {
     if (currentOnlineStatus) {
       syncOfflineQueue();
     }
-  }, [currentOnlineStatus]);
+  }, [currentOnlineStatus, syncOfflineQueue]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -435,11 +435,21 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
   }
 
   return (
-    <div className={`min-h-full transition-all duration-700 pb-24 px-4 ${isGhostMode ? 'bg-[#020F14] text-[#F1FAEE]' : 'bg-[var(--app-bg)] text-white'}`}>
-      <header className={`-mx-4 px-4 py-5 text-white sticky top-0 z-30 shadow-md transition-colors duration-500 ${isGhostMode ? 'bg-[#020F14]' : 'bg-[#062B34]'}`}>
+    <div className={`min-h-full transition-all duration-700 pb-24 px-4 ${isGhostMode ? 'bg-[#03171C] text-[#F1FAEE]' : 'bg-[var(--app-bg,#FFF9E6)] text-[var(--text-primary,#0B1720)]'}`}>
+      <header className={`-mx-4 px-4 py-5 text-white sticky top-0 z-30 shadow-md transition-colors duration-500 ${isGhostMode ? 'bg-[#03171C]' : 'bg-[#062B34]'}`}>
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-black font-montserrat tracking-tight">Hush</h1>
           <div className="flex items-center gap-2">
+            {visibleNotes.length > 0 && (
+              <button
+                onClick={handleClearAll}
+                className="px-2.5 py-1.5 rounded-xl transition-all active:scale-90 flex items-center justify-center gap-1 border bg-white/10 text-white/80 border-white/10 hover:text-white"
+                title="Clear Whispers"
+              >
+                <Trash2 size={15} />
+                <span className="text-[10px] font-black uppercase tracking-wider">Clear</span>
+              </button>
+            )}
             <button 
               onClick={() => {
                 setIsVaultOpen(!isVaultOpen);
@@ -585,7 +595,7 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({ isGhostMode, onCa
             }`}
           >
             <div className="relative">
-              <img src={user.avatar} loading="lazy" className={`w-14 h-14 rounded-2xl border-2 transition-colors group-hover:border-[#2EC4B6] ${isGhostMode ? 'border-[#020F14]' : 'border-[#062B34]'}`} alt="" />
+              <img src={user.avatar} loading="lazy" className={`w-14 h-14 rounded-2xl border-2 transition-colors group-hover:border-[#2EC4B6] ${isGhostMode ? 'border-[#03171C]' : 'border-[#062B34]'}`} alt="" />
               <div className={`absolute bottom-0 right-0 w-3.5 h-3.5 border-2 border-white rounded-full ${user.status === 'online' ? 'bg-green-500' : 'bg-gray-400'}`}></div>
             </div>
             <div className="flex-1 min-w-0">

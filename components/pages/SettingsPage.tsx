@@ -31,7 +31,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = React.memo(({
 
   return (
     <div className="min-h-full pb-24 transition-colors duration-500 bg-[var(--app-bg)] text-white">
-      <header className={`p-6 text-white flex items-center justify-between sticky top-0 z-20 shadow-md transition-colors duration-500 ${isGhostMode ? 'bg-[#020F14]' : 'bg-[#062B34]'}`}>
+      <header className={`p-6 text-white flex items-center justify-between sticky top-0 z-20 shadow-md transition-colors duration-500 ${isGhostMode ? 'bg-[#03171C]' : 'bg-[#062B34]'}`}>
         <div className="flex items-center gap-4">
           <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-xl transition-all active:scale-90" title="Back"><ArrowLeft size={24} /></button>
           <h1 className="text-xl font-bold font-montserrat tracking-tight">Persona Settings</h1>

@@ -9,7 +9,7 @@ interface StoryViewerPageProps {
   isGhostMode: boolean;
 }
 
-export const StoryViewerPage: React.FC<StoryViewerPageProps> = React.memo(({ storyId, onClose, isGhostMode }) => {
+export const StoryViewerPage: React.FC<StoryViewerPageProps> = React.memo(({ storyId, onClose, isGhostMode: _isGhostMode }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -30,6 +30,17 @@ export const StoryViewerPage: React.FC<StoryViewerPageProps> = React.memo(({ sto
 
   const currentStory = MOCK_STORIES[currentIndex];
 
+  const handleNext = React.useCallback(() => {
+    if (currentIndex < MOCK_STORIES.length - 1) {
+      setCurrentIndex(prev => prev + 1);
+      setProgress(0);
+      setIsLiked(false);
+      if (navigator.vibrate) navigator.vibrate(15);
+    } else {
+      onClose();
+    }
+  }, [currentIndex, onClose]);
+
   useEffect(() => {
     if (isPaused || !isAutoplay) return;
 
@@ -44,18 +55,7 @@ export const StoryViewerPage: React.FC<StoryViewerPageProps> = React.memo(({ sto
     }, 30);
 
     return () => clearInterval(timer);
-  }, [currentIndex, isPaused, isAutoplay]);
-
-  const handleNext = () => {
-    if (currentIndex < MOCK_STORIES.length - 1) {
-      setCurrentIndex(prev => prev + 1);
-      setProgress(0);
-      setIsLiked(false);
-      if (navigator.vibrate) navigator.vibrate(15);
-    } else {
-      onClose();
-    }
-  };
+  }, [currentIndex, isPaused, isAutoplay, handleNext]);
 
   const handlePrev = () => {
     if (currentIndex > 0) {

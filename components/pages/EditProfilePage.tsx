@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Camera, Save, User as UserIcon, Image as ImageIcon, AtSign, FileText, Palette, Sparkles } from 'lucide-react';
+import { ArrowLeft, Camera, Save, User as UserIcon, AtSign, FileText, Palette, Sparkles } from 'lucide-react';
 import { User } from '../../types';
 
 export const CARD_SKINS = [
   { id: 'default', name: 'Default', bg: 'bg-white', text: 'text-primary', border: 'border-gray-200' },
-  { id: 'holographic', name: 'Holographic', bg: 'bg-gradient-to-br from-[#2EC4B6] via-[#80FFEC] to-[#062B34]', text: 'text-white', border: 'border-white/40' },
+  { id: 'holographic', name: 'Holographic', bg: 'bg-[linear-gradient(135deg,#80FFEC_0%,#2EC4B6_40%,#20878E_100%)]', text: 'text-[#062B34]', border: 'border-[rgba(128,255,236,0.60)]' },
   { id: 'neon', name: 'Neon', bg: 'bg-black', text: 'text-green-400', border: 'border-green-500 shadow-[0_0_15px_rgba(34,197,94,0.5)]' },
   { id: 'gold', name: 'Gold', bg: 'bg-gradient-to-br from-yellow-300 via-yellow-500 to-yellow-700', text: 'text-black', border: 'border-yellow-200' },
   { id: 'cyberpunk', name: 'Cyberpunk', bg: 'bg-yellow-400', text: 'text-black', border: 'border-black border-4' },
@@ -30,12 +30,18 @@ export const EditProfilePage: React.FC<EditProfilePageProps> = React.memo(({ use
 
   const handleAvatarClick = () => {
     setIsUploadingAvatar(true);
-    setTimeout(() => setIsUploadingAvatar(false), 2000);
+    setTimeout(() => {
+      setAvatar(`https://picsum.photos/seed/avatar_${Date.now()}/200/200`);
+      setIsUploadingAvatar(false);
+    }, 1000);
   };
 
   const handleBannerClick = () => {
     setIsUploadingBanner(true);
-    setTimeout(() => setIsUploadingBanner(false), 2000);
+    setTimeout(() => {
+      setBanner(`https://picsum.photos/seed/cover_${Date.now()}/800/400`);
+      setIsUploadingBanner(false);
+    }, 1000);
   };
 
   const handleSave = () => {
@@ -50,8 +56,8 @@ export const EditProfilePage: React.FC<EditProfilePageProps> = React.memo(({ use
   };
 
   return (
-    <div className={`min-h-full flex flex-col transition-colors duration-500 ${isGhostMode ? 'bg-[#020F14] text-white' : 'bg-[var(--app-bg)] text-white'}`}>
-      <header className={`p-6 sticky top-0 z-20 shadow-xl transition-colors duration-500 flex items-center justify-between ${isGhostMode ? 'bg-[#020F14]' : 'bg-[#062B34] text-white'}`}>
+    <div className={`min-h-full flex flex-col transition-colors duration-500 ${isGhostMode ? 'bg-[#03171C] text-[#F1FAEE]' : 'bg-[var(--app-bg,#FFF9E6)] text-[var(--text-primary,#0B1720)]'}`}>
+      <header className={`p-6 sticky top-0 z-20 shadow-xl transition-colors duration-500 flex items-center justify-between ${isGhostMode ? 'bg-[#03171C]' : 'bg-[#062B34] text-white'}`}>
         <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-full transition-colors active:scale-90">
           <ArrowLeft size={24} />
         </button>
@@ -73,7 +79,7 @@ export const EditProfilePage: React.FC<EditProfilePageProps> = React.memo(({ use
         {/* Avatar Edit */}
         <div className="flex justify-center -mt-16 relative z-10">
           <div className="relative group" onClick={handleAvatarClick}>
-            <div className={`w-32 h-32 rounded-[2.5rem] p-1 transition-all duration-500 ${isGhostMode ? 'bg-[#020F14]' : 'bg-[#062B34]'} ${isUploadingAvatar ? 'scale-95' : ''}`}>
+            <div className={`w-32 h-32 rounded-[2.5rem] p-1 transition-all duration-500 ${isGhostMode ? 'bg-[#03171C]' : 'bg-[#062B34]'} ${isUploadingAvatar ? 'scale-95' : ''}`}>
               <img src={avatar} loading="lazy" className={`w-full h-full rounded-[2.3rem] object-cover transition-all duration-500 ${isUploadingAvatar ? 'brightness-50 blur-[2px]' : ''}`} alt="Avatar" />
             </div>
             <div className={`absolute inset-0 flex items-center justify-center transition-opacity cursor-pointer ${isUploadingAvatar ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
@@ -88,7 +94,7 @@ export const EditProfilePage: React.FC<EditProfilePageProps> = React.memo(({ use
         <div className="space-y-6">
           <div className="space-y-2">
             <label className={`text-[10px] font-black uppercase tracking-widest ml-4 ${isGhostMode ? 'text-[#80FFEC]' : 'text-white/40'}`}>Display Name</label>
-            <div className={`flex items-center gap-3 p-4 rounded-2xl border ${isGhostMode ? 'bg-[#031820] border-[#2EC4B6]/20' : 'bg-[#0A2832] border-white/10'}`}>
+            <div className={`flex items-center gap-3 p-4 rounded-2xl border ${isGhostMode ? 'bg-[#03171C] border-[#2EC4B6]/20' : 'bg-[#0A2832] border-white/10'}`}>
               <UserIcon size={18} className={isGhostMode ? 'text-[#80FFEC]' : 'text-[#2EC4B6]'} />
               <input 
                 type="text" 
@@ -101,7 +107,7 @@ export const EditProfilePage: React.FC<EditProfilePageProps> = React.memo(({ use
 
           <div className="space-y-2">
             <label className={`text-[10px] font-black uppercase tracking-widest ml-4 ${isGhostMode ? 'text-[#80FFEC]' : 'text-white/40'}`}>Username</label>
-            <div className={`flex items-center gap-3 p-4 rounded-2xl border ${isGhostMode ? 'bg-[#031820] border-[#2EC4B6]/20' : 'bg-[#0A2832] border-white/10'}`}>
+            <div className={`flex items-center gap-3 p-4 rounded-2xl border ${isGhostMode ? 'bg-[#03171C] border-[#2EC4B6]/20' : 'bg-[#0A2832] border-white/10'}`}>
               <AtSign size={18} className={isGhostMode ? 'text-[#80FFEC]' : 'text-[#2EC4B6]'} />
               <input 
                 type="text" 
@@ -114,7 +120,7 @@ export const EditProfilePage: React.FC<EditProfilePageProps> = React.memo(({ use
 
           <div className="space-y-2">
             <label className={`text-[10px] font-black uppercase tracking-widest ml-4 ${isGhostMode ? 'text-[#80FFEC]' : 'text-white/40'}`}>Bio</label>
-            <div className={`flex items-start gap-3 p-4 rounded-2xl border ${isGhostMode ? 'bg-[#031820] border-[#2EC4B6]/20' : 'bg-[#0A2832] border-white/10'}`}>
+            <div className={`flex items-start gap-3 p-4 rounded-2xl border ${isGhostMode ? 'bg-[#03171C] border-[#2EC4B6]/20' : 'bg-[#0A2832] border-white/10'}`}>
               <FileText size={18} className={`mt-1 ${isGhostMode ? 'text-[#80FFEC]' : 'text-[#2EC4B6]'}`} />
               <textarea 
                 value={bio}

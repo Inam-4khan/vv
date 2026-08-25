@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ArrowLeft, Search, UserPlus, MessageCircle, MoreHorizontal, User } from 'lucide-react';
+import { ArrowLeft, Search, MessageCircle, MoreHorizontal, User } from 'lucide-react';
 import { MOCK_USERS } from '../../constants';
 import { User as UserType } from '../../types';
 
@@ -24,8 +24,8 @@ export const ConnectionsPage: React.FC<ConnectionsPageProps> = React.memo(({ onB
   );
 
   return (
-    <div className={`min-h-full flex flex-col transition-colors duration-500 ${isGhostMode ? 'bg-[#020F14] text-white' : 'bg-[var(--app-bg)] text-white'}`}>
-      <header className={`p-6 sticky top-0 z-20 shadow-xl transition-colors duration-500 ${isGhostMode ? 'bg-[#020F14]' : 'bg-[#062B34] text-white'}`}>
+    <div className={`min-h-full flex flex-col transition-colors duration-500 ${isGhostMode ? 'bg-[#03171C] text-[#F1FAEE]' : 'bg-[var(--app-bg,#FFF9E6)] text-[var(--text-primary,#0B1720)]'}`}>
+      <header className={`p-6 sticky top-0 z-20 shadow-xl transition-colors duration-500 ${isGhostMode ? 'bg-[#03171C]' : 'bg-[#062B34] text-white'}`}>
         <div className="flex items-center gap-4 mb-6">
           <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-full transition-colors active:scale-90">
             <ArrowLeft size={24} />
@@ -68,7 +68,7 @@ export const ConnectionsPage: React.FC<ConnectionsPageProps> = React.memo(({ onB
           <div 
             key={user.id}
             onClick={() => onViewProfile(user)}
-            className={`p-4 rounded-[2rem] border flex items-center gap-4 transition-all active:scale-[0.98] cursor-pointer ${isGhostMode ? 'bg-[#031820] border-[#2EC4B6]/10' : 'bg-[#0A2832] border-white/10 shadow-sm'}`}
+            className={`p-4 rounded-[2rem] border flex items-center gap-4 transition-all active:scale-[0.98] cursor-pointer ${isGhostMode ? 'bg-[#03171C] border-[#2EC4B6]/10' : 'bg-[#0A2832] border-white/10 shadow-sm'}`}
           >
             <div className="relative">
               <img src={user.avatar} loading="lazy" className={`w-14 h-14 rounded-2xl border-2 ${isGhostMode ? 'border-[#2EC4B6]/20 grayscale opacity-70' : 'border-[#062B34]'}`} alt="" />
