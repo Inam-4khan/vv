@@ -56,7 +56,7 @@ export const VistaPage: React.FC<{ isGhostMode: boolean }> = React.memo(({ isGho
                     onClick={() => setActiveFilter(filter)}
                     className={`px-2.5 py-1 rounded-xl text-[9px] font-mono uppercase tracking-wider transition-all ${
                       activeFilter === filter
-                        ? 'bg-[var(--app-accent)] text-[var(--app-primary)] font-black'
+                        ? 'bg-[var(--app-accent)] text-primary dark:text-white font-black'
                         : 'bg-white/5 text-[#8AADB5] hover:text-[#F1FAEE]'
                     }`}
                   >
@@ -220,7 +220,7 @@ export const VistaPage: React.FC<{ isGhostMode: boolean }> = React.memo(({ isGho
           <button 
             onClick={() => setMode('ar')} 
             className={`px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${
-              mode === 'ar' ? 'bg-[var(--app-accent)] text-[var(--app-primary)] shadow-lg font-black' : 'text-[#8AADB5] hover:text-[#F1FAEE]'
+              mode === 'ar' ? 'bg-[var(--app-accent)] text-primary dark:text-white shadow-lg font-black' : 'text-[#8AADB5] hover:text-[#F1FAEE]'
             }`}
           >
             Vista
@@ -228,7 +228,7 @@ export const VistaPage: React.FC<{ isGhostMode: boolean }> = React.memo(({ isGho
           <button 
             onClick={() => setMode('map')} 
             className={`px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all ${
-              mode === 'map' ? 'bg-[var(--app-accent)] text-[var(--app-primary)] shadow-lg font-black' : 'text-[#8AADB5] hover:text-[#F1FAEE]'
+              mode === 'map' ? 'bg-[var(--app-accent)] text-primary dark:text-white shadow-lg font-black' : 'text-[#8AADB5] hover:text-[#F1FAEE]'
             }`}
           >
             Map

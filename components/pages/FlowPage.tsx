@@ -79,7 +79,7 @@ export const FlowPage: React.FC<FlowPageProps> = React.memo(({ onExplore, onNoti
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       className={`min-h-full transition-all duration-700 pb-24 ${
-        isGhostMode ? 'bg-[var(--app-bg-ghost)] text-[#F1FAEE]' : 'bg-[var(--app-bg,var(--app-bg))] text-[var(--text-primary,var(--text-primary))]'
+        isGhostMode ? 'bg-[var(--app-bg-ghost)] text-[#F1FAEE]' : 'bg-[var(--app-bg,var(--app-bg))] text-[var(--text-primary dark:text-white,var(--text-primary dark:text-white))]'
       }`}
     >
       {/* Pull to Refresh Indicator */}
@@ -90,7 +90,7 @@ export const FlowPage: React.FC<FlowPageProps> = React.memo(({ onExplore, onNoti
         <div className={`flex items-center gap-2.5 px-4 py-2 rounded-full border backdrop-blur-md shadow-md text-xs font-bold ${
           isGhostMode 
             ? 'bg-[color-mix(in_srgb,var(--app-primary)_90%,transparent)] border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] text-[var(--app-accent-light)]' 
-            : 'bg-white/90 border-[#20878E]/20 text-[var(--app-primary)]'
+            : 'bg-white/90 border-[#20878E]/20 text-primary dark:text-white'
         }`}>
           <RefreshCw 
             size={16} 
@@ -101,7 +101,7 @@ export const FlowPage: React.FC<FlowPageProps> = React.memo(({ onExplore, onNoti
         </div>
       </div>
 
-      <header className={`p-6 sticky top-0 z-50 shadow-md transition-colors duration-500 text-white ${isGhostMode ? 'bg-[var(--app-bg-ghost)]' : 'bg-[var(--app-primary)]'}`}>
+      <header className={`p-6 sticky top-0 z-50 shadow-md transition-colors duration-500 text-primary dark:text-white ${isGhostMode ? 'bg-[var(--app-bg-ghost)]' : 'bg-[var(--app-primary)]'}`}>
         <div className="flex justify-between items-center animate-fade-in">
           <div className="flex items-center gap-3">
             <div className="animate-vizu-logo-entrance inline-flex items-center justify-center">
@@ -114,11 +114,11 @@ export const FlowPage: React.FC<FlowPageProps> = React.memo(({ onExplore, onNoti
           </div>
           <div className="flex items-center gap-2">
             <button onClick={onNotifications} className="p-2 hover:bg-white/10 rounded-full transition-colors relative" title="Notifications">
-              <Bell size={22} className="text-white/60" />
+              <Bell size={22} className="text-primary/40 dark:text-white/40" />
               <div className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[var(--app-primary)] animate-pulse" />
             </button>
             <button onClick={onExplore} className="p-2 hover:bg-white/10 rounded-full transition-colors md:hidden" title="Explore">
-              <Compass size={22} className="text-white/60" />
+              <Compass size={22} className="text-primary/40 dark:text-white/40" />
             </button>
           </div>
         </div>
@@ -145,11 +145,11 @@ export const FlowPage: React.FC<FlowPageProps> = React.memo(({ onExplore, onNoti
                 <OptimizedImg src="https://picsum.photos/seed/user_me/100" alt="My Story" width={64} height={64} loading="lazy" className="w-full h-full object-cover" />
               </div>
             </div>
-            <div className={`absolute bottom-0 right-0 p-1 rounded-full border-2 text-white ${isGhostMode ? 'bg-[var(--app-accent)] border-[var(--app-primary)]' : 'bg-secondary border-[var(--app-bg,var(--app-bg))]'}`}>
+            <div className={`absolute bottom-0 right-0 p-1 rounded-full border-2 text-primary dark:text-white ${isGhostMode ? 'bg-[var(--app-accent)] border-[var(--app-primary)]' : 'bg-secondary border-[var(--app-bg,var(--app-bg))]'}`}>
               <Plus size={10} />
             </div>
           </div>
-          <span className={`text-[10px] font-bold uppercase ${isGhostMode ? 'text-white/40' : 'text-[var(--text-primary,var(--text-primary))]/40'}`}>My Story</span>
+          <span className={`text-[10px] font-bold uppercase ${isGhostMode ? 'text-primary/40 dark:text-white/40' : 'text-[var(--text-primary dark:text-white,var(--text-primary dark:text-white))]/40'}`}>My Story</span>
         </button>
         {stories.map((story, index) => (
           <button 
@@ -171,7 +171,7 @@ export const FlowPage: React.FC<FlowPageProps> = React.memo(({ onExplore, onNoti
                 <OptimizedImg src={story.avatar} alt={`@${story.username}`} width={64} height={64} loading="lazy" className="w-full h-full object-cover" />
               </div>
             </div>
-            <span className={`text-[10px] font-bold truncate w-16 text-center ${isGhostMode ? 'text-white/80' : 'text-[var(--text-primary,var(--text-primary))]'}`}>@{story.username}</span>
+            <span className={`text-[10px] font-bold truncate w-16 text-center ${isGhostMode ? 'text-primary dark:text-white' : 'text-[var(--text-primary dark:text-white,var(--text-primary dark:text-white))]'}`}>@{story.username}</span>
           </button>
         ))}
       </div>
@@ -190,11 +190,11 @@ export const FlowPage: React.FC<FlowPageProps> = React.memo(({ onExplore, onNoti
                   <OptimizedImg src={`https://picsum.photos/seed/${post.username}/100`} alt={`@${post.username}`} width={48} height={48} loading="lazy" className="w-full h-full object-cover" />
                 </div>
                 <div>
-                  <h4 className={`font-bold text-sm ${isGhostMode ? 'text-white' : 'text-[var(--text-primary,var(--text-primary))]'}`}>@{post.username}</h4>
-                  <p className={`text-[10px] font-bold uppercase tracking-widest ${isGhostMode ? 'text-white/40' : 'text-[var(--text-primary,var(--text-primary))]/40'}`}>{post.timestamp}</p>
+                  <h4 className={`font-bold text-sm ${isGhostMode ? 'text-primary dark:text-white' : 'text-[var(--text-primary dark:text-white,var(--text-primary dark:text-white))]'}`}>@{post.username}</h4>
+                  <p className={`text-[10px] font-bold uppercase tracking-widest ${isGhostMode ? 'text-primary/40 dark:text-white/40' : 'text-[var(--text-primary dark:text-white,var(--text-primary dark:text-white))]/40'}`}>{post.timestamp}</p>
                 </div>
               </div>
-              <button className={`p-2 ${isGhostMode ? isGhostMode ? 'text-white/20 hover:text-white' : 'text-primary/20 hover:text-primary dark:text-white/20 dark:hover:text-white' : 'text-primary/20 hover:text-primary'}`}><MoreVertical size={20} /></button>
+              <button className={`p-2 ${isGhostMode ? isGhostMode ? 'text-primary dark:text-white/20 hover:text-primary dark:text-white' : 'text-primary dark:text-white/20 hover:text-primary dark:text-white  dark:hover:text-primary dark:text-white' : 'text-primary dark:text-white/20 hover:text-primary dark:text-white'}`}><MoreVertical size={20} /></button>
             </div>
 
             {post.image && (
@@ -204,19 +204,19 @@ export const FlowPage: React.FC<FlowPageProps> = React.memo(({ onExplore, onNoti
             )}
 
             <div className="p-6">
-              <p className={`mb-6 text-sm leading-relaxed ${isGhostMode ? 'text-white/70' : 'text-[var(--text-primary,var(--text-primary))]/70'}`}>{post.content}</p>
+              <p className={`mb-6 text-sm leading-relaxed ${isGhostMode ? 'text-primary/40 dark:text-white/40' : 'text-[var(--text-primary dark:text-white,var(--text-primary dark:text-white))]/70'}`}>{post.content}</p>
               
               <div className={`flex items-center justify-between pt-4 border-t ${isGhostMode ? 'border-white/5' : 'border-primary/5'}`}>
                 <div className="flex items-center gap-4">
-                  <button onClick={() => toggleLike(post.id)} className={`flex items-center gap-1.5 transition-all active:scale-90 ${likedPosts.includes(post.id) ? 'text-red-500' : isGhostMode ? 'text-white/40 hover:text-white' : 'text-[var(--text-primary,var(--text-primary))]/40 hover:text-primary'}`}>
+                  <button onClick={() => toggleLike(post.id)} className={`flex items-center gap-1.5 transition-all active:scale-90 ${likedPosts.includes(post.id) ? 'text-red-500' : isGhostMode ? 'text-primary/40 dark:text-white/40 hover:text-primary dark:text-white' : 'text-[var(--text-primary dark:text-white,var(--text-primary dark:text-white))]/40 hover:text-primary dark:text-white'}`}>
                     <Heart size={20} fill={likedPosts.includes(post.id) ? "currentColor" : "none"} />
                     <span className="text-[11px] font-black">{post.likes + (likedPosts.includes(post.id) ? 1 : 0)}</span>
                   </button>
-                  <button className={`flex items-center gap-1.5 ${isGhostMode ? 'text-white/40' : 'text-[var(--text-primary,var(--text-primary))]/40'}`}>
+                  <button className={`flex items-center gap-1.5 ${isGhostMode ? 'text-primary/40 dark:text-white/40' : 'text-[var(--text-primary dark:text-white,var(--text-primary dark:text-white))]/40'}`}>
                     <MessageCircle size={20} />
                     <span className="text-[11px] font-black">{post.comments}</span>
                   </button>
-                  <button className={`flex items-center gap-1.5 transition-colors ${isGhostMode ? 'text-white/30 hover:text-[var(--app-accent-light)]' : 'text-primary/30 hover:text-secondary'}`} title="Share to Hush">
+                  <button className={`flex items-center gap-1.5 transition-colors ${isGhostMode ? 'text-primary dark:text-white/30 hover:text-[var(--app-accent-light)]' : 'text-primary dark:text-white/30 hover:text-secondary'}`} title="Share to Hush">
                     <Send size={18} />
                     <span className="text-[9px] font-black uppercase">Hush</span>
                   </button>
@@ -227,7 +227,7 @@ export const FlowPage: React.FC<FlowPageProps> = React.memo(({ onExplore, onNoti
                       toggleSave(post.id);
                       showToast(savedPosts.includes(post.id) ? 'Post unsaved' : 'Post saved to bookmarks!', 'info');
                     }}
-                    className={`p-1.5 transition-colors ${savedPosts.includes(post.id) ? 'text-[var(--app-accent)]' : isGhostMode ? 'text-white/20 hover:text-white' : 'text-primary/20 hover:text-primary dark:text-white/20 dark:hover:text-white'}`}
+                    className={`p-1.5 transition-colors ${savedPosts.includes(post.id) ? 'text-[var(--app-accent)]' : isGhostMode ? 'text-primary dark:text-white/20 hover:text-primary dark:text-white' : 'text-primary dark:text-white/20 hover:text-primary dark:text-white  dark:hover:text-primary dark:text-white'}`}
                     title="Bookmark Post"
                   >
                     <Bookmark size={18} fill={savedPosts.includes(post.id) ? "currentColor" : "none"} />
@@ -236,7 +236,7 @@ export const FlowPage: React.FC<FlowPageProps> = React.memo(({ onExplore, onNoti
                     onClick={() => {
                       showToast('Post link copied to clipboard!', 'info');
                     }} 
-                    className={`p-1.5 transition-colors ${isGhostMode ? 'text-white/20 hover:text-[var(--app-accent-light)]' : 'text-primary/20 hover:text-secondary'}`} 
+                    className={`p-1.5 transition-colors ${isGhostMode ? 'text-primary dark:text-white/20 hover:text-[var(--app-accent-light)]' : 'text-primary dark:text-white/20 hover:text-secondary'}`} 
                     title="Post Options"
                   >
                     <MoreHorizontal size={20} />

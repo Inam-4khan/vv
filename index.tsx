@@ -5,6 +5,7 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './src/router/routes';
 import { ToastProvider } from './src/context/ToastContext';
 import { AppStateProvider } from './src/context/AppStateContext';
+import { AuthProvider } from './src/context/AuthContext';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -15,9 +16,11 @@ const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <ToastProvider>
-      <AppStateProvider>
-        <RouterProvider router={router} />
-      </AppStateProvider>
+      <AuthProvider>
+        <AppStateProvider>
+          <RouterProvider router={router} />
+        </AppStateProvider>
+      </AuthProvider>
     </ToastProvider>
   </React.StrictMode>
 );

@@ -12,28 +12,40 @@ export const StoryCreatorPage: React.FC<StoryCreatorPageProps> = React.memo(({ o
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  const streamRef = useRef<MediaStream | null>(null);
+
   useEffect(() => {
-    startCamera();
+    let isMounted = true;
+    const initCamera = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+        if (!isMounted) {
+          // Unmounted before stream finished loading, clean up immediately
+          stream.getTracks().forEach(t => t.stop());
+          return;
+        }
+        streamRef.current = stream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } catch (err) {
+        console.error("Camera error:", err);
+      }
+    };
+    
+    initCamera();
+    
     return () => {
-      stopCamera();
+      isMounted = false;
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(t => t.stop());
+        streamRef.current = null;
+      }
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+      }
     };
   }, []);
-
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-    } catch (err) {
-      console.error("Camera error:", err);
-    }
-  };
-
-  const stopCamera = () => {
-    const stream = videoRef.current?.srcObject as MediaStream;
-    stream?.getTracks().forEach(t => t.stop());
-  };
 
   const takePicture = () => {
     if (videoRef.current && canvasRef.current) {
@@ -72,7 +84,7 @@ export const StoryCreatorPage: React.FC<StoryCreatorPageProps> = React.memo(({ o
         
         {!capturedMedia ? (
           <div className="absolute bottom-10 left-0 w-full flex justify-center items-center gap-8 safe-area-inset-bottom">
-             <button aria-label="Upload photo from gallery" className="p-4 rounded-full bg-white/10 text-white backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)]">
+             <button aria-label="Upload photo from gallery" className="p-4 rounded-full bg-white/10 text-primary dark:text-white backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)]">
                <ImageIcon size={24} aria-hidden="true" />
              </button>
              <button 
@@ -83,7 +95,7 @@ export const StoryCreatorPage: React.FC<StoryCreatorPageProps> = React.memo(({ o
              >
                <div className="w-16 h-16 rounded-full bg-white" />
              </button>
-             <button aria-label="Flip camera" className="p-4 rounded-full bg-white/10 text-white backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)]">
+             <button aria-label="Flip camera" className="p-4 rounded-full bg-white/10 text-primary dark:text-white backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)]">
                <RefreshCw size={24} aria-hidden="true" />
              </button>
           </div>
@@ -91,15 +103,15 @@ export const StoryCreatorPage: React.FC<StoryCreatorPageProps> = React.memo(({ o
           <>
             {/* Audience Privacy Selector */}
             <div className="absolute bottom-28 left-0 w-full px-6 flex flex-col items-center gap-1.5 z-20">
-              <span className="text-[9px] font-black uppercase tracking-widest text-white/50">Who can see this story?</span>
+              <span className="text-[9px] font-black uppercase tracking-widest text-primary/40 dark:text-white/40">Who can see this story?</span>
               <div className="flex bg-black/60 backdrop-blur-md p-1 rounded-2xl border border-white/10 gap-1 shadow-2xl">
                 <button 
                   type="button" 
                   onClick={() => setPrivacy('public')} 
                   className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
                     privacy === 'public' 
-                      ? 'bg-[var(--app-accent)] text-white shadow-md' 
-                      : 'text-white/45 hover:text-white'
+                      ? 'bg-[var(--app-accent)] text-primary dark:text-white shadow-md' 
+                      : 'text-primary dark:text-white/45 hover:text-primary dark:text-white'
                   }`}
                 >
                   🌐 Public
@@ -109,8 +121,8 @@ export const StoryCreatorPage: React.FC<StoryCreatorPageProps> = React.memo(({ o
                   onClick={() => setPrivacy('circle')} 
                   className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
                     privacy === 'circle' 
-                      ? 'bg-[var(--app-accent)] text-[var(--app-primary)] shadow-md font-bold' 
-                      : 'text-white/45 hover:text-white'
+                      ? 'bg-[var(--app-accent)] text-primary dark:text-white shadow-md font-bold' 
+                      : 'text-primary dark:text-white/45 hover:text-primary dark:text-white'
                   }`}
                 >
                   👥 Circle
@@ -119,10 +131,10 @@ export const StoryCreatorPage: React.FC<StoryCreatorPageProps> = React.memo(({ o
             </div>
 
             <div className="absolute bottom-10 left-0 w-full px-6 flex justify-between items-center safe-area-inset-bottom z-10">
-               <button onClick={() => setCapturedMedia(null)} className="px-6 py-3 rounded-full bg-white/20 text-white backdrop-blur-md font-bold text-xs uppercase tracking-widest">
+               <button onClick={() => setCapturedMedia(null)} className="px-6 py-3 rounded-full bg-white/20 text-primary dark:text-white backdrop-blur-md font-bold text-xs uppercase tracking-widest">
                  Retake
                </button>
-               <button onClick={shareStory} className="px-8 py-3 rounded-full bg-[var(--app-accent)] text-[var(--app-primary)] font-black uppercase tracking-widest flex items-center gap-2 shadow-lg active:scale-95 transition-transform text-xs">
+               <button onClick={shareStory} className="px-8 py-3 rounded-full bg-[var(--app-accent)] text-primary dark:text-white font-black uppercase tracking-widest flex items-center gap-2 shadow-lg active:scale-95 transition-transform text-xs">
                  <Send size={15} /> Share Story
                </button>
             </div>

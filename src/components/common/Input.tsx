@@ -44,7 +44,7 @@ export const Input: React.FC<InputProps> = ({
       {label && (
         <label
           htmlFor={inputId}
-          className="block text-xs font-semibold uppercase tracking-wider text-[color-mix(in_srgb,var(--app-primary)_80%,transparent)] dark:text-white/80"
+          className="block text-xs font-semibold uppercase tracking-wider text-[color-mix(in_srgb,var(--app-primary)_80%,transparent)] "
         >
           {label} {required && <span className="text-rose-500">*</span>}
         </label>
@@ -70,7 +70,7 @@ export const Input: React.FC<InputProps> = ({
           autoComplete={autoComplete}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? `${inputId}-error` : undefined}
-          className={`w-full rounded-2xl border-2 bg-white/80 dark:bg-[#0F2229]/80 px-4 py-3 text-sm text-[var(--app-primary)] dark:text-white placeholder:text-slate-400 transition-all duration-200 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 ${
+          className={`w-full rounded-2xl border-2 bg-white/80 dark:bg-[#0F2229]/80 px-4 py-3 text-sm text-primary dark:text-white  placeholder:text-slate-400 transition-all duration-200 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 ${
             Icon ? 'pl-11' : ''
           } ${rightElement ? 'pr-11' : ''} ${
             error

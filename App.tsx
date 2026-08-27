@@ -16,6 +16,7 @@ import { pathToPage, pageToPath } from './src/router/routes';
 
 export interface AppOutletContext {
   hushNotes: HushNote[];
+  isLoadingNotes: boolean;
   handleAddHushNote: (newNote: HushNote) => void;
   handleStartOnboarding: () => void;
   handleFinishSplash: () => void;
@@ -46,30 +47,35 @@ export const AppLayout: React.FC = () => {
   const [isGhostTransitioning, setIsGhostTransitioning] = useState(false);
   
   const [hushNotes, setHushNotes] = useState<HushNote[]>([]);
+  const [isLoadingNotes, setIsLoadingNotes] = useState(false);
   const { accessToken } = useAuth();
   
   useEffect(() => {
     const fetchNotes = async () => {
       if (!accessToken) return;
+      setIsLoadingNotes(true);
       try {
         const res = await fetch('/api/notes', {
           headers: { 'Authorization': `Bearer ${accessToken}` }
         });
-        if (res.ok) {
-          const data = await res.json();
-          const formattedNotes = data.map(n => ({
-            id: String(n.id),
-            userId: String(n.userUid),
-            username: n.userName,
-            avatar: n.userAvatar,
-            text: n.text,
-            music: n.musicTitle ? { title: n.musicTitle, artist: n.musicArtist } : undefined,
-            timestamp: new Date(n.createdAt).toLocaleTimeString()
-          }));
-          setHushNotes(formattedNotes);
-        }
-      } catch (e) {
-        console.error('Failed to fetch notes:', e);
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        const formattedNotes = data.map((n: any) => ({
+          id: String(n.id),
+          userId: String(n.userUid),
+          username: n.userName,
+          avatar: n.userAvatar,
+          text: n.text,
+          music: n.musicTitle ? { title: n.musicTitle, artist: n.musicArtist } : undefined,
+          timestamp: new Date(n.createdAt).toLocaleTimeString()
+        }));
+        setHushNotes(formattedNotes);
+      } catch (err) {
+        console.error(err);
+        showToast('Could not load notes. Try again.', 'error');
+        setHushNotes([]);
+      } finally {
+        setIsLoadingNotes(false);
       }
     };
     fetchNotes();
@@ -107,14 +113,17 @@ export const AppLayout: React.FC = () => {
   }, [location.pathname]);
 
   
+  const [isSavingNote, setIsSavingNote] = useState(false);
+
   const handleAddHushNote = async (newNote: HushNote) => {
     // Add optimistically
     setHushNotes(prev => [newNote, ...prev]);
     showToast('Secret whisper note published!', 'success');
     
     if (accessToken) {
+      setIsSavingNote(true);
       try {
-        await fetch('/api/notes', {
+        const res = await fetch('/api/notes', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -128,8 +137,14 @@ export const AppLayout: React.FC = () => {
             musicArtist: newNote.music?.artist
           })
         });
-      } catch (e) {
-        console.error('Failed to save note:', e);
+        if (!res.ok) throw new Error('Failed to fetch');
+      } catch (err) {
+        console.error(err);
+        showToast('Could not save note. Try again.', 'error');
+        // If we want to rollback optimistic update:
+        // setHushNotes(prev => prev.filter(n => n.id !== newNote.id));
+      } finally {
+        setIsSavingNote(false);
       }
     }
   };
@@ -179,7 +194,7 @@ export const AppLayout: React.FC = () => {
     if (defaultUser) {
       setUser(defaultUser);
       navigate('/home');
-      showToast('Authenticated as ' + defaultUser.username, 'success');
+      showToast('Authenticated as ' + defaultUser.displayName, 'success');
     }
   };
 
@@ -215,11 +230,12 @@ export const AppLayout: React.FC = () => {
   const getAppBgClass = () => {
     if (isDarkPage) return 'bg-[var(--app-primary)] text-[#F1FAEE]';
     if (isGlobalGhostMode) return 'bg-[var(--app-bg-ghost)] text-[#F1FAEE]';
-    return 'bg-[var(--app-bg)] text-[var(--text-primary)]';
+    return 'bg-[var(--app-bg)] text-primary dark:text-white';
   };
 
   const outletContext: AppOutletContext = {
     hushNotes,
+    isLoadingNotes,
     handleAddHushNote,
     handleStartOnboarding,
     handleFinishSplash,
@@ -237,7 +253,7 @@ export const AppLayout: React.FC = () => {
       {/* Skip to Main Content Link for Screen Readers & Keyboard Users */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[500] focus:px-4 focus:py-2 focus:bg-[var(--app-accent)] focus:text-[var(--app-primary)] focus:font-black focus:rounded-xl focus:shadow-2xl focus:outline-none focus:ring-2 focus:ring-white"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[500] focus:px-4 focus:py-2 focus:bg-[var(--app-accent)] focus:text-primary dark:text-white focus:font-black focus:rounded-xl focus:shadow-2xl focus:outline-none focus:ring-2 focus:ring-white"
       >
         Skip to main content
       </a>

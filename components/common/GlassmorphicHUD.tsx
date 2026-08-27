@@ -36,7 +36,7 @@ export const GlassCard: React.FC<GlassCardProps> = ({
       className={`relative rounded-3xl overflow-hidden backdrop-blur-[14px] transition-all duration-300 ${
         isDarkMode
           ? 'bg-[color-mix(in_srgb,var(--app-primary)_68%,transparent)] text-[#F1FAEE] shadow-[0_10px_30px_-5px_rgba(0,0,0,0.5)]'
-          : 'bg-[color-mix(in_srgb,var(--app-primary)_18%,transparent)] text-[var(--app-primary)] shadow-[0_10px_25px_-5px_rgba(6,43,52,0.15)]'
+          : 'bg-[color-mix(in_srgb,var(--app-primary)_18%,transparent)] text-primary dark:text-white shadow-[0_10px_25px_-5px_rgba(6,43,52,0.15)]'
       } ${
         glowOnHover ? 'hover:shadow-[0_0_25px_rgba(46,196,182,0.4)] hover:scale-[1.02]' : ''
       } ${onClick ? 'cursor-pointer active:scale-95' : ''} ${className}`}
@@ -90,7 +90,7 @@ export const GlassButton: React.FC<GlassButtonProps> = ({
 
   const variantClasses = {
     solid:
-      'bg-[var(--app-accent)] hover:bg-[var(--app-accent-light)] text-[var(--app-primary)] font-black shadow-[0_4px_15px_rgba(46,196,182,0.4)] hover:shadow-[0_6px_20px_rgba(128,255,236,0.6)] active:scale-95',
+      'bg-[var(--app-accent)] hover:bg-[var(--app-accent-light)] text-primary dark:text-white font-black shadow-[0_4px_15px_rgba(46,196,182,0.4)] hover:shadow-[0_6px_20px_rgba(128,255,236,0.6)] active:scale-95',
     glass:
       'bg-[color-mix(in_srgb,var(--app-primary)_60%,transparent)] backdrop-blur-[14px] text-[#F1FAEE] font-bold border border-[color-mix(in_srgb,var(--app-accent-light)_40%,transparent)] hover:border-[var(--app-accent-light)] hover:bg-[color-mix(in_srgb,var(--app-primary)_80%,transparent)] active:scale-95',
     ghost:

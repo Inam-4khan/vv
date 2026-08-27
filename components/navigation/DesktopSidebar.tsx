@@ -76,11 +76,11 @@ export const DesktopSidebar = React.forwardRef<HTMLElement, DesktopSidebarProps>
                 className={`w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-sm font-bold tracking-tight transition-all duration-200 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)] ${
                   isActive
                     ? isGhostActive
-                      ? 'bg-[var(--app-accent)] text-[var(--app-primary)] font-black shadow-md'
+                      ? 'bg-[var(--app-accent)] text-primary dark:text-white font-black shadow-md'
                       : 'bg-white/15 text-[var(--app-bg)] border border-white/10 shadow-md'
                     : isGhostActive
                     ? 'text-[#8AADB5] hover:text-[#F1FAEE] hover:bg-[#0C3B46]'
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                    : 'text-primary/40 dark:text-white/40 hover:text-primary dark:text-white hover:bg-white/5'
                 }`}
               >
                 <Icon
@@ -88,7 +88,7 @@ export const DesktopSidebar = React.forwardRef<HTMLElement, DesktopSidebarProps>
                   strokeWidth={isActive ? 2.5 : 2}
                   aria-hidden="true"
                   className={`transition-transform duration-200 group-hover:scale-110 ${
-                    isActive ? (isGhostActive ? 'text-[var(--app-primary)]' : 'text-[var(--app-accent)]') : ''
+                    isActive ? (isGhostActive ? 'text-primary dark:text-white' : 'text-[var(--app-accent)]') : ''
                   }`}
                 />
                 <span>{item.label}</span>
@@ -109,15 +109,15 @@ export const DesktopSidebar = React.forwardRef<HTMLElement, DesktopSidebarProps>
             className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl text-xs font-bold transition-all border focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent-light)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--app-primary)] ${
               isGhostActive
                 ? 'bg-[var(--app-primary)] text-[var(--app-accent-light)] border-[color-mix(in_srgb,var(--app-accent)_40%,transparent)] shadow-inner'
-                : 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10'
+                : 'bg-white/5 text-primary/40 dark:text-white/40 border-white/10 hover:bg-white/10'
             }`}
           >
             <div className="flex items-center gap-2.5">
-              <Ghost size={18} aria-hidden="true" className={isGhostActive ? 'text-[var(--app-accent-light)] animate-pulse' : 'text-white/50'} />
+              <Ghost size={18} aria-hidden="true" className={isGhostActive ? 'text-[var(--app-accent-light)] animate-pulse' : 'text-primary/40 dark:text-white/40'} />
               <span>Ghost Mode</span>
             </div>
             <span className={`px-2 py-0.5 rounded-full text-[9px] uppercase font-mono ${
-              isGhostActive ? 'bg-[color-mix(in_srgb,var(--app-accent)_30%,transparent)] text-[var(--app-accent-light)]' : 'bg-white/10 text-white/40'
+              isGhostActive ? 'bg-[color-mix(in_srgb,var(--app-accent)_30%,transparent)] text-[var(--app-accent-light)]' : 'bg-white/10 text-primary/40 dark:text-white/40'
             }`}>
               {isGhostActive ? 'ON' : 'OFF'}
             </span>
@@ -136,15 +136,15 @@ export const DesktopSidebar = React.forwardRef<HTMLElement, DesktopSidebarProps>
             className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl text-xs font-bold transition-all border focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent-light)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--app-primary)] ${
               isDarkMode
                 ? 'bg-amber-500/20 text-amber-300 border-amber-500/30'
-                : 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10'
+                : 'bg-white/5 text-primary/40 dark:text-white/40 border-white/10 hover:bg-white/10'
             }`}
           >
             <div className="flex items-center gap-2.5">
-              {isDarkMode ? <Sun size={18} className="text-amber-300" aria-hidden="true" /> : <Moon size={18} className="text-white/50" aria-hidden="true" />}
+              {isDarkMode ? <Sun size={18} className="text-amber-300" aria-hidden="true" /> : <Moon size={18} className="text-primary/40 dark:text-white/40" aria-hidden="true" />}
               <span>Theme Mode</span>
             </div>
             <span className={`px-2 py-0.5 rounded-full text-[9px] uppercase font-mono ${
-              isDarkMode ? 'bg-amber-500/30 text-amber-300' : 'bg-white/10 text-white/40'
+              isDarkMode ? 'bg-amber-500/30 text-amber-300' : 'bg-white/10 text-primary/40 dark:text-white/40'
             }`}>
               {isDarkMode ? 'DARK' : 'LIGHT'}
             </span>

@@ -27,13 +27,13 @@ const getToastStyle = (type: ToastType) => {
       };
     case 'error':
       return {
-        bg: 'bg-[#1F080C] text-white border-rose-500/60 shadow-[0_8px_25px_rgba(244,63,94,0.35)]',
+        bg: 'bg-[#1F080C] text-primary dark:text-white border-rose-500/60 shadow-[0_8px_25px_rgba(244,63,94,0.35)]',
         badgeBg: 'bg-rose-500/20 text-rose-300',
         icon: <XCircle className="w-5 h-5 text-rose-400 shrink-0" />,
       };
     case 'warning':
       return {
-        bg: 'bg-[#1F1706] text-white border-amber-500/60 shadow-[0_8px_25px_rgba(245,158,11,0.35)]',
+        bg: 'bg-[#1F1706] text-primary dark:text-white border-amber-500/60 shadow-[0_8px_25px_rgba(245,158,11,0.35)]',
         badgeBg: 'bg-amber-500/20 text-amber-300',
         icon: <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0" />,
       };
@@ -76,7 +76,7 @@ export const ToastList: React.FC<ToastListProps> = React.memo(({ toasts, onRemov
 
             <button
               onClick={() => onRemove(toast.id)}
-              className="p-1.5 rounded-xl hover:bg-white/10 text-white/60 hover:text-white transition-colors shrink-0"
+              className="p-1.5 rounded-xl hover:bg-white/10 text-primary/40 dark:text-white/40 hover:text-primary dark:text-white transition-colors shrink-0"
               aria-label="Close notification"
             >
               <X className="w-4 h-4" />

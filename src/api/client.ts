@@ -13,7 +13,7 @@ const processQueue = (error: unknown, token: string | null) => {
 };
 
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://api.vizu.app/v1',
+  baseURL: import.meta.env.VITE_API_URL,
   timeout: 10000,
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' },

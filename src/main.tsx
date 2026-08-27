@@ -4,6 +4,7 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './router/routes';
 import { ToastProvider } from './context/ToastContext';
 import { AppStateProvider } from './context/AppStateContext';
+import { AuthProvider } from './context/AuthContext';
 
 // Global error handlers for uncaught exceptions and unhandled promise rejections
 window.onerror = (message, source, lineno, colno, error) => {
@@ -28,9 +29,11 @@ if (rootElement) {
   root.render(
     <React.StrictMode>
       <ToastProvider>
+        <AuthProvider>
         <AppStateProvider>
           <RouterProvider router={router} />
         </AppStateProvider>
+        </AuthProvider>
       </ToastProvider>
     </React.StrictMode>
   );

@@ -65,8 +65,8 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = React.memo(({
   ];
 
   return (
-    <div className={`min-h-full flex flex-col transition-colors duration-500 ${isGhostMode ? 'bg-[var(--app-bg-ghost)] text-[#F1FAEE]' : 'bg-[var(--app-bg,var(--app-bg))] text-[var(--text-primary,var(--text-primary))]'}`}>
-      <header className={`p-6 text-white sticky top-0 z-20 shadow-xl transition-colors duration-500 ${isGhostMode ? 'bg-[var(--app-bg-ghost)]' : 'bg-[var(--app-primary)]'}`}>
+    <div className={`min-h-full flex flex-col transition-colors duration-500 ${isGhostMode ? 'bg-[var(--app-bg-ghost)] text-[#F1FAEE]' : 'bg-[var(--app-bg,var(--app-bg))] text-[var(--text-primary dark:text-white,var(--text-primary dark:text-white))]'}`}>
+      <header className={`p-6 text-primary dark:text-white sticky top-0 z-20 shadow-xl transition-colors duration-500 ${isGhostMode ? 'bg-[var(--app-bg-ghost)]' : 'bg-[var(--app-primary)]'}`}>
         <div className="flex items-center gap-4 mb-6">
           <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-full transition-colors active:scale-90">
             <ArrowLeft size={24} />
@@ -80,13 +80,13 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = React.memo(({
         <div className="flex p-1 bg-white/5 rounded-2xl border border-white/5">
           <button 
             onClick={() => setActiveTab('activity')}
-            className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'activity' ? (isGhostMode ? 'bg-[var(--app-accent)] text-[var(--app-primary)]' : 'bg-[var(--app-accent)] text-[var(--app-primary)]') + ' font-bold shadow-lg' : 'text-primary/40 dark:text-white/40'}`}
+            className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'activity' ? (isGhostMode ? 'bg-[var(--app-accent)] text-primary dark:text-white' : 'bg-[var(--app-accent)] text-primary dark:text-white') + ' font-bold shadow-lg' : 'text-primary/40 dark:text-white/40 '}`}
           >
             Activity
           </button>
           <button 
             onClick={() => setActiveTab('requests')}
-            className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all relative ${activeTab === 'requests' ? (isGhostMode ? 'bg-[var(--app-accent)] text-[var(--app-primary)]' : 'bg-[var(--app-accent)] text-[var(--app-primary)]') + ' font-bold shadow-lg' : 'text-primary/40 dark:text-white/40'}`}
+            className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all relative ${activeTab === 'requests' ? (isGhostMode ? 'bg-[var(--app-accent)] text-primary dark:text-white' : 'bg-[var(--app-accent)] text-primary dark:text-white') + ' font-bold shadow-lg' : 'text-primary/40 dark:text-white/40 '}`}
           >
             Requests
             {requests.length > 0 && <span className="absolute top-2 right-4 w-2 h-2 bg-red-500 rounded-full" />}
@@ -100,11 +100,11 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = React.memo(({
             {notifications.map((notif) => (
               <div 
                 key={notif.id}
-                className={`p-4 rounded-[2rem] border flex items-start gap-4 transition-all hover:scale-[1.01] ${isGhostMode ? 'bg-[var(--app-bg-ghost)] border-[color-mix(in_srgb,var(--app-accent)_10%,transparent)]' : 'bg-[var(--app-bg-surface)] border-black/5 dark:border-white/10 text-primary dark:text-white shadow-sm'}`}
+                className={`p-4 rounded-[2rem] border flex items-start gap-4 transition-all hover:scale-[1.01] ${isGhostMode ? 'bg-[var(--app-bg-ghost)] border-[color-mix(in_srgb,var(--app-accent)_10%,transparent)]' : 'bg-[var(--app-bg-surface)] border-black/5 dark:border-white/10 text-primary dark:text-white  shadow-sm'}`}
               >
                 <div className="relative">
                   <img src={notif.user?.avatar} loading="lazy" className={`w-12 h-12 rounded-2xl border-2 ${isGhostMode ? 'border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] grayscale opacity-70' : 'border-[var(--app-primary)]'}`} alt="" />
-                  <div className={`absolute -bottom-1 -right-1 p-1.5 rounded-full text-white shadow-lg ${
+                  <div className={`absolute -bottom-1 -right-1 p-1.5 rounded-full text-primary dark:text-white shadow-lg ${
                     notif.type === 'like' ? 'bg-red-500' : 
                     notif.type === 'comment' ? 'bg-blue-500' : 
                     notif.type === 'mention' ? 'bg-[var(--app-accent)]' : 'bg-orange-500'
@@ -116,10 +116,10 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = React.memo(({
                   </div>
                 </div>
                 <div className="flex-1 min-w-0 pt-1">
-                  <p className={`text-sm leading-snug ${isGhostMode ? 'text-white/80' : 'text-primary dark:text-white'}`}>
+                  <p className={`text-sm leading-snug ${isGhostMode ? 'text-primary dark:text-white' : 'text-primary dark:text-white '}`}>
                     <span className="font-black">@{notif.user?.username ?? 'user'}</span> {notif.text}
                   </p>
-                  <span className="text-[10px] font-bold uppercase tracking-widest opacity-30 mt-1 block text-primary dark:text-white">{notif.time}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest opacity-30 mt-1 block text-primary dark:text-white ">{notif.time}</span>
                 </div>
               </div>
             ))}
@@ -130,27 +130,27 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = React.memo(({
               requests.map((req) => (
                 <div 
                   key={req.id}
-                  className={`p-5 rounded-[2.5rem] border flex flex-col gap-4 transition-all ${isGhostMode ? 'bg-[var(--app-bg-ghost)] border-[color-mix(in_srgb,var(--app-accent)_10%,transparent)] shadow-none' : 'bg-[var(--app-bg-surface)] border-black/5 dark:border-white/10 text-primary dark:text-white shadow-xl'}`}
+                  className={`p-5 rounded-[2.5rem] border flex flex-col gap-4 transition-all ${isGhostMode ? 'bg-[var(--app-bg-ghost)] border-[color-mix(in_srgb,var(--app-accent)_10%,transparent)] shadow-none' : 'bg-[var(--app-bg-surface)] border-black/5 dark:border-white/10 text-primary dark:text-white  shadow-xl'}`}
                 >
                   <div className="flex items-center gap-4">
                     <div className="relative">
                       <img src={req.user?.avatar} loading="lazy" className={`w-14 h-14 rounded-[1.8rem] border-2 ${isGhostMode ? 'border-[color-mix(in_srgb,var(--app-accent)_40%,transparent)] opacity-70' : 'border-[var(--app-accent)]'}`} alt="" />
-                      <div className="absolute -bottom-1 -right-1 p-2 rounded-full text-[var(--app-primary)] bg-[var(--app-accent)]">
+                      <div className="absolute -bottom-1 -right-1 p-2 rounded-full text-primary dark:text-white bg-[var(--app-accent)]">
                         {req.type === 'proximity' ? <Zap size={14} fill="currentColor" /> : <UserPlus size={14} />}
                       </div>
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-sm font-black text-primary dark:text-white">@{req.user?.username ?? 'user'}</h4>
-                      <p className="text-[11px] leading-tight opacity-50 font-medium text-primary dark:text-white">{req.text}</p>
+                      <h4 className="text-sm font-black text-primary dark:text-white ">@{req.user?.username ?? 'user'}</h4>
+                      <p className="text-[11px] leading-tight opacity-50 font-medium text-primary dark:text-white ">{req.text}</p>
                     </div>
-                    <span className="text-[9px] font-black uppercase tracking-tighter opacity-20 text-primary dark:text-white">{req.time}</span>
+                    <span className="text-[9px] font-black uppercase tracking-tighter opacity-20 text-primary dark:text-white ">{req.time}</span>
                   </div>
                   
                   <div className="flex gap-2 pt-2">
-                    <button className={`flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all active:scale-95 ${isGhostMode ? 'bg-[var(--app-accent)] text-[var(--app-primary)]' : 'bg-[var(--app-accent)] text-[var(--app-primary)] shadow-lg shadow-[color-mix(in_srgb,var(--app-accent)_20%,transparent)]'}`}>
+                    <button className={`flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all active:scale-95 ${isGhostMode ? 'bg-[var(--app-accent)] text-primary dark:text-white' : 'bg-[var(--app-accent)] text-primary dark:text-white shadow-lg shadow-[color-mix(in_srgb,var(--app-accent)_20%,transparent)]'}`}>
                       <Check size={16} strokeWidth={3} /> Accept
                     </button>
-                    <button className="px-6 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all active:scale-95 bg-white/5 text-primary/40 dark:text-white/40">
+                    <button className="px-6 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all active:scale-95 bg-white/5 text-primary/40 dark:text-white/40 ">
                       Ignore
                     </button>
                   </div>
@@ -158,11 +158,11 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = React.memo(({
               ))
             ) : (
               <div className="py-20 flex flex-col items-center justify-center text-center px-8">
-                 <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 ${isGhostMode ? 'bg-[color-mix(in_srgb,var(--app-accent)_10%,transparent)] text-[var(--app-accent-light)]' : 'bg-white/5 text-primary/20 dark:text-white/20'}`}>
+                 <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 ${isGhostMode ? 'bg-[color-mix(in_srgb,var(--app-accent)_10%,transparent)] text-[var(--app-accent-light)]' : 'bg-white/5 text-primary dark:text-white/20 '}`}>
                     <ShieldCheck size={40} />
                  </div>
-                 <h3 className="text-lg font-bold mb-2 text-primary dark:text-white">No Pending Trace</h3>
-                 <p className="text-xs opacity-40 leading-relaxed italic text-primary dark:text-white">Your Persona visibility is optimized. No proximity requests currently queued.</p>
+                 <h3 className="text-lg font-bold mb-2 text-primary dark:text-white ">No Pending Trace</h3>
+                 <p className="text-xs opacity-40 leading-relaxed italic text-primary dark:text-white ">Your Persona visibility is optimized. No proximity requests currently queued.</p>
               </div>
             )}
           </div>
@@ -171,10 +171,10 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = React.memo(({
         {/* Suggested Connections section based on shared interests or proximity frequency */}
         <div className="mt-8 pt-6 border-t border-white/10 animate-fade-in pb-10">
           <div className="flex justify-between items-center mb-4 px-2">
-            <h3 className={`text-[10px] font-black uppercase tracking-[0.3em] ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-primary/40 dark:text-white/40'}`}>
+            <h3 className={`text-[10px] font-black uppercase tracking-[0.3em] ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-primary/40 dark:text-white/40 '}`}>
               Suggested Connections
             </h3>
-            <span className="text-[8px] font-black opacity-30 uppercase tracking-[0.1em] text-primary dark:text-white">ENCOUNTERS BASED</span>
+            <span className="text-[8px] font-black opacity-30 uppercase tracking-[0.1em] text-primary dark:text-white ">ENCOUNTERS BASED</span>
           </div>
 
           <div className="space-y-3">
@@ -186,7 +186,7 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = React.memo(({
                   className={`p-4 rounded-[2rem] border flex items-center justify-between gap-3 transition-all ${
                     isGhostMode 
                       ? 'bg-[var(--app-bg-ghost)] border-[color-mix(in_srgb,var(--app-accent)_10%,transparent)] hover:border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)]' 
-                      : 'bg-[var(--app-bg-surface)] border-black/5 dark:border-white/10 text-primary dark:text-white shadow-md'
+                      : 'bg-[var(--app-bg-surface)] border-black/5 dark:border-white/10 text-primary dark:text-white  shadow-md'
                   }`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
@@ -194,7 +194,7 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = React.memo(({
                       <img src={sug.avatar} loading="lazy" className={`w-11 h-11 rounded-[1.2rem] border-2 ${isGhostMode ? 'border-[color-mix(in_srgb,var(--app-accent)_40%,transparent)] opacity-85' : 'border-white/10 bg-[var(--app-bg-surface)]'}`} alt="" />
                     </div>
                     <div className="min-w-0">
-                      <h4 className="text-xs font-black truncate text-primary dark:text-white">
+                      <h4 className="text-xs font-black truncate text-primary dark:text-white ">
                         @{sug.username}
                       </h4>
                       <p className={`text-[10px] opacity-70 leading-snug ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-[var(--app-accent)]'} font-medium`}>
@@ -205,7 +205,7 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = React.memo(({
                           <span 
                             key={interest} 
                             className={`text-[8px] px-1.5 py-0.5 rounded font-mono font-bold ${
-                              isGhostMode ? 'bg-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] text-[var(--app-accent-light)]' : 'bg-white/10 text-primary/60 dark:text-white/60'
+                              isGhostMode ? 'bg-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] text-[var(--app-accent-light)]' : 'bg-white/10 text-primary/40 dark:text-white/40 '
                             }`}
                           >
                             #{interest}
@@ -219,7 +219,7 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = React.memo(({
                     className={`ml-2 px-3 py-1.5 rounded-xl font-bold font-mono text-[9px] uppercase tracking-wider transition-all min-w-[70px] ${
                       isFollowed 
                         ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' 
-                        : (isGhostMode ? 'bg-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] text-[var(--app-accent-light)] border border-[color-mix(in_srgb,var(--app-accent)_30%,transparent)] hover:bg-[color-mix(in_srgb,var(--app-accent)_30%,transparent)]' : 'bg-[var(--app-accent)] text-[var(--app-primary)] hover:bg-opacity-90')
+                        : (isGhostMode ? 'bg-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] text-[var(--app-accent-light)] border border-[color-mix(in_srgb,var(--app-accent)_30%,transparent)] hover:bg-[color-mix(in_srgb,var(--app-accent)_30%,transparent)]' : 'bg-[var(--app-accent)] text-primary dark:text-white hover:bg-opacity-90')
                     }`}
                   >
                     {isFollowed ? 'Mutual' : 'Connect'}

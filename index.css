@@ -11,6 +11,10 @@
   --app-bg-surface2:#FFF8E1;
   --app-bg-ghost:   #03171C;
   --text-primary:   #0B1720;
+  --on-bg:          #0B1720;
+  --on-bg-muted:    rgba(11,23,32,0.6);
+  --on-primary:     #FFF9E6;
+  --on-primary-muted:rgba(255,249,230,0.6);
   --app-primary:    #062B34;
   --app-secondary:  #20878E;
   --app-accent:     #2EC4B6;
@@ -25,6 +29,10 @@
   --app-bg-surface2:#0D3340;
   --app-bg-ghost:   #03171C;
   --text-primary:   #F1FAEE;
+  --on-bg:          #F1FAEE;
+  --on-bg-muted:    rgba(241,250,238,0.6);
+  --on-primary:     #F1FAEE;
+  --on-primary-muted:rgba(241,250,238,0.6);
   --app-primary:    #062B34;
   --app-secondary:  #20878E;
   --app-accent:     #2EC4B6;
@@ -37,6 +45,10 @@
   --app-bg:         #03171C;
   --app-bg-surface: #062B34;
   --app-bg-surface2:#0C3B46;
+  --on-bg:          #80FFEC;
+  --on-bg-muted:    rgba(128,255,236,0.6);
+  --on-primary:     #80FFEC;
+  --on-primary-muted:rgba(128,255,236,0.6);
   --app-accent:     #80FFEC;
   --app-border:     rgba(128,255,236,0.20);
 }

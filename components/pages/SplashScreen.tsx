@@ -13,7 +13,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ index, onNext }) => 
     title: 'Vizu',
     subtitle: 'Vibe. Vision. Vista.',
     text: 'Experience social flow with privacy at its core.',
-    color: 'var(--text-primary)',
+    color: 'var(--text-primary dark:text-white)',
   };
 
   return (
@@ -22,9 +22,9 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ index, onNext }) => 
       style={{ backgroundColor: data.color }}
     >
       <div className="mt-16 text-center animate-fade-in" key={index}>
-        <h1 className="text-4xl font-bold text-white font-montserrat mb-1">{data.title}</h1>
-        <p className="text-white/40 font-mono text-[10px] mb-8 tracking-widest uppercase">{data.subtitle}</p>
-        <p className="text-white/80 text-lg font-light leading-relaxed max-w-[260px] mx-auto">
+        <h1 className="text-4xl font-bold text-primary dark:text-white font-montserrat mb-1">{data.title}</h1>
+        <p className="text-primary/40 dark:text-white/40 font-mono text-[10px] mb-8 tracking-widest uppercase">{data.subtitle}</p>
+        <p className="text-primary dark:text-white text-lg font-light leading-relaxed max-w-[260px] mx-auto">
           "{data.text}"
         </p>
       </div>
@@ -43,12 +43,12 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ index, onNext }) => 
         
         <button
           onClick={onNext}
-          className="bg-[var(--app-accent)] text-white p-5 rounded-full transition-all active:scale-90 shadow-xl hover:brightness-110"
+          className="bg-[var(--app-accent)] text-primary dark:text-white p-5 rounded-full transition-all active:scale-90 shadow-xl hover:brightness-110"
         >
           <ChevronRight size={28} />
         </button>
 
-        <p className="text-white/20 text-[9px] uppercase tracking-widest font-bold">
+        <p className="text-primary dark:text-white/20 text-[9px] uppercase tracking-widest font-bold">
           {index === 4 ? "Final Step" : `Step ${index + 1} of 5`}
         </p>
       </div>

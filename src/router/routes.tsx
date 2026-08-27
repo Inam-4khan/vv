@@ -79,6 +79,7 @@ const useAppOutletContext = (): AppOutletContext => {
   if (!ctx) {
     return {
       hushNotes: [],
+      isLoadingNotes: false,
       handleAddHushNote: () => {},
       handleStartOnboarding: () => {},
       handleFinishSplash: () => {},
@@ -167,12 +168,13 @@ const VistaRoute: React.FC = () => {
 const HushRoute: React.FC = () => {
   const navigate = useNavigate();
   const { isGlobalGhostMode } = useAppState();
-  const { hushNotes, handleAddHushNote } = useAppOutletContext();
+  const { hushNotes, isLoadingNotes, handleAddHushNote } = useAppOutletContext();
   return (
     <HushPage
       isGhostMode={isGlobalGhostMode}
       onCameraOpen={() => navigate('/hush/camera')}
       notes={hushNotes}
+      isLoadingNotes={isLoadingNotes}
       onAddNote={handleAddHushNote}
     />
   );

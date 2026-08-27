@@ -9,6 +9,10 @@ export default {
   theme: {
     extend: {
       colors: {
+        'on-bg': 'var(--on-bg)',
+        'on-bg-muted': 'var(--on-bg-muted)',
+        'on-primary': 'var(--on-primary)',
+        'on-primary-muted': 'var(--on-primary-muted)',
         primary: 'var(--app-primary)',
         secondary: '#20878E',
       },},

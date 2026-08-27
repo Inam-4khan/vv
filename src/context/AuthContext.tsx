@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, ReactNode, useCallback, use
 import { auth, googleAuthProvider } from '../lib/firebase.ts';
 import { signInWithPopup, onAuthStateChanged, signOut, User as FirebaseUser } from 'firebase/auth';
 import { User, AuthUser, AppUser } from '../types/auth.types.ts';
+import { useToast } from './ToastContext.tsx';
 
 export interface AuthContextType {
   user: any;
@@ -23,12 +24,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [profile, setProfile] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [isSyncing, setIsSyncing] = useState(false);
+  const { showToast } = useToast();
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         const token = await firebaseUser.getIdToken();
         inMemoryAccessToken = token;
         
+        setIsSyncing(true);
         try {
           // Sync with our backend
           const res = await fetch('/api/auth/sync', {
@@ -37,22 +42,29 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
               'Authorization': `Bearer ${token}`
             }
           });
+          if (!res.ok) throw new Error('Failed to fetch');
           const dbUser = await res.json();
           setUser(firebaseUser);
           setProfile(dbUser);
-        } catch (e) {
-          console.error("Sync error", e);
+        } catch (err) {
+          console.error(err);
+          showToast('Could not load user profile. Try again.', 'error');
+          setUser(null);
+          setProfile(null);
+        } finally {
+          setIsSyncing(false);
+          setIsLoading(false);
         }
       } else {
         setUser(null);
         setProfile(null);
         inMemoryAccessToken = null;
+        setIsLoading(false);
       }
-      setIsLoading(false);
     });
     
     return unsubscribe;
-  }, []);
+  }, [showToast]);
 
   const loginWithGoogle = async () => {
     try {

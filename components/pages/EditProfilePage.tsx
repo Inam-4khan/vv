@@ -3,8 +3,8 @@ import { ArrowLeft, Camera, Save, User as UserIcon, AtSign, FileText, Palette, S
 import { User } from '../../types';
 
 export const CARD_SKINS = [
-  { id: 'default', name: 'Default', bg: 'bg-white', text: 'text-primary', border: 'border-gray-200' },
-  { id: 'holographic', name: 'Holographic', bg: 'bg-[linear-gradient(135deg,var(--app-accent-light)_0%,var(--app-accent)_40%,#20878E_100%)]', text: 'text-[var(--app-primary)]', border: 'border-[rgba(128,255,236,0.60)]' },
+  { id: 'default', name: 'Default', bg: 'bg-white', text: 'text-primary dark:text-white', border: 'border-gray-200' },
+  { id: 'holographic', name: 'Holographic', bg: 'bg-[linear-gradient(135deg,var(--app-accent-light)_0%,var(--app-accent)_40%,#20878E_100%)]', text: 'text-primary dark:text-white', border: 'border-[rgba(128,255,236,0.60)]' },
   { id: 'neon', name: 'Neon', bg: 'bg-black', text: 'text-green-400', border: 'border-green-500 shadow-[0_0_15px_rgba(34,197,94,0.5)]' },
   { id: 'gold', name: 'Gold', bg: 'bg-gradient-to-br from-yellow-300 via-yellow-500 to-yellow-700', text: 'text-black', border: 'border-yellow-200' },
   { id: 'cyberpunk', name: 'Cyberpunk', bg: 'bg-yellow-400', text: 'text-black', border: 'border-black border-4' },
@@ -56,7 +56,7 @@ export const EditProfilePage: React.FC<EditProfilePageProps> = React.memo(({ use
   };
 
   return (
-    <div className={`min-h-full flex flex-col transition-colors duration-500 ${isGhostMode ? 'bg-[var(--app-bg-ghost)] text-[#F1FAEE]' : 'bg-[var(--app-bg,var(--app-bg))] text-[var(--text-primary,var(--text-primary))]'}`}>
+    <div className={`min-h-full flex flex-col transition-colors duration-500 ${isGhostMode ? 'bg-[var(--app-bg-ghost)] text-[#F1FAEE]' : 'bg-[var(--app-bg,var(--app-bg))] text-[var(--text-primary dark:text-white,var(--text-primary dark:text-white))]'}`}>
       <header className={`p-6 sticky top-0 z-20 shadow-xl transition-colors duration-500 flex items-center justify-between ${isGhostMode ? 'bg-[var(--app-bg-ghost)]' : 'bg-[var(--app-primary)] text-white'}`}>
         <button onClick={onBack} className="p-2 hover:bg-white/10 rounded-full transition-colors active:scale-90">
           <ArrowLeft size={24} />
@@ -72,7 +72,7 @@ export const EditProfilePage: React.FC<EditProfilePageProps> = React.memo(({ use
         <div className="relative h-40 rounded-[2rem] overflow-hidden group" onClick={handleBannerClick}>
           <img src={banner} loading="lazy" className={`w-full h-full object-cover transition-all duration-500 ${isGhostMode ? 'opacity-50 grayscale' : ''} ${isUploadingBanner ? 'scale-110 blur-sm' : ''}`} alt="Banner" />
           <div className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity cursor-pointer ${isUploadingBanner ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
-            <Camera size={32} className={`text-white ${isUploadingBanner ? 'animate-bounce' : ''}`} />
+            <Camera size={32} className={`text-primary dark:text-white ${isUploadingBanner ? 'animate-bounce' : ''}`} />
           </div>
         </div>
 
@@ -84,7 +84,7 @@ export const EditProfilePage: React.FC<EditProfilePageProps> = React.memo(({ use
             </div>
             <div className={`absolute inset-0 flex items-center justify-center transition-opacity cursor-pointer ${isUploadingAvatar ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
               <div className="bg-black/50 p-3 rounded-full backdrop-blur-sm">
-                <Camera size={24} className={`text-white ${isUploadingAvatar ? 'animate-spin' : ''}`} />
+                <Camera size={24} className={`text-primary dark:text-white ${isUploadingAvatar ? 'animate-spin' : ''}`} />
               </div>
             </div>
           </div>
@@ -93,43 +93,43 @@ export const EditProfilePage: React.FC<EditProfilePageProps> = React.memo(({ use
         {/* Form Fields */}
         <div className="space-y-6">
           <div className="space-y-2">
-            <label className={`text-[10px] font-black uppercase tracking-widest ml-4 ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-white/40'}`}>Display Name</label>
+            <label className={`text-[10px] font-black uppercase tracking-widest ml-4 ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-primary/40 dark:text-white/40'}`}>Display Name</label>
             <div className={`flex items-center gap-3 p-4 rounded-2xl border ${isGhostMode ? 'bg-[var(--app-bg-ghost)] border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)]' : 'bg-[var(--app-bg-surface)] border-white/10'}`}>
               <UserIcon size={18} className={isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-[var(--app-accent)]'} />
               <input 
                 type="text" 
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                className="flex-1 bg-transparent focus:outline-none text-sm font-bold text-white"
+                className="flex-1 bg-transparent focus:outline-none text-sm font-bold text-primary dark:text-white"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className={`text-[10px] font-black uppercase tracking-widest ml-4 ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-white/40'}`}>Username</label>
+            <label className={`text-[10px] font-black uppercase tracking-widest ml-4 ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-primary/40 dark:text-white/40'}`}>Username</label>
             <div className={`flex items-center gap-3 p-4 rounded-2xl border ${isGhostMode ? 'bg-[var(--app-bg-ghost)] border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)]' : 'bg-[var(--app-bg-surface)] border-white/10'}`}>
               <AtSign size={18} className={isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-[var(--app-accent)]'} />
               <input 
                 type="text" 
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="flex-1 bg-transparent focus:outline-none text-sm font-bold text-white"
+                className="flex-1 bg-transparent focus:outline-none text-sm font-bold text-primary dark:text-white"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className={`text-[10px] font-black uppercase tracking-widest ml-4 ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-white/40'}`}>Bio</label>
+            <label className={`text-[10px] font-black uppercase tracking-widest ml-4 ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-primary/40 dark:text-white/40'}`}>Bio</label>
             <div className={`flex items-start gap-3 p-4 rounded-2xl border ${isGhostMode ? 'bg-[var(--app-bg-ghost)] border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)]' : 'bg-[var(--app-bg-surface)] border-white/10'}`}>
               <FileText size={18} className={`mt-1 ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-[var(--app-accent)]'}`} />
               <textarea 
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
-                className="flex-1 bg-transparent focus:outline-none text-sm font-medium resize-none h-24 text-white"
+                className="flex-1 bg-transparent focus:outline-none text-sm font-medium resize-none h-24 text-primary dark:text-white"
                 maxLength={150}
               />
             </div>
-            <p className="text-[9px] text-right opacity-40 font-mono text-white">{bio.length}/150</p>
+            <p className="text-[9px] text-right opacity-40 font-mono text-primary dark:text-white">{bio.length}/150</p>
           </div>
         </div>
 
@@ -137,10 +137,10 @@ export const EditProfilePage: React.FC<EditProfilePageProps> = React.memo(({ use
         <div className="pt-8 border-t border-white/10">
           <div className="flex items-center gap-2 mb-6">
             <Sparkles size={20} className={isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-[var(--app-accent)]'} />
-            <h3 className="text-lg font-bold font-montserrat text-white">Vista Profile Card</h3>
+            <h3 className="text-lg font-bold font-montserrat text-primary dark:text-white">Vista Profile Card</h3>
           </div>
           
-          <p className="text-xs mb-6 text-white/60">
+          <p className="text-xs mb-6 text-primary/40 dark:text-white/40">
             Customize the floating 3D card that other users see when they discover you on the Vista page.
           </p>
 
@@ -165,7 +165,7 @@ export const EditProfilePage: React.FC<EditProfilePageProps> = React.memo(({ use
 
           {/* Skin Selector */}
           <div className="space-y-3">
-            <label className={`text-[10px] font-black uppercase tracking-widest ml-4 flex items-center gap-2 ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-white/40'}`}>
+            <label className={`text-[10px] font-black uppercase tracking-widest ml-4 flex items-center gap-2 ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-primary/40 dark:text-white/40'}`}>
               <Palette size={14} /> Card Skin
             </label>
             <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar px-2">

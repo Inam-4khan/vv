@@ -49,7 +49,7 @@ export const Navbar: React.FC<NavbarProps> = React.memo(({ activePage, onNavigat
                 aria-current="page"
                 className={`nav-button flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-full transition-all duration-300 transform scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent-light)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--app-primary)] ${
                   isGhostActive 
-                    ? 'bg-[var(--app-accent)] text-[var(--app-primary)] font-black shadow-md' 
+                    ? 'bg-[var(--app-accent)] text-primary dark:text-white font-black shadow-md' 
                     : 'bg-white/10 text-[var(--app-bg)]'
                 }`}
               >
@@ -71,7 +71,7 @@ export const Navbar: React.FC<NavbarProps> = React.memo(({ activePage, onNavigat
               }}
               aria-label={`Navigate to ${item.label}`}
               className={`nav-button flex flex-col items-center justify-center gap-0.5 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent-light)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--app-primary)] rounded-full p-2 ${
-                isGhostActive ? 'text-[#8AADB5] hover:text-[var(--app-accent-light)]' : 'text-white/60 hover:text-white'
+                isGhostActive ? 'text-[#8AADB5] hover:text-[var(--app-accent-light)]' : 'text-primary/40 dark:text-white/40 hover:text-primary dark:text-white'
               }`}
             >
               <Icon size={20} strokeWidth={2} aria-hidden="true" />

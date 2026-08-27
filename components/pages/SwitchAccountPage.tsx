@@ -12,7 +12,7 @@ interface SwitchAccountPageProps {
 
 export const SwitchAccountPage: React.FC<SwitchAccountPageProps> = React.memo(({ currentUser, onSelect, onBack }) => {
   return (
-    <div className="min-h-full bg-[var(--app-bg,var(--app-bg))] text-[var(--text-primary,var(--text-primary))] animate-fade-in flex flex-col">
+    <div className="min-h-full bg-[var(--app-bg,var(--app-bg))] text-[var(--text-primary dark:text-white,var(--text-primary dark:text-white))] animate-fade-in flex flex-col">
       <header className="p-6 bg-primary text-white flex items-center gap-4 sticky top-0 z-10">
         <button onClick={onBack} className="p-1 hover:bg-white/10 rounded-full transition-colors">
           <ArrowLeft size={24} />
@@ -21,7 +21,7 @@ export const SwitchAccountPage: React.FC<SwitchAccountPageProps> = React.memo(({
       </header>
 
       <div className="p-6 flex-1 space-y-4">
-        <p className="text-[10px] font-black text-primary/30 uppercase tracking-[0.3em] mb-4">Switch Persona</p>
+        <p className="text-[10px] font-black text-primary dark:text-white/30 uppercase tracking-[0.3em] mb-4">Switch Persona</p>
         
         <div className="space-y-3">
           {MOCK_USERS.map((user) => {
@@ -45,11 +45,11 @@ export const SwitchAccountPage: React.FC<SwitchAccountPageProps> = React.memo(({
                   )}
                 </div>
                 <div className="flex-1 text-left">
-                  <h3 className="font-bold text-primary">{user.displayName}</h3>
+                  <h3 className="font-bold text-primary dark:text-white">{user.displayName}</h3>
                   <p className="text-xs text-secondary font-bold">@{user.username}</p>
                 </div>
                 {!isCurrent && (
-                  <div className="text-primary/20 group-hover:text-primary transition-colors">
+                  <div className="text-primary dark:text-white/20 group-hover:text-primary dark:text-white transition-colors">
                     <ArrowLeft className="rotate-180" size={18} />
                   </div>
                 )}
@@ -57,7 +57,7 @@ export const SwitchAccountPage: React.FC<SwitchAccountPageProps> = React.memo(({
             );
           })}
 
-          <button className="w-full p-6 rounded-3xl border-2 border-dashed border-primary/10 flex flex-col items-center justify-center gap-3 bg-primary/5 hover:bg-primary/10 transition-all text-primary/40 active:scale-95">
+          <button className="w-full p-6 rounded-3xl border-2 border-dashed border-primary/10 flex flex-col items-center justify-center gap-3 bg-primary/5 hover:bg-primary/10 transition-all text-primary/40 dark:text-white/40 active:scale-95">
             <div className="p-3 bg-white rounded-2xl shadow-sm">
               <Plus size={24} className="text-secondary" />
             </div>
@@ -67,8 +67,8 @@ export const SwitchAccountPage: React.FC<SwitchAccountPageProps> = React.memo(({
       </div>
 
       <div className="p-8 text-center">
-        <p className="text-[9px] text-primary/30 font-bold uppercase tracking-[0.4em] mb-6">Security Layer Active</p>
-        <div className="flex items-center justify-center gap-2 text-primary/20">
+        <p className="text-[9px] text-primary dark:text-white/30 font-bold uppercase tracking-[0.4em] mb-6">Security Layer Active</p>
+        <div className="flex items-center justify-center gap-2 text-primary dark:text-white/20">
           <UserPlus size={14} />
           <span className="text-[10px] font-bold">Manage multiple identities securely.</span>
         </div>

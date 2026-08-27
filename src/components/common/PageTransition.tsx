@@ -13,12 +13,15 @@ export const PageTransition: React.FC<PageTransitionProps> = ({
 }) => {
   const [displayedChildren, setDisplayedChildren] = useState<ReactNode>(children);
   const [transitionStage, setTransitionStage] = useState<'enter' | 'active' | 'exit'>('active');
+  const [currentKey, setCurrentKey] = useState(pageKey);
 
   useEffect(() => {
-    if (children === displayedChildren) {
+    if (pageKey === currentKey) {
+      setDisplayedChildren(children);
       return;
     }
 
+    setCurrentKey(pageKey);
     // Trigger exit animation
     setTransitionStage('exit');
 
@@ -35,7 +38,7 @@ export const PageTransition: React.FC<PageTransitionProps> = ({
     }, 150); // 150ms exit fade out duration
 
     return () => clearTimeout(timer);
-  }, [pageKey, children, displayedChildren]);
+  }, [pageKey, children, currentKey]);
 
   const getTransitionStyle = () => {
     switch (transitionStage) {

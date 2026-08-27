@@ -14,28 +14,39 @@ export const HushCameraPage: React.FC<HushCameraPageProps> = React.memo(({ onBac
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  const streamRef = useRef<MediaStream | null>(null);
+
   useEffect(() => {
-    startCamera();
+    let isMounted = true;
+    const initCamera = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+        if (!isMounted) {
+          stream.getTracks().forEach(t => t.stop());
+          return;
+        }
+        streamRef.current = stream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } catch (err) {
+        console.error("Camera error:", err);
+      }
+    };
+    
+    initCamera();
+    
     return () => {
-      stopCamera();
+      isMounted = false;
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(t => t.stop());
+        streamRef.current = null;
+      }
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+      }
     };
   }, []);
-
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-    } catch (err) {
-      console.error("Camera error:", err);
-    }
-  };
-
-  const stopCamera = () => {
-    const stream = videoRef.current?.srcObject as MediaStream;
-    stream?.getTracks().forEach(t => t.stop());
-  };
 
   const takePicture = () => {
     if (videoRef.current && canvasRef.current) {
@@ -88,7 +99,7 @@ export const HushCameraPage: React.FC<HushCameraPageProps> = React.memo(({ onBac
         
         {!capturedMedia && (
           <div className="absolute bottom-10 left-0 w-full flex justify-center items-center gap-8 safe-area-inset-bottom">
-             <button aria-label="Toggle video mode" className="p-4 rounded-full bg-white/10 text-white backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)]">
+             <button aria-label="Toggle video mode" className="p-4 rounded-full bg-white/10 text-primary dark:text-white backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)]">
                <Video size={24} aria-hidden="true" />
              </button>
              <button 
@@ -99,7 +110,7 @@ export const HushCameraPage: React.FC<HushCameraPageProps> = React.memo(({ onBac
              >
                <div className="w-16 h-16 rounded-full bg-white" />
              </button>
-             <button aria-label="Flip camera" className="p-4 rounded-full bg-white/10 text-white backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)]">
+             <button aria-label="Flip camera" className="p-4 rounded-full bg-white/10 text-primary dark:text-white backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--app-accent)]">
                <RefreshCw size={24} aria-hidden="true" />
              </button>
           </div>
@@ -112,7 +123,7 @@ export const HushCameraPage: React.FC<HushCameraPageProps> = React.memo(({ onBac
            <div className="w-12 h-1.5 rounded-full bg-gray-300" />
          </div>
          <div className="px-6 pb-4 border-b flex justify-between items-center">
-           <h3 className="text-lg font-bold text-primary">Send to...</h3>
+           <h3 className="text-lg font-bold text-primary dark:text-white">Send to...</h3>
            <button onClick={() => { setCapturedMedia(null); setShowRecipients(false); }} className="text-sm font-bold text-secondary">Retake</button>
          </div>
          <div className="flex-1 overflow-y-auto p-4 space-y-2">
@@ -127,10 +138,10 @@ export const HushCameraPage: React.FC<HushCameraPageProps> = React.memo(({ onBac
               >
                  <img src={user.avatar} loading="lazy" className="w-10 h-10 rounded-xl object-cover" alt="" />
                  <div className="flex-1">
-                    <h4 className="font-bold text-sm text-primary">@{user.username}</h4>
+                    <h4 className="font-bold text-sm text-primary dark:text-white">@{user.username}</h4>
                  </div>
                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${selectedRecipients.includes(user.id) ? 'bg-secondary border-secondary' : 'border-gray-300'}`}>
-                    {selectedRecipients.includes(user.id) && <Check size={14} className="text-white" />}
+                    {selectedRecipients.includes(user.id) && <Check size={14} className="text-primary dark:text-white" />}
                  </div>
               </button>
             ))}
