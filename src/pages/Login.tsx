@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mail, Lock, Eye, EyeOff, Loader2, ArrowLeft, KeyRound, CheckCircle2 } from 'lucide-react';
 import { BrandLogo } from '../../components/common/BrandLogo';
 import { validateLoginForm } from '../utils/validation';
-import { AuthContext, useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 
 export interface LoginProps {
   onLogin?: (data?: any) => void;
@@ -21,10 +21,9 @@ export const Login: React.FC<LoginProps> = ({
   onSuccess,
   onBack,
 }) => {
-  const auth = useContext(AuthContext);
+  const { loginWithGoogle, login } = useAuth();
 
   const [mode, setMode] = useState<'login' | 'reset'>('login');
-  const { loginWithGoogle } = useAuth();
 
   // Login form state
   const [formData, setFormData] = useState({
@@ -122,8 +121,8 @@ export const Login: React.FC<LoginProps> = ({
 
       await new Promise((resolve) => setTimeout(resolve, 800));
 
-      if (auth && auth.login) {
-        auth.login({
+      if (login) {
+        login({
           id: formData.identifier,
           email: formData.identifier.includes('@') ? formData.identifier : `${formData.identifier}@vizu.com`,
           username: formData.identifier.split('@')[0],
@@ -134,9 +133,9 @@ export const Login: React.FC<LoginProps> = ({
       if (onSuccess) onSuccess(formData);
 
       if (onNavigate) {
-        onNavigate('/dashboard');
+        onNavigate('/home');
       } else if (typeof window !== 'undefined') {
-        window.history.pushState({}, '', '/dashboard');
+        window.history.pushState({}, '', '/home');
         window.dispatchEvent(new Event('popstate'));
       }
     } catch (err: any) {
@@ -222,10 +221,14 @@ export const Login: React.FC<LoginProps> = ({
                 type="button"
                 onClick={async () => {
                   try {
+                    setSubmitError(null);
                     await loginWithGoogle();
-                    onLogin();
-                  } catch (e) {
-                    console.error(e);
+                    if (onLogin) onLogin();
+                    if (onSuccess) onSuccess();
+                    if (onNavigate) onNavigate('/home');
+                  } catch (e: any) {
+                    console.error('Google login error:', e);
+                    setSubmitError(e?.message || 'Google sign-in failed. Please try again.');
                   }
                 }}
                 className="w-full bg-white text-gray-700 font-bold py-3 px-6 rounded-full shadow-sm hover:shadow-md border border-gray-200 transition-all flex items-center justify-center gap-3"

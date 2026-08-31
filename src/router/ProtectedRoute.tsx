@@ -1,6 +1,8 @@
 import React from 'react';
 import { Navigate, Outlet, useOutletContext } from 'react-router-dom';
 import { useAppState } from '../context/AppStateContext';
+import { useAuth } from '../context/AuthContext';
+import { AppOutletContext } from '../../App';
 
 interface ProtectedRouteProps {
   children?: React.ReactNode;
@@ -8,9 +10,12 @@ interface ProtectedRouteProps {
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { user } = useAppState();
-  const outletContext = useOutletContext();
+  const auth = useAuth();
+  const outletContext = useOutletContext<AppOutletContext>();
 
-  if (!user) {
+  const isUserAuthenticated = Boolean(user || auth?.user || auth?.isAuthenticated);
+
+  if (!isUserAuthenticated) {
     return <Navigate to="/auth/login" replace />;
   }
 

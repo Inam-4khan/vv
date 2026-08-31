@@ -1,8 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { User as UserIcon, Mail, Lock, Eye, EyeOff, Loader2, ArrowLeft } from 'lucide-react';
 import { BrandLogo } from '../../components/common/BrandLogo';
 import { validateSignupForm } from '../utils/validation';
-import { AuthContext } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 
 export interface SignupProps {
   onSignup?: (data?: any) => void;
@@ -19,7 +19,7 @@ export const Signup: React.FC<SignupProps> = ({
   onNavigate,
   onSuccess,
 }) => {
-  const auth = useContext(AuthContext);
+  const { login } = useAuth();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -118,8 +118,8 @@ export const Signup: React.FC<SignupProps> = ({
     try {
       await new Promise((resolve) => setTimeout(resolve, 800));
 
-      if (auth && auth.login) {
-        auth.login({
+      if (login) {
+        login({
           id: formData.email,
           email: formData.email,
           username: formData.name || formData.email.split('@')[0],
@@ -130,9 +130,9 @@ export const Signup: React.FC<SignupProps> = ({
       if (onSuccess) onSuccess(formData);
 
       if (onNavigate) {
-        onNavigate('/dashboard');
+        onNavigate('/home');
       } else if (typeof window !== 'undefined') {
-        window.history.pushState({}, '', '/dashboard');
+        window.history.pushState({}, '', '/home');
         window.dispatchEvent(new Event('popstate'));
       }
     } catch (err: any) {

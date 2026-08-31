@@ -1,64 +1,64 @@
-import React, { createContext, useContext, useState, ReactNode, useCallback, useEffect } from 'react';
-import { auth, googleAuthProvider } from '../lib/firebase.ts';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { auth, googleAuthProvider } from '../lib/firebase';
 import { signInWithPopup, onAuthStateChanged, signOut, User as FirebaseUser } from 'firebase/auth';
-import { User, AuthUser, AppUser } from '../types/auth.types.ts';
-import { useToast } from './ToastContext.tsx';
+import { AppUser } from '../types/auth.types';
+import { useToast } from './ToastContext';
 
 export interface AuthContextType {
-  user: any;
-  profile: any;
+  user: FirebaseUser | null;
+  profile: AppUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   accessToken: string | null;
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
+  login?: (userData?: { id: string; email: string; username: string }) => void;
 }
 
 let inMemoryAccessToken: string | null = null;
 export const getAccessToken = () => inMemoryAccessToken;
+export const setAccessToken = (token: string | null) => {
+  inMemoryAccessToken = token;
+};
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<any>(null);
-  const [profile, setProfile] = useState<any>(null);
+  const [user, setUser] = useState<FirebaseUser | null>(null);
+  const [profile, setProfile] = useState<AppUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  const [isSyncing, setIsSyncing] = useState(false);
   const { showToast } = useToast();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         const token = await firebaseUser.getIdToken();
-        inMemoryAccessToken = token;
+        setAccessToken(token);
         
-        setIsSyncing(true);
         try {
-          // Sync with our backend
+          // Sync with backend
           const res = await fetch('/api/auth/sync', {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${token}`
             }
           });
-          if (!res.ok) throw new Error('Failed to fetch');
+          if (!res.ok) throw new Error('Failed to fetch user profile');
           const dbUser = await res.json();
           setUser(firebaseUser);
           setProfile(dbUser);
         } catch (err) {
-          console.error(err);
+          console.error('Error syncing user profile:', err);
           showToast('Could not load user profile. Try again.', 'error');
           setUser(null);
           setProfile(null);
         } finally {
-          setIsSyncing(false);
           setIsLoading(false);
         }
       } else {
         setUser(null);
         setProfile(null);
-        inMemoryAccessToken = null;
+        setAccessToken(null);
         setIsLoading(false);
       }
     });
@@ -73,14 +73,48 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     } catch (error) {
       console.error("Login failed", error);
       setIsLoading(false);
+      throw error;
     }
   };
 
   const logout = async () => {
-    await signOut(auth);
-    inMemoryAccessToken = null;
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.error('Sign out error:', err);
+    }
+    setAccessToken(null);
     setUser(null);
     setProfile(null);
+  };
+
+  const login = (userData?: { id: string; email: string; username: string }) => {
+    if (userData) {
+      const mockUser: any = {
+        uid: userData.id,
+        email: userData.email,
+        displayName: userData.username,
+        getIdToken: async () => 'mock-token-demo'
+      };
+      const mockProfile: AppUser = {
+        id: userData.id,
+        email: userData.email,
+        username: userData.username,
+        displayName: userData.username,
+        avatar: `https://picsum.photos/seed/${userData.username}/200`,
+        bio: 'Digital explorer',
+        emailVerified: true,
+        twoFactorEnabled: false,
+        role: 'user',
+        isPrivate: false,
+        status: 'online',
+        ghostModeEnabled: false,
+        createdAt: new Date().toISOString()
+      };
+      setAccessToken('mock-token-demo');
+      setUser(mockUser);
+      setProfile(mockProfile);
+    }
   };
 
   return (
@@ -93,6 +127,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         accessToken: inMemoryAccessToken,
         loginWithGoogle,
         logout,
+        login,
       }}
     >
       {children}

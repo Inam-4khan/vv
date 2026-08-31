@@ -7,8 +7,16 @@ let failedQueue: Array<{
   reject: (err: unknown) => void;
 }> = [];
 
-const processQueue = (error: unknown, token: string | null) => {
-  failedQueue.forEach(p => error ? p.reject(error) : p.resolve(token!));
+const processQueue = (error: unknown, token: string | null = null) => {
+  failedQueue.forEach(p => {
+    if (error) {
+      p.reject(error);
+    } else if (token) {
+      p.resolve(token);
+    } else {
+      p.reject(new Error('Authentication token refresh failed'));
+    }
+  });
   failedQueue = [];
 };
 

@@ -10,7 +10,7 @@ export function isHushNote(data: unknown): data is HushNote {
     typeof obj.id === 'string' &&
     typeof obj.userId === 'string' &&
     typeof obj.username === 'string' &&
-    typeof obj.avatar === 'string' &&
+    (typeof obj.avatar === 'string' || obj.avatar === null || obj.avatar === undefined) &&
     typeof obj.text === 'string' &&
     typeof obj.timestamp === 'string'
   );

@@ -46,6 +46,18 @@ interface ServerNoteResponse {
   lng?: number;
 }
 
+const formatNoteTimestamp = (createdAt?: string | number | Date): string => {
+  if (!createdAt) return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const d = new Date(createdAt);
+  if (isNaN(d.getTime())) return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const now = new Date();
+  const isToday = d.toDateString() === now.toDateString();
+  if (isToday) {
+    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+  return `${d.toLocaleDateString([], { month: 'short', day: 'numeric' })}, ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+};
+
 const mapServerToHushNote = (n: ServerNoteResponse): HushNote => ({
   id: String(n.id ?? n._id ?? `note-${Date.now()}`),
   userId: String(n.userUid ?? n.userId ?? 'unknown'),
@@ -53,9 +65,7 @@ const mapServerToHushNote = (n: ServerNoteResponse): HushNote => ({
   avatar: n.userAvatar ?? n.avatar ?? 'https://picsum.photos/seed/anon/200',
   text: n.text ?? '',
   music: n.musicTitle ? { title: n.musicTitle, artist: n.musicArtist ?? '' } : undefined,
-  timestamp: n.createdAt
-    ? new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    : new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  timestamp: formatNoteTimestamp(n.createdAt)
 });
 
 export const AppLayout: React.FC = () => {
@@ -80,7 +90,6 @@ export const AppLayout: React.FC = () => {
     parseLocalStorage<HushNote[]>('hush_all_notes', isHushNoteArray, MOCK_HUSH_NOTES)
   );
   const [isLoadingNotes, setIsLoadingNotes] = useState(false);
-  const [_hasLoadedNotes, setHasLoadedNotes] = useState(false);
   
   // Guard useAuth safely
   const auth = useAuth();
@@ -167,8 +176,6 @@ export const AppLayout: React.FC = () => {
   }, [location.pathname]);
 
   
-  const [_isSavingNote, setIsSavingNote] = useState(false);
-
   const handleAddHushNote = async (newNote: HushNote) => {
     const tempId = `temp-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
     const optimisticNote: HushNote = {
@@ -181,7 +188,6 @@ export const AppLayout: React.FC = () => {
     showToast('Secret whisper note published!', 'success');
     
     if (accessToken) {
-      setIsSavingNote(true);
       try {
         const payload: Record<string, unknown> = {
           text: newNote.text,
@@ -215,8 +221,6 @@ export const AppLayout: React.FC = () => {
         // Rollback: Remove the optimistic note if API fails
         setHushNotes(prev => prev.filter(note => note.id !== tempId));
         showToast('Failed to save note to server. Rolled back.', 'error');
-      } finally {
-        setIsSavingNote(false);
       }
     }
   };
@@ -325,7 +329,7 @@ export const AppLayout: React.FC = () => {
       {/* Skip to Main Content Link for Screen Readers & Keyboard Users */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[500] focus:px-4 focus:py-2 focus:bg-[var(--app-accent)] focus:text-slate-900 dark:text-[var(--text-on-dark)] focus:font-black focus:rounded-xl focus:shadow-2xl focus:outline-none focus:ring-2 focus:ring-white"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[500] focus:px-4 focus:py-2 focus:bg-[var(--app-accent)] focus:text-slate-900 dark:text-[var(--text-on-dark)] focus:font-black focus:rounded-xl focus:shadow-2xl focus:outline-none focus:ring-2 focus:ring-[var(--app-accent-light)]"
       >
         Skip to main content
       </a>
