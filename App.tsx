@@ -46,18 +46,6 @@ interface ServerNoteResponse {
   lng?: number;
 }
 
-const formatNoteTimestamp = (createdAt?: string | number | Date): string => {
-  if (!createdAt) return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const d = new Date(createdAt);
-  if (isNaN(d.getTime())) return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const now = new Date();
-  const isToday = d.toDateString() === now.toDateString();
-  if (isToday) {
-    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  }
-  return `${d.toLocaleDateString([], { month: 'short', day: 'numeric' })}, ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-};
-
 const mapServerToHushNote = (n: ServerNoteResponse): HushNote => ({
   id: String(n.id ?? n._id ?? `note-${Date.now()}`),
   userId: String(n.userUid ?? n.userId ?? 'unknown'),
@@ -65,7 +53,9 @@ const mapServerToHushNote = (n: ServerNoteResponse): HushNote => ({
   avatar: n.userAvatar ?? n.avatar ?? 'https://picsum.photos/seed/anon/200',
   text: n.text ?? '',
   music: n.musicTitle ? { title: n.musicTitle, artist: n.musicArtist ?? '' } : undefined,
-  timestamp: formatNoteTimestamp(n.createdAt)
+  timestamp: n.createdAt
+    ? new Date(n.createdAt).toLocaleString()
+    : new Date().toLocaleString()
 });
 
 export const AppLayout: React.FC = () => {

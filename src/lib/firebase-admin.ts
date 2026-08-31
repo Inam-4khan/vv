@@ -1,10 +1,23 @@
 import { initializeApp, getApps } from 'firebase-admin/app';
-import { getAuth } from 'firebase-admin/auth';
+import { getAuth, Auth } from 'firebase-admin/auth';
 
-if (!getApps().length) {
-  initializeApp({
-    projectId: process.env.FIREBASE_PROJECT_ID || 'atlantean-genre-8t8c4',
-  });
-}
+let adminAuthInstance: Auth | null = null;
 
-export const adminAuth = getAuth();
+export const getAdminAuth = (): Auth => {
+  if (!adminAuthInstance) {
+    if (!getApps().length) {
+      initializeApp({
+        projectId: process.env.FIREBASE_PROJECT_ID || 'atlantean-genre-8t8c4',
+      });
+    }
+    adminAuthInstance = getAuth();
+  }
+  return adminAuthInstance;
+};
+
+export const adminAuth = {
+  verifyIdToken: async (token: string) => {
+    return getAdminAuth().verifyIdToken(token);
+  }
+};
+

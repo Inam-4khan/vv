@@ -21,7 +21,8 @@ export const Login: React.FC<LoginProps> = ({
   onSuccess,
   onBack,
 }) => {
-  const { loginWithGoogle, login } = useAuth();
+  const auth = useAuth();
+  const { loginWithGoogle } = auth;
 
   const [mode, setMode] = useState<'login' | 'reset'>('login');
 
@@ -121,22 +122,19 @@ export const Login: React.FC<LoginProps> = ({
 
       await new Promise((resolve) => setTimeout(resolve, 800));
 
-      if (login) {
-        login({
-          id: formData.identifier,
-          email: formData.identifier.includes('@') ? formData.identifier : `${formData.identifier}@vizu.com`,
-          username: formData.identifier.split('@')[0],
-        });
-      }
-
-      if (onLogin) onLogin(formData);
-      if (onSuccess) onSuccess(formData);
-
-      if (onNavigate) {
-        onNavigate('/home');
-      } else if (typeof window !== 'undefined') {
-        window.history.pushState({}, '', '/home');
-        window.dispatchEvent(new Event('popstate'));
+      // Prefer external handler if provided (tests / host app)
+      if (onLogin) {
+        onLogin(formData);
+      } else {
+        // Fallback: mark as logged in for demo (replace with real credential flow)
+        // NOTE: In production implement a credential-sign-in in AuthContext and call it here.
+        if (onSuccess) onSuccess(formData);
+        if (onNavigate) {
+          onNavigate('/home');
+        } else if (typeof window !== 'undefined') {
+          window.history.pushState({}, '', '/home');
+          window.dispatchEvent(new Event('popstate'));
+        }
       }
     } catch (err: any) {
       setSubmitError(err.message || 'Login failed. Please check your credentials.');
