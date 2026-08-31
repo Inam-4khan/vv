@@ -16,9 +16,7 @@ export interface AuthContextType {
 
 let inMemoryAccessToken: string | null = null;
 export const getAccessToken = () => inMemoryAccessToken;
-export const setAccessToken = (token: string | null) => {
-  inMemoryAccessToken = token;
-};
+export const setAccessToken = (token: string | null) => { inMemoryAccessToken = token; };
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -27,7 +25,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [profile, setProfile] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [_isSyncing, setIsSyncing] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -35,7 +33,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (firebaseUser) {
         const token = await firebaseUser.getIdToken();
         setAccessToken(token);
-
+        
         setIsSyncing(true);
         try {
           // Sync with our backend
@@ -65,7 +63,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setIsLoading(false);
       }
     });
-
+    
     return unsubscribe;
   }, [showToast]);
 
@@ -74,7 +72,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setIsLoading(true);
       await signInWithPopup(auth, googleAuthProvider);
     } catch (error) {
-      console.error('Login failed', error);
+      console.error("Login failed", error);
       setIsLoading(false);
     }
   };
@@ -110,4 +108,3 @@ export const useAuth = (): AuthContextType => {
   }
   return context;
 };
-
