@@ -6,7 +6,14 @@ declare global {
   var _postgresPool: pg.Pool | undefined;
 }
 
-export const createPool = () => {
+export const isDbConfigured = Boolean(
+  process.env.SQL_HOST && process.env.SQL_USER && process.env.SQL_DB_NAME
+);
+
+export const createPool = (): pg.Pool | null => {
+  if (!isDbConfigured) {
+    return null;
+  }
   if (!global._postgresPool) {
     global._postgresPool = new pg.Pool({
       host: process.env.SQL_HOST,
@@ -14,15 +21,24 @@ export const createPool = () => {
       password: process.env.SQL_PASSWORD,
       database: process.env.SQL_DB_NAME,
       max: 10,
-      connectionTimeoutMillis: 15000,
+      connectionTimeoutMillis: 5000,
     });
 
     global._postgresPool.on('error', (err) => {
-      console.error('Unexpected error on idle SQL pool client:', err);
+      console.warn('Postgres client error:', err.message);
     });
   }
   return global._postgresPool;
 };
 
-const pool = createPool();
-export const db = drizzle(pool, { schema });
+let dbInstance: any = null;
+try {
+  const pool = createPool();
+  if (pool) {
+    dbInstance = drizzle(pool, { schema });
+  }
+} catch (error) {
+  console.warn('[AI Studio] Database init warning, using fallback store:', error);
+}
+
+export const db = dbInstance;

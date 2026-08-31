@@ -53,7 +53,7 @@ export default async function handler(req: ServerlessRequest, res: ServerlessRes
       },
     });
 
-    const selectedModel = model || 'gemini-3.6-flash';
+    const selectedModel = model || 'gemini-flash-latest';
 
     const response = await ai.models.generateContent({
       model: selectedModel,

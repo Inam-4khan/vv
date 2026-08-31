@@ -123,6 +123,15 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   const setUser = (user: User | null) => {
+    try {
+      if (user) {
+        localStorage.setItem('vizu_current_user', JSON.stringify(user));
+      } else {
+        localStorage.removeItem('vizu_current_user');
+      }
+    } catch (e) {
+      console.error(e);
+    }
     dispatch({ type: 'SET_USER', payload: user });
   };
 

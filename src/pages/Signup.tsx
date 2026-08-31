@@ -158,7 +158,7 @@ export const Signup: React.FC<SignupProps> = ({
       </div>
 
       {/* Floating Clean White Card */}
-      <div className="relative w-full max-w-md bg-white border border-[color-mix(in_srgb,var(--app-primary)_5%,transparent)] rounded-[2.2rem] p-6 sm:p-8 shadow-xl text-primary dark:text-white my-auto">
+      <div className="relative w-full max-w-md bg-white border border-[color-mix(in_srgb,var(--app-primary)_5%,transparent)] rounded-[2.2rem] p-6 sm:p-8 shadow-xl text-slate-900 dark:text-[#F1FAEE] my-auto">
         {/* Top Navigation Bar */}
         <div className="flex items-center justify-between mb-6">
           <button
@@ -167,7 +167,7 @@ export const Signup: React.FC<SignupProps> = ({
               if (onBack) onBack();
               else if (onSwitchToLogin) onSwitchToLogin();
             }}
-            className="w-10 h-10 rounded-full bg-[#E8F6F4] hover:bg-[#D8F0EC] text-primary dark:text-white flex items-center justify-center transition-all active:scale-90"
+            className="w-10 h-10 rounded-full bg-[#E8F6F4] hover:bg-[#D8F0EC] text-slate-900 dark:text-[#F1FAEE] flex items-center justify-center transition-all active:scale-90"
             aria-label="Go back"
           >
             <ArrowLeft size={18} />
@@ -175,7 +175,7 @@ export const Signup: React.FC<SignupProps> = ({
 
           <div className="flex items-center gap-2">
             <BrandLogo size={26} color="var(--app-primary)" />
-            <span className="font-extrabold tracking-wider text-base font-montserrat text-primary dark:text-white">
+            <span className="font-extrabold tracking-wider text-base font-montserrat text-slate-900 dark:text-[#F1FAEE]">
               VIZU
             </span>
           </div>
@@ -185,7 +185,7 @@ export const Signup: React.FC<SignupProps> = ({
 
         {/* Header */}
         <div className="text-left mb-6">
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-montserrat text-primary dark:text-white">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-montserrat text-slate-900 dark:text-[#F1FAEE]">
             Create Persona
           </h1>
           <p className="text-xs sm:text-sm text-[color-mix(in_srgb,var(--app-primary)_60%,transparent)] mt-1">
@@ -203,7 +203,7 @@ export const Signup: React.FC<SignupProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           {/* Field 1: Full Name */}
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="signup-name" className="text-xs font-semibold text-primary dark:text-white">
+            <label htmlFor="signup-name" className="text-xs font-semibold text-slate-900 dark:text-[#F1FAEE]">
               Full Name
             </label>
             <div className="relative flex items-center">
@@ -216,7 +216,7 @@ export const Signup: React.FC<SignupProps> = ({
                 onChange={handleInputChange}
                 onBlur={() => handleBlur('name')}
                 placeholder="username"
-                className="w-full rounded-2xl bg-[#FFFDE0] border border-[color-mix(in_srgb,var(--app-primary)_10%,transparent)] pl-11 pr-4 py-3 text-sm text-primary dark:text-white placeholder:text-[color-mix(in_srgb,var(--app-primary)_40%,transparent)] focus:outline-none focus:border-[var(--app-accent)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] transition-all font-medium"
+                className="w-full rounded-2xl bg-[#FFFDE0] border border-[color-mix(in_srgb,var(--app-primary)_10%,transparent)] pl-11 pr-4 py-3 text-sm text-slate-900 dark:text-[#F1FAEE] placeholder:text-[color-mix(in_srgb,var(--app-primary)_40%,transparent)] focus:outline-none focus:border-[var(--app-accent)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] transition-all font-medium"
               />
             </div>
             {errors.name && (
@@ -226,7 +226,7 @@ export const Signup: React.FC<SignupProps> = ({
 
           {/* Field 2: Email Address */}
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="signup-email" className="text-xs font-semibold text-primary dark:text-white">
+            <label htmlFor="signup-email" className="text-xs font-semibold text-slate-900 dark:text-[#F1FAEE]">
               Email Address
             </label>
             <div className="relative flex items-center">
@@ -239,7 +239,7 @@ export const Signup: React.FC<SignupProps> = ({
                 onChange={handleInputChange}
                 onBlur={() => handleBlur('email')}
                 placeholder="jane@vizu.com"
-                className="w-full rounded-2xl bg-[#FFFDE0] border border-[color-mix(in_srgb,var(--app-primary)_10%,transparent)] pl-11 pr-4 py-3 text-sm text-primary dark:text-white placeholder:text-[color-mix(in_srgb,var(--app-primary)_40%,transparent)] focus:outline-none focus:border-[var(--app-accent)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] transition-all font-medium"
+                className="w-full rounded-2xl bg-[#FFFDE0] border border-[color-mix(in_srgb,var(--app-primary)_10%,transparent)] pl-11 pr-4 py-3 text-sm text-slate-900 dark:text-[#F1FAEE] placeholder:text-[color-mix(in_srgb,var(--app-primary)_40%,transparent)] focus:outline-none focus:border-[var(--app-accent)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] transition-all font-medium"
               />
             </div>
             {errors.email && (
@@ -249,7 +249,7 @@ export const Signup: React.FC<SignupProps> = ({
 
           {/* Field 3: Create Password */}
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="signup-password" className="text-xs font-semibold text-primary dark:text-white">
+            <label htmlFor="signup-password" className="text-xs font-semibold text-slate-900 dark:text-[#F1FAEE]">
               Create Password
             </label>
             <div className="relative flex items-center">
@@ -262,12 +262,12 @@ export const Signup: React.FC<SignupProps> = ({
                 onChange={handleInputChange}
                 onBlur={() => handleBlur('password')}
                 placeholder="••••••••"
-                className="w-full rounded-2xl bg-[#FFFDE0] border border-[color-mix(in_srgb,var(--app-primary)_10%,transparent)] pl-11 pr-11 py-3 text-sm text-primary dark:text-white placeholder:text-[color-mix(in_srgb,var(--app-primary)_40%,transparent)] focus:outline-none focus:border-[var(--app-accent)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] transition-all font-medium"
+                className="w-full rounded-2xl bg-[#FFFDE0] border border-[color-mix(in_srgb,var(--app-primary)_10%,transparent)] pl-11 pr-11 py-3 text-sm text-slate-900 dark:text-[#F1FAEE] placeholder:text-[color-mix(in_srgb,var(--app-primary)_40%,transparent)] focus:outline-none focus:border-[var(--app-accent)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] transition-all font-medium"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 text-[color-mix(in_srgb,var(--app-primary)_50%,transparent)] hover:text-primary dark:text-white transition-colors focus:outline-none"
+                className="absolute right-3.5 text-[color-mix(in_srgb,var(--app-primary)_50%,transparent)] hover:text-slate-900 dark:text-[#F1FAEE] transition-colors focus:outline-none"
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -280,7 +280,7 @@ export const Signup: React.FC<SignupProps> = ({
 
           {/* Field 4: Confirm Password */}
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="signup-confirm-password" className="text-xs font-semibold text-primary dark:text-white">
+            <label htmlFor="signup-confirm-password" className="text-xs font-semibold text-slate-900 dark:text-[#F1FAEE]">
               Confirm Password
             </label>
             <div className="relative flex items-center">
@@ -293,7 +293,7 @@ export const Signup: React.FC<SignupProps> = ({
                 onChange={handleInputChange}
                 onBlur={() => handleBlur('confirmPassword')}
                 placeholder="••••••••"
-                className="w-full rounded-2xl bg-[#FFFDE0] border border-[color-mix(in_srgb,var(--app-primary)_10%,transparent)] pl-11 pr-11 py-3 text-sm text-primary dark:text-white placeholder:text-[color-mix(in_srgb,var(--app-primary)_40%,transparent)] focus:outline-none focus:border-[var(--app-accent)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] transition-all font-medium"
+                className="w-full rounded-2xl bg-[#FFFDE0] border border-[color-mix(in_srgb,var(--app-primary)_10%,transparent)] pl-11 pr-11 py-3 text-sm text-slate-900 dark:text-[#F1FAEE] placeholder:text-[color-mix(in_srgb,var(--app-primary)_40%,transparent)] focus:outline-none focus:border-[var(--app-accent)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] transition-all font-medium"
               />
             </div>
             {errors.confirmPassword && (
@@ -303,7 +303,7 @@ export const Signup: React.FC<SignupProps> = ({
 
           {/* Small Teal Checkbox for Terms & Privacy */}
           <div className="pt-1">
-            <label htmlFor="signup-terms" className="flex items-center gap-2.5 cursor-pointer select-none text-xs text-[color-mix(in_srgb,var(--app-primary)_80%,transparent)] hover:text-primary dark:text-white transition-colors">
+            <label htmlFor="signup-terms" className="flex items-center gap-2.5 cursor-pointer select-none text-xs text-[color-mix(in_srgb,var(--app-primary)_80%,transparent)] hover:text-slate-900 dark:text-[#F1FAEE] transition-colors">
               <input
                 id="signup-terms"
                 type="checkbox"
@@ -329,7 +329,7 @@ export const Signup: React.FC<SignupProps> = ({
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full mt-6 bg-[var(--app-accent)] hover:bg-[#25A89B] text-primary dark:text-white font-bold py-3.5 px-6 rounded-full shadow-md hover:shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2.5 disabled:opacity-80"
+            className="w-full mt-6 bg-[var(--app-accent)] hover:bg-[#25A89B] text-slate-900 dark:text-[#F1FAEE] font-bold py-3.5 px-6 rounded-full shadow-md hover:shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2.5 disabled:opacity-80"
           >
             {isLoading ? (
               <>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Heart, MessageCircle, Send, MoreHorizontal, Play, Pause } from 'lucide-react';
 import { MOCK_STORIES } from '../../constants';
 import { OptimizedImg } from '../common/OptimizedImg';
+import { useToast } from '../../src/context/ToastContext';
 
 interface StoryViewerPageProps {
   storyId: string;
@@ -10,6 +11,7 @@ interface StoryViewerPageProps {
 }
 
 export const StoryViewerPage: React.FC<StoryViewerPageProps> = React.memo(({ storyId, onClose, isGhostMode: _isGhostMode }) => {
+  const { showToast } = useToast();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -119,7 +121,7 @@ export const StoryViewerPage: React.FC<StoryViewerPageProps> = React.memo(({ sto
   const handleSendComment = () => {
     if (!comment.trim() || !currentStory) return;
     if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
-    alert(`Comment sent to @${currentStory.username}: ${comment}`);
+    showToast(`Replied to @${currentStory.username}: ${comment}`, 'success');
     setComment('');
   };
 
@@ -189,8 +191,8 @@ export const StoryViewerPage: React.FC<StoryViewerPageProps> = React.memo(({ sto
                 <OptimizedImg src={currentStory.avatar} alt={currentStory.username} width={40} height={40} loading="lazy" className="w-full h-full object-cover" />
               </div>
               <div>
-                <p className="text-primary dark:text-white font-bold text-sm">@{currentStory.username}</p>
-                <p className="text-primary/40 dark:text-white/40 text-[10px] uppercase font-bold tracking-widest">Active Story</p>
+                <p className="text-slate-900 dark:text-[#F1FAEE] font-bold text-sm">@{currentStory.username}</p>
+                <p className="text-slate-500 dark:text-slate-400 text-[10px] uppercase font-bold tracking-widest">Active Story</p>
               </div>
             </div>
             
@@ -203,8 +205,8 @@ export const StoryViewerPage: React.FC<StoryViewerPageProps> = React.memo(({ sto
                 }}
                 className={`flex items-center gap-1 py-1.5 px-3 rounded-full text-[9px] font-black uppercase tracking-wider transition-all border ${
                   isAutoplay 
-                    ? 'bg-[color-mix(in_srgb,var(--app-accent)_90%,transparent)] border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] text-primary dark:text-white shadow-glow shadow-[color-mix(in_srgb,var(--app-accent)_10%,transparent)]' 
-                    : 'bg-white/10 border-white/10 text-primary/40 dark:text-white/40'
+                    ? 'bg-[color-mix(in_srgb,var(--app-accent)_90%,transparent)] border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] text-slate-900 dark:text-[#F1FAEE] shadow-glow shadow-[color-mix(in_srgb,var(--app-accent)_10%,transparent)]' 
+                    : 'bg-white/10 border-white/10 text-slate-500 dark:text-slate-400'
                 }`}
                 title="Toggle Autoplay"
               >
@@ -212,15 +214,15 @@ export const StoryViewerPage: React.FC<StoryViewerPageProps> = React.memo(({ sto
                 <span>{isAutoplay ? 'Auto' : 'Manual'}</span>
               </button>
 
-              <button className="p-2 text-primary dark:text-white/85 hover:bg-white/15 rounded-full transition-colors"><MoreHorizontal size={20} /></button>
-              <button onClick={onClose} className="p-2 text-primary dark:text-white/85 hover:bg-white/15 rounded-full transition-colors"><X size={24} /></button>
+              <button className="p-2 text-slate-500 dark:text-slate-400 hover:bg-white/15 rounded-full transition-colors"><MoreHorizontal size={20} /></button>
+              <button onClick={onClose} className="p-2 text-slate-500 dark:text-slate-400 hover:bg-white/15 rounded-full transition-colors"><X size={24} /></button>
             </div>
           </div>
         </div>
 
         {/* Swipe Down Dismiss Alert Indicator */}
         <div className="absolute top-20 left-0 w-full text-center pointer-events-none opacity-25 animate-bounce-slow">
-          <p className="text-[8px] uppercase tracking-[0.2em] text-primary dark:text-white font-bold">↓ Swipe Down to Dismiss ↓</p>
+          <p className="text-[8px] uppercase tracking-[0.2em] text-slate-900 dark:text-[#F1FAEE] font-bold">↓ Swipe Down to Dismiss ↓</p>
         </div>
 
         {/* Bottom Bar */}
@@ -236,7 +238,7 @@ export const StoryViewerPage: React.FC<StoryViewerPageProps> = React.memo(({ sto
                 placeholder={`Reply to @${currentStory.username}...`}
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                className="w-full bg-white/20 border border-white/30 text-primary dark:text-white placeholder-white/60 rounded-full py-3 px-5 pr-12 backdrop-blur-md focus:outline-none focus:bg-white/30 transition-colors"
+                className="w-full bg-white/20 border border-white/30 text-slate-900 dark:text-[#F1FAEE] placeholder-white/60 rounded-full py-3 px-5 pr-12 backdrop-blur-md focus:outline-none focus:bg-white/30 transition-colors"
                 onFocus={() => setIsPaused(true)}
                 onBlur={() => setIsPaused(false)}
               />
@@ -251,11 +253,11 @@ export const StoryViewerPage: React.FC<StoryViewerPageProps> = React.memo(({ sto
             </div>
             <button 
               onClick={handleToggleLike} 
-              className={`p-3 rounded-full backdrop-blur-md transition-colors ${isLiked ? 'bg-red-500/20 text-red-500' : 'bg-white/20 text-primary dark:text-white'}`}
+              className={`p-3 rounded-full backdrop-blur-md transition-colors ${isLiked ? 'bg-red-500/20 text-red-500' : 'bg-white/20 text-slate-900 dark:text-[#F1FAEE]'}`}
             >
               <Heart size={24} fill={isLiked ? "currentColor" : "none"} />
             </button>
-            <button className="p-3 rounded-full bg-white/20 text-primary dark:text-white backdrop-blur-md">
+            <button className="p-3 rounded-full bg-white/20 text-slate-900 dark:text-[#F1FAEE] backdrop-blur-md">
               <MessageCircle size={24} />
             </button>
           </div>

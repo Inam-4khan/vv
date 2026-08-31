@@ -75,7 +75,7 @@ export const InstallPrompt: React.FC = () => {
 
   return (
     <div className="fixed bottom-20 md:bottom-6 left-4 right-4 md:left-auto md:right-6 md:max-w-md z-50 animate-fade-in">
-      <div className="bg-[color-mix(in_srgb,var(--app-bg-ghost)_95%,transparent)] border border-[color-mix(in_srgb,var(--app-accent)_40%,transparent)] rounded-3xl p-4 shadow-2xl backdrop-blur-xl flex items-center gap-3 text-primary dark:text-white">
+      <div className="bg-[color-mix(in_srgb,var(--app-bg-ghost)_95%,transparent)] border border-[color-mix(in_srgb,var(--app-accent)_40%,transparent)] rounded-3xl p-4 shadow-2xl backdrop-blur-xl flex items-center gap-3 text-slate-900 dark:text-[#F1FAEE]">
         <div className="w-12 h-12 rounded-2xl bg-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] border border-[color-mix(in_srgb,var(--app-accent)_40%,transparent)] flex items-center justify-center shrink-0">
           <Ghost size={24} className="text-[var(--app-accent-light)]" />
         </div>
@@ -84,7 +84,7 @@ export const InstallPrompt: React.FC = () => {
           <h4 className="text-xs font-black uppercase tracking-wider text-[var(--app-accent-light)]">
             Install Vizu
           </h4>
-          <p className="text-[11px] text-primary/40 dark:text-white/40 truncate">
+          <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
             Add to home screen for fast proximity alerts.
           </p>
         </div>
@@ -92,14 +92,14 @@ export const InstallPrompt: React.FC = () => {
         <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={handleInstallClick}
-            className="px-3.5 py-2 rounded-xl bg-[var(--app-accent)] hover:bg-[var(--app-accent-light)] text-primary dark:text-white font-black text-xs uppercase tracking-wider transition-all flex items-center gap-1.5 shadow-md active:scale-95 cursor-pointer"
+            className="px-3.5 py-2 rounded-xl bg-[var(--app-accent)] hover:bg-[var(--app-accent-light)] text-slate-900 dark:text-[#F1FAEE] font-black text-xs uppercase tracking-wider transition-all flex items-center gap-1.5 shadow-md active:scale-95 cursor-pointer"
           >
             <Download size={14} />
             Install
           </button>
           <button
             onClick={handleDismiss}
-            className="p-1.5 rounded-xl hover:bg-white/10 text-primary/40 dark:text-white/40 hover:text-primary dark:text-white transition-colors cursor-pointer"
+            className="p-1.5 rounded-xl hover:bg-white/10 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-[#F1FAEE] transition-colors cursor-pointer"
             aria-label="Close install prompt"
           >
             <X size={18} />

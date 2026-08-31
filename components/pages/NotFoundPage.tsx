@@ -11,7 +11,7 @@ export const NotFoundPage: React.FC = () => {
   const isGhost = isGlobalGhostMode;
 
   return (
-    <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 text-center text-primary dark:text-white">
+    <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 text-center text-slate-900 dark:text-[#F1FAEE]">
       <div className={`relative p-6 rounded-3xl mb-6 ${
         isGhost ? 'bg-[var(--app-bg-ghost)] border border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)]' : 'bg-[var(--app-bg-surface)] border border-white/10'
       }`}>
@@ -21,7 +21,7 @@ export const NotFoundPage: React.FC = () => {
           }`}>
             {isGhost ? <Ghost size={40} className="animate-pulse" /> : <Compass size={40} className="animate-spin-slow" />}
           </div>
-          <div className="absolute -top-1 -right-1 p-2 rounded-full bg-[var(--app-accent)] text-primary dark:text-white shadow-lg">
+          <div className="absolute -top-1 -right-1 p-2 rounded-full bg-[var(--app-accent)] text-[#062B34] font-black shadow-lg">
             <Sparkles size={16} />
           </div>
         </div>
@@ -30,7 +30,7 @@ export const NotFoundPage: React.FC = () => {
       <h1 className="text-4xl font-black tracking-tight mb-2">404</h1>
       <h2 className="text-xl font-extrabold mb-3">Lost in the Vizu Flow?</h2>
 
-      <p className="max-w-md text-sm opacity-70 mb-8 leading-relaxed font-medium text-primary/40 dark:text-white/40">
+      <p className="max-w-md text-sm opacity-70 mb-8 leading-relaxed font-medium text-slate-500 dark:text-slate-400">
         {error?.message || error?.statusText || "The destination or secret whisper page you're searching for doesn't exist, has been moved, or dissolved in ghost mode."}
       </p>
 
@@ -48,7 +48,7 @@ export const NotFoundPage: React.FC = () => {
           className={`w-full py-3.5 px-5 rounded-2xl font-extrabold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 ${
             isGhost
               ? 'bg-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] hover:bg-[color-mix(in_srgb,var(--app-accent)_30%,transparent)] text-[var(--app-accent-light)] border border-[color-mix(in_srgb,var(--app-accent)_30%,transparent)]'
-              : 'bg-white/10 hover:bg-white/15 text-primary dark:text-white'
+              : 'bg-white/10 hover:bg-white/15 text-slate-900 dark:text-[#F1FAEE]'
           }`}
         >
           <RefreshCw size={16} />

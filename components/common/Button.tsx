@@ -28,7 +28,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variantClasses = {
     solid:
-      'bg-[var(--app-accent)] hover:bg-[var(--app-accent-light)] text-primary dark:text-white font-black shadow-[0_4px_15px_rgba(46,196,182,0.4)] active:scale-95',
+      'bg-[var(--app-accent)] hover:bg-[var(--app-accent-light)] text-slate-900 dark:text-[#F1FAEE] font-black shadow-[0_4px_15px_rgba(46,196,182,0.4)] active:scale-95',
     glass:
       'bg-[color-mix(in_srgb,var(--app-primary)_60%,transparent)] backdrop-blur-[14px] text-[#F1FAEE] border border-[color-mix(in_srgb,var(--app-accent-light)_40%,transparent)] hover:border-[var(--app-accent-light)] active:scale-95',
     ghost:
@@ -38,7 +38,7 @@ export const Button: React.FC<ButtonProps> = ({
     secondary:
       'bg-white/10 hover:bg-white/20 text-[#F1FAEE] border border-white/10 active:scale-95',
     danger:
-      'bg-rose-600 hover:bg-rose-500 text-primary dark:text-white shadow-md active:scale-95',
+      'bg-rose-600 hover:bg-rose-500 text-slate-900 dark:text-[#F1FAEE] shadow-md active:scale-95',
   };
 
   const widthClass = fullWidth ? 'w-full' : '';

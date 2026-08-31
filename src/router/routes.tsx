@@ -1,32 +1,33 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import { createBrowserRouter, useNavigate, useOutletContext, useParams, Navigate } from 'react-router-dom';
 import AppLayout, { AppOutletContext } from '../../App';
 import { ProtectedRoute } from './ProtectedRoute';
 import { Page } from '../../types';
+import { MOCK_USERS, MOCK_STORIES } from '../../constants';
 import { useAppState } from '../context/AppStateContext';
 import { useToast } from '../context/ToastContext';
 import { LoadingPage } from '../../components/pages/LoadingPage';
 
-const LaunchSplash = lazy(() => import('../../components/pages/LaunchSplash').then(m => ({ default: m.LaunchSplash })));
-const InitialSplash = lazy(() => import('../../components/pages/InitialSplash').then(m => ({ default: m.InitialSplash })));
-const WelcomePage = lazy(() => import('../../components/pages/WelcomePage').then(m => ({ default: m.WelcomePage })));
-const LoginPage = lazy(() => import('../../components/pages/LoginPage').then(m => ({ default: m.LoginPage })));
-const SignupPage = lazy(() => import('../../components/pages/SignupPage').then(m => ({ default: m.SignupPage })));
-const SplashScreen = lazy(() => import('../../components/pages/SplashScreen').then(m => ({ default: m.SplashScreen })));
-const FlowPage = lazy(() => import('../../components/pages/FlowPage').then(m => ({ default: m.FlowPage })));
-const HushPage = lazy(() => import('../../components/pages/HushPage').then(m => ({ default: m.HushPage })));
-const PersonaPage = lazy(() => import('../../components/pages/PersonaPage').then(m => ({ default: m.PersonaPage })));
-const SettingsPage = lazy(() => import('../../components/pages/SettingsPage').then(m => ({ default: m.SettingsPage })));
-const SwitchAccountPage = lazy(() => import('../../components/pages/SwitchAccountPage').then(m => ({ default: m.SwitchAccountPage })));
-const ExplorePage = lazy(() => import('../../components/pages/ExplorePage').then(m => ({ default: m.ExplorePage })));
-const NotificationsPage = lazy(() => import('../../components/pages/NotificationsPage').then(m => ({ default: m.NotificationsPage })));
-const ConnectionsPage = lazy(() => import('../../components/pages/ConnectionsPage').then(m => ({ default: m.ConnectionsPage })));
-const EditProfilePage = lazy(() => import('../../components/pages/EditProfilePage').then(m => ({ default: m.EditProfilePage })));
-const HushCameraPage = lazy(() => import('../../components/pages/HushCameraPage').then(m => ({ default: m.HushCameraPage })));
-const StoryCreatorPage = lazy(() => import('../../components/pages/StoryCreatorPage').then(m => ({ default: m.StoryCreatorPage })));
-const StoryViewerPage = lazy(() => import('../../components/pages/StoryViewerPage').then(m => ({ default: m.StoryViewerPage })));
-const VistaPage = lazy(() => import('../../components/pages/VistaPage').then(m => ({ default: m.VistaPage })));
-const NotFoundPage = lazy(() => import('../../components/pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
+import { LaunchSplash } from '../../components/pages/LaunchSplash';
+import { InitialSplash } from '../../components/pages/InitialSplash';
+import { WelcomePage } from '../../components/pages/WelcomePage';
+import { LoginPage } from '../../components/pages/LoginPage';
+import { SignupPage } from '../../components/pages/SignupPage';
+import { SplashScreen } from '../../components/pages/SplashScreen';
+import { FlowPage } from '../../components/pages/FlowPage';
+import { HushPage } from '../../components/pages/HushPage';
+import { PersonaPage } from '../../components/pages/PersonaPage';
+import { SettingsPage } from '../../components/pages/SettingsPage';
+import { SwitchAccountPage } from '../../components/pages/SwitchAccountPage';
+import { ExplorePage } from '../../components/pages/ExplorePage';
+import { NotificationsPage } from '../../components/pages/NotificationsPage';
+import { ConnectionsPage } from '../../components/pages/ConnectionsPage';
+import { EditProfilePage } from '../../components/pages/EditProfilePage';
+import { HushCameraPage } from '../../components/pages/HushCameraPage';
+import { StoryCreatorPage } from '../../components/pages/StoryCreatorPage';
+import { StoryViewerPage } from '../../components/pages/StoryViewerPage';
+import { VistaPage } from '../../components/pages/VistaPage';
+import { NotFoundPage } from '../../components/pages/NotFoundPage';
 
 export const pageToPath = (page: string): string => {
   switch (page) {
@@ -48,29 +49,33 @@ export const pageToPath = (page: string): string => {
     case 'signup': return '/auth/signup';
     case 'splash': return '/splash';
     case 'loading': return '/loading';
+    case 'launch': return '/launch';
+    case 'initial': return '/initial';
     default: return '/home';
   }
 };
 
 export const pathToPage = (path: string): Page => {
-  if (path === '/') return 'welcome';
-  if (path.startsWith('/home')) return 'home';
+  if (path === '/' || path === '/welcome') return 'welcome';
+  if (path.startsWith('/home') || path.startsWith('/flow') || path.startsWith('/dashboard')) return 'home';
   if (path.startsWith('/vista')) return 'vista';
-  if (path.startsWith('/hush/camera')) return 'hush-camera';
+  if (path.startsWith('/hush/camera') || path.startsWith('/hush-camera')) return 'hush-camera';
   if (path.startsWith('/hush')) return 'hush';
-  if (path.startsWith('/persona/connections')) return 'connections';
-  if (path.startsWith('/persona/edit')) return 'edit-profile';
-  if (path.startsWith('/persona/settings')) return 'settings';
-  if (path.startsWith('/persona/switch-account')) return 'switch-account';
-  if (path.startsWith('/persona')) return 'persona';
+  if (path.startsWith('/persona/connections') || path.startsWith('/connections')) return 'connections';
+  if (path.startsWith('/persona/edit') || path.startsWith('/edit-profile') || path.startsWith('/profile/edit')) return 'edit-profile';
+  if (path.startsWith('/persona/settings') || path.startsWith('/settings')) return 'settings';
+  if (path.startsWith('/persona/switch-account') || path.startsWith('/switch-account')) return 'switch-account';
+  if (path.startsWith('/persona') || path.startsWith('/profile')) return 'persona';
   if (path.startsWith('/explore')) return 'explore';
   if (path.startsWith('/notifications')) return 'notifications';
-  if (path.startsWith('/story/create')) return 'story-creator';
+  if (path.startsWith('/story/create') || path.startsWith('/story-creator') || path.startsWith('/create')) return 'story-creator';
   if (path.startsWith('/story')) return 'story-viewer';
-  if (path.startsWith('/auth/login')) return 'login';
-  if (path.startsWith('/auth/signup')) return 'signup';
+  if (path.startsWith('/auth/login') || path.startsWith('/login')) return 'login';
+  if (path.startsWith('/auth/signup') || path.startsWith('/signup')) return 'signup';
   if (path.startsWith('/splash')) return 'splash';
   if (path.startsWith('/loading')) return 'loading';
+  if (path.startsWith('/launch')) return 'launch';
+  if (path.startsWith('/initial')) return 'initial';
   return 'home';
 };
 
@@ -157,10 +162,12 @@ const FlowRoute: React.FC = () => {
 };
 
 const VistaRoute: React.FC = () => {
+  const navigate = useNavigate();
   const { isGlobalGhostMode } = useAppState();
   return (
     <VistaPage
       isGhostMode={isGlobalGhostMode}
+      onCreateContent={() => navigate('/story/create')}
     />
   );
 };
@@ -195,9 +202,10 @@ const PersonaRoute: React.FC = () => {
   const navigate = useNavigate();
   const { user, isGlobalGhostMode, isDarkMode } = useAppState();
   const { hushNotes, toggleGhostMode, toggleThemeMode } = useAppOutletContext();
+  const activeUser = user || MOCK_USERS[0];
   return (
     <PersonaPage
-      user={user}
+      user={activeUser}
       isGhostMode={isGlobalGhostMode}
       onToggleGhost={toggleGhostMode}
       isDarkMode={isDarkMode}
@@ -227,10 +235,11 @@ const EditProfileRoute: React.FC = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const { user, setUser, isGlobalGhostMode } = useAppState();
-  if (!user) return null;
+  const activeUser = user || MOCK_USERS[0];
+  
   return (
     <EditProfilePage
-      user={user}
+      user={activeUser}
       onBack={() => navigate('/persona')}
       onSave={(updatedUser) => {
         setUser(updatedUser);
@@ -269,7 +278,7 @@ const SwitchAccountRoute: React.FC = () => {
   const { handleAccountSwitch } = useAppOutletContext();
   return (
     <SwitchAccountPage
-      currentUser={user}
+      currentUser={user || MOCK_USERS[0]}
       onSelect={handleAccountSwitch}
       onBack={() => navigate('/persona')}
     />
@@ -313,7 +322,7 @@ const StoryViewerRoute: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { isGlobalGhostMode, selectedStoryId, setSelectedStoryId } = useAppState();
-  const activeStoryId = id || selectedStoryId;
+  const activeStoryId = id || selectedStoryId || MOCK_STORIES[0]?.id;
 
   if (!activeStoryId) return <Navigate to="/home" replace />;
 
@@ -339,6 +348,8 @@ export const router = createBrowserRouter([
       { path: 'welcome', element: <WelcomeRoute /> },
       { path: 'auth/login', element: <LoginRoute /> },
       { path: 'auth/signup', element: <SignupRoute /> },
+      { path: 'login', element: <Navigate to="/auth/login" replace /> },
+      { path: 'signup', element: <Navigate to="/auth/signup" replace /> },
       { path: 'splash', element: <SplashRoute /> },
       { path: 'loading', element: <LoadingPage /> },
       { path: 'launch', element: <LaunchSplash /> },
@@ -347,17 +358,29 @@ export const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
           { path: 'home', element: <FlowRoute /> },
+          { path: 'flow', element: <Navigate to="/home" replace /> },
+          { path: 'dashboard', element: <Navigate to="/home" replace /> },
           { path: 'vista', element: <VistaRoute /> },
           { path: 'hush', element: <HushRoute /> },
           { path: 'hush/camera', element: <HushCameraRoute /> },
+          { path: 'hush-camera', element: <Navigate to="/hush/camera" replace /> },
           { path: 'persona', element: <PersonaRoute /> },
+          { path: 'profile', element: <Navigate to="/persona" replace /> },
           { path: 'persona/connections', element: <ConnectionsRoute /> },
+          { path: 'connections', element: <Navigate to="/persona/connections" replace /> },
           { path: 'persona/edit', element: <EditProfileRoute /> },
+          { path: 'edit-profile', element: <Navigate to="/persona/edit" replace /> },
+          { path: 'profile/edit', element: <Navigate to="/persona/edit" replace /> },
           { path: 'persona/settings', element: <SettingsRoute /> },
+          { path: 'settings', element: <Navigate to="/persona/settings" replace /> },
           { path: 'persona/switch-account', element: <SwitchAccountRoute /> },
+          { path: 'switch-account', element: <Navigate to="/persona/switch-account" replace /> },
           { path: 'explore', element: <ExploreRoute /> },
           { path: 'notifications', element: <NotificationsRoute /> },
           { path: 'story/create', element: <StoryCreatorRoute /> },
+          { path: 'story-creator', element: <Navigate to="/story/create" replace /> },
+          { path: 'create', element: <Navigate to="/story/create" replace /> },
+          { path: 'story', element: <StoryViewerRoute /> },
           { path: 'story/:id', element: <StoryViewerRoute /> },
         ],
       },

@@ -4,6 +4,7 @@ import { User } from '../../types';
 import { Settings, Grid, Bookmark, Play, Share2, Ghost, Lock, Globe, Heart, Star, MoreHorizontal, Archive, Trash2, Eye, Clock, MessageSquare, X, Send } from 'lucide-react';
 import { HushNote } from '../../types';
 import { OptimizedImg } from '../common/OptimizedImg';
+import { useToast } from '../../src/context/ToastContext';
 
 interface PersonaPageProps {
   user: User | null;
@@ -17,6 +18,15 @@ interface PersonaPageProps {
   userNotes?: HushNote[];
 }
 
+const GRID_IMAGES = [
+  'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80'
+];
+
 export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({ 
   user, 
   isGhostMode, 
@@ -27,13 +37,14 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
   onConnections, 
   onEditProfile 
 }) => {
+  const { showToast } = useToast();
   const [isPrivate, setIsPrivate] = useState(user?.isPrivate || false);
   const [activeTab, setActiveTab] = useState<'posts' | 'saved' | 'zaps' | 'stories'>('posts');
   const [archivedStories, setArchivedStories] = useState([
-    { id: 'as1', imageUrl: 'https://picsum.photos/seed/arch1/400/700', timestamp: '2 days ago', views: 142, likes: 24 },
-    { id: 'as2', imageUrl: 'https://picsum.photos/seed/arch2/400/700', timestamp: '5 days ago', views: 98, likes: 12 },
-    { id: 'as3', imageUrl: 'https://picsum.photos/seed/arch3/400/700', timestamp: '1 week ago', views: 220, likes: 45 },
-    { id: 'as4', imageUrl: 'https://picsum.photos/seed/arch4/400/700', timestamp: '2 weeks ago', views: 185, likes: 30 },
+    { id: 'as1', imageUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80', timestamp: '2 days ago', views: 142, likes: 24 },
+    { id: 'as2', imageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80', timestamp: '5 days ago', views: 98, likes: 12 },
+    { id: 'as3', imageUrl: 'https://images.unsplash.com/photo-1477959858617-67f30bc75b82?auto=format&fit=crop&w=600&q=80', timestamp: '1 week ago', views: 220, likes: 45 },
+    { id: 'as4', imageUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80', timestamp: '2 weeks ago', views: 185, likes: 30 },
   ]);
   const [selectedArchivedStory, setSelectedArchivedStory] = useState<any | null>(null);
 
@@ -59,7 +70,7 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
   };
 
   const handleShareStoryAsPost = (_story: { id: string }) => {
-    alert("Shared archived story as active post!");
+    showToast("Shared archived story as active post!", 'success');
     setSelectedArchivedStory(null);
   };
 
@@ -75,7 +86,6 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
   };
 
   const handlePostClick = (index: number) => {
-    const seed = `p-${activeTab}-${index}`;
     const captions = [
       "Moments captured in full flow ✨ #vizu #vibes",
       "Sunset reflections and late night thoughts 🌅",
@@ -87,13 +97,13 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
 
     setSelectedPostDetail({
       id: `post-${index}`,
-      imageUrl: `https://picsum.photos/seed/${seed}/800`,
+      imageUrl: GRID_IMAGES[index % GRID_IMAGES.length] || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80',
       caption: captions[index % captions.length] ?? "Moments captured in full flow ✨ #vizu #vibes",
       likes: 142 + index * 37,
       commentsCount: 18 + index * 4,
       comments: [
-        { id: 'c1', user: 'Elena Vance', avatar: 'https://picsum.photos/seed/elena/100', text: 'This aesthetic is unreal! 😍', time: '2h ago' },
-        { id: 'c2', user: 'Marcus Wright', avatar: 'https://picsum.photos/seed/marcus/100', text: 'Stunning shot bro 🔥', time: '1h ago' },
+        { id: 'c1', user: 'Elena Vance', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80', text: 'This aesthetic is unreal! 😍', time: '2h ago' },
+        { id: 'c2', user: 'Marcus Wright', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80', text: 'Stunning shot bro 🔥', time: '1h ago' },
       ],
       timestamp: `${index + 1}d ago`,
       isLiked: false,
@@ -133,19 +143,21 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
   }
 
   return (
-    <div className={`min-h-full pb-24 transition-all duration-700 ${isGhostMode ? 'bg-[var(--app-bg-ghost)] text-[#F1FAEE]' : 'bg-[var(--app-bg,var(--app-bg))] text-[var(--text-primary dark:text-white,var(--text-primary dark:text-white))]'}`}>
+    <div className={`min-h-full pb-24 transition-all duration-700 ${isGhostMode ? 'bg-[var(--app-bg-ghost)] text-[#F1FAEE]' : 'bg-[var(--app-bg)] text-slate-900 dark:text-[#F1FAEE]'}`}>
       <header className={`p-6 flex justify-between items-center transition-colors duration-500 ${isGhostMode ? 'bg-[var(--app-bg-ghost)] shadow-lg shadow-[color-mix(in_srgb,var(--app-accent)_10%,transparent)]' : 'bg-[var(--app-primary)] text-white'}`}>
-        <h1 className="text-xl font-bold font-montserrat">Persona</h1>
-        <div className="flex items-center gap-2">
-          <button onClick={handleToggleGhostWithHaptic} className={`p-2 rounded-xl transition-all ${isGhostMode ? 'bg-[var(--app-accent-light)] text-[var(--app-bg-ghost)] shadow-glow' : 'bg-white/10'}`} title="Ghost Mode"><Ghost size={22} /></button>
-          <button onClick={onSettings} className="p-2 hover:bg-white/10 rounded-xl transition-all" title="Settings"><Settings size={22} /></button>
+        <div className="max-w-3xl mx-auto w-full flex justify-between items-center">
+          <h1 className="text-xl font-bold font-montserrat">Persona</h1>
+          <div className="flex items-center gap-2">
+            <button onClick={handleToggleGhostWithHaptic} className={`p-2 rounded-xl transition-all ${isGhostMode ? 'bg-[var(--app-accent-light)] text-[var(--app-bg-ghost)] shadow-glow' : 'bg-white/10'}`} title="Ghost Mode"><Ghost size={22} /></button>
+            <button onClick={onSettings} className="p-2 hover:bg-white/10 rounded-xl transition-all" title="Settings"><Settings size={22} /></button>
+          </div>
         </div>
       </header>
 
-      <div className="relative">
+      <div className="max-w-3xl mx-auto w-full relative">
         {/* Cover */}
         <div className={`h-48 relative overflow-hidden transition-all duration-700 ${isGhostMode ? 'opacity-30 grayscale brightness-50' : 'opacity-100'}`}>
-          <OptimizedImg src="https://picsum.photos/seed/cover/800/400" alt="Cover" width={800} height={400} loading="lazy" className="w-full h-full object-cover" />
+          <OptimizedImg src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" alt="Cover" width={800} height={400} loading="lazy" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           {isGhostMode && <div className="absolute inset-0 bg-[color-mix(in_srgb,var(--app-accent)_10%,transparent)]" />}
         </div>
@@ -157,19 +169,19 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
                  <OptimizedImg src={user.avatar} alt={user.displayName} width={128} height={128} loading="lazy" className="w-32 h-32 rounded-[2.8rem] border-4 border-transparent object-cover group-hover:scale-105 transition-transform" />
               </div>
               <div className={`absolute -bottom-1 -right-1 w-8 h-8 rounded-full border-4 flex items-center justify-center ${isGhostMode ? 'bg-[var(--app-accent)] border-[var(--app-bg-ghost)]' : 'bg-[var(--app-accent)] border-[var(--app-primary)]'}`}>
-                 <Star size={12} className="text-primary dark:text-white" fill="currentColor" />
+                 <Star size={12} className="text-slate-900 dark:text-[#F1FAEE]" fill="currentColor" />
               </div>
             </div>
             <div className="flex gap-2 mb-2">
-               <button className={`p-3.5 rounded-2xl shadow-lg transition-all active:scale-90 ${isGhostMode ? 'bg-[var(--app-bg-ghost)] text-[var(--app-accent-light)] border border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)]' : 'bg-[var(--app-bg-surface)] text-primary dark:text-white '}`}><Share2 size={20} /></button>
-               <button onClick={onEditProfile} className={`px-8 py-3.5 rounded-2xl shadow-xl font-black text-xs uppercase tracking-widest transition-all active:scale-95 ${isGhostMode ? 'bg-[var(--app-accent)] text-primary dark:text-white' : 'bg-[var(--app-accent)] text-primary dark:text-white'}`}>Edit</button>
+               <button className={`p-3.5 rounded-2xl shadow-lg transition-all active:scale-90 ${isGhostMode ? 'bg-[var(--app-bg-ghost)] text-[var(--app-accent-light)] border border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)]' : 'bg-[var(--app-bg-surface)] text-slate-900 dark:text-[#F1FAEE] '}`}><Share2 size={20} /></button>
+               <button onClick={onEditProfile} className={`px-8 py-3.5 rounded-2xl shadow-xl font-black text-xs uppercase tracking-widest transition-all active:scale-95 ${isGhostMode ? 'bg-[var(--app-accent)] text-[#062B34] font-black' : 'bg-[var(--app-accent)] text-[#062B34] font-black'}`}>Edit</button>
             </div>
           </div>
 
           <div className="mb-8">
             <div className="flex items-center justify-between mb-1">
               <h2 className="text-3xl font-black">{user.displayName}</h2>
-              <button className={`p-2 rounded-xl ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-primary/40 dark:text-white/40 hover:text-primary dark:text-white'}`}><MoreHorizontal size={20} /></button>
+              <button className={`p-2 rounded-xl ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-[#F1FAEE]'}`}><MoreHorizontal size={20} /></button>
             </div>
             <p className={`font-black text-sm mb-6 tracking-widest uppercase ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-[var(--app-accent)]'}`}>@{user.username}</p>
             
@@ -177,15 +189,15 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
             <div className="flex gap-8 mb-8">
               <button className="flex flex-col items-start group" onClick={onConnections}>
                 <span className="text-xl font-black">1.2K</span>
-                <span className={`text-[10px] font-black uppercase tracking-widest transition-colors ${isGhostMode ? 'text-[var(--app-accent-light)] group-hover:text-primary dark:text-white' : 'text-primary/40 dark:text-white/40 group-hover:text-[var(--app-accent)]'}`}>Followers</span>
+                <span className={`text-[10px] font-black uppercase tracking-widest transition-colors ${isGhostMode ? 'text-[var(--app-accent-light)] group-hover:text-slate-900 dark:text-[#F1FAEE]' : 'text-slate-500 dark:text-slate-400 group-hover:text-[var(--app-accent)]'}`}>Followers</span>
               </button>
               <button className="flex flex-col items-start group" onClick={onConnections}>
                 <span className="text-xl font-black">482</span>
-                <span className={`text-[10px] font-black uppercase tracking-widest transition-colors ${isGhostMode ? 'text-[var(--app-accent-light)] group-hover:text-primary dark:text-white' : 'text-primary/40 dark:text-white/40 group-hover:text-[var(--app-accent)]'}`}>Following</span>
+                <span className={`text-[10px] font-black uppercase tracking-widest transition-colors ${isGhostMode ? 'text-[var(--app-accent-light)] group-hover:text-slate-900 dark:text-[#F1FAEE]' : 'text-slate-500 dark:text-slate-400 group-hover:text-[var(--app-accent)]'}`}>Following</span>
               </button>
             </div>
 
-            <p className={`text-sm leading-relaxed mb-10 ${isGhostMode ? 'text-primary/40 dark:text-white/40' : 'text-primary dark:text-white/80'}`}>{user.bio}</p>
+            <p className={`text-sm leading-relaxed mb-10 ${isGhostMode ? 'text-slate-500 dark:text-slate-400' : 'text-slate-500 dark:text-slate-400'}`}>{user.bio}</p>
 
             {/* Account Status Toggle */}
             {!isGhostMode && (
@@ -215,28 +227,28 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
           <div className="flex border-b border-white/10 mb-6 overflow-x-auto no-scrollbar">
             <button 
               onClick={() => setActiveTab('posts')}
-              className={`flex-1 min-w-[70px] py-4 text-[9px] font-black uppercase tracking-wider transition-all border-b-2 ${activeTab === 'posts' ? (isGhostMode ? 'text-[var(--app-accent-light)] border-[var(--app-accent-light)]' : 'text-[var(--app-accent)] border-[var(--app-accent)]') : 'text-primary/40 dark:text-white/40 hover:text-primary dark:text-white border-transparent'}`}
+              className={`flex-1 min-w-[70px] py-4 text-[9px] font-black uppercase tracking-wider transition-all border-b-2 ${activeTab === 'posts' ? (isGhostMode ? 'text-[var(--app-accent-light)] border-[var(--app-accent-light)]' : 'text-[var(--app-accent)] border-[var(--app-accent)]') : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-[#F1FAEE] border-transparent'}`}
             >
               <Grid size={15} className="mx-auto mb-1" />
               Posts
             </button>
             <button 
               onClick={() => setActiveTab('zaps')}
-              className={`flex-1 min-w-[70px] py-4 text-[9px] font-black uppercase tracking-wider transition-all border-b-2 ${activeTab === 'zaps' ? (isGhostMode ? 'text-[var(--app-accent-light)] border-[var(--app-accent-light)]' : 'text-[var(--app-accent)] border-[var(--app-accent)]') : 'text-primary/40 dark:text-white/40 hover:text-primary dark:text-white border-transparent'}`}
+              className={`flex-1 min-w-[70px] py-4 text-[9px] font-black uppercase tracking-wider transition-all border-b-2 ${activeTab === 'zaps' ? (isGhostMode ? 'text-[var(--app-accent-light)] border-[var(--app-accent-light)]' : 'text-[var(--app-accent)] border-[var(--app-accent)]') : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-[#F1FAEE] border-transparent'}`}
             >
               <Play size={15} className="mx-auto mb-1" />
               Zaps
             </button>
             <button 
               onClick={() => setActiveTab('saved')}
-              className={`flex-1 min-w-[70px] py-4 text-[9px] font-black uppercase tracking-wider transition-all border-b-2 ${activeTab === 'saved' ? (isGhostMode ? 'text-[var(--app-accent-light)] border-[var(--app-accent-light)]' : 'text-[var(--app-accent)] border-[var(--app-accent)]') : 'text-primary/40 dark:text-white/40 hover:text-primary dark:text-white border-transparent'}`}
+              className={`flex-1 min-w-[70px] py-4 text-[9px] font-black uppercase tracking-wider transition-all border-b-2 ${activeTab === 'saved' ? (isGhostMode ? 'text-[var(--app-accent-light)] border-[var(--app-accent-light)]' : 'text-[var(--app-accent)] border-[var(--app-accent)]') : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-[#F1FAEE] border-transparent'}`}
             >
               <Bookmark size={15} className="mx-auto mb-1" />
               Saved
             </button>
             <button 
               onClick={() => setActiveTab('stories')}
-              className={`flex-1 min-w-[70px] py-4 text-[9px] font-black uppercase tracking-wider transition-all border-b-2 ${activeTab === 'stories' ? (isGhostMode ? 'text-[var(--app-accent-light)] border-[var(--app-accent-light)]' : 'text-[var(--app-accent)] border-[var(--app-accent)]') : 'text-primary/40 dark:text-white/40 hover:text-primary dark:text-white border-transparent'}`}
+              className={`flex-1 min-w-[70px] py-4 text-[9px] font-black uppercase tracking-wider transition-all border-b-2 ${activeTab === 'stories' ? (isGhostMode ? 'text-[var(--app-accent-light)] border-[var(--app-accent-light)]' : 'text-[var(--app-accent)] border-[var(--app-accent)]') : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-[#F1FAEE] border-transparent'}`}
             >
               <Archive size={15} className="mx-auto mb-1" />
               Stories
@@ -254,7 +266,7 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
                   }`}
                 >
                   <OptimizedImg src={story.imageUrl} alt="Archived story" width={200} height={350} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent flex flex-col justify-end p-4 text-primary dark:text-white">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent flex flex-col justify-end p-4 text-slate-900 dark:text-[#F1FAEE]">
                     <p className="text-[10px] uppercase font-black tracking-widest text-[var(--app-accent)] flex items-center gap-1">
                       <Clock size={10} /> {story.timestamp}
                     </p>
@@ -286,14 +298,14 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
                      isGhostMode ? 'opacity-60 grayscale hover:grayscale-0 hover:opacity-100' : ''
                    }`}
                  >
-                    <OptimizedImg src={`https://picsum.photos/seed/p-${activeTab}-${i}/400`} alt={`Post ${i + 1}`} width={200} height={200} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 text-primary dark:text-white text-xs font-bold">
+                    <OptimizedImg src={GRID_IMAGES[i % GRID_IMAGES.length] || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80'} alt={`Post ${i + 1}`} width={200} height={200} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 text-slate-900 dark:text-[#F1FAEE] text-xs font-bold">
                       <span className="flex items-center gap-1"><Heart size={14} fill="currentColor" className="text-red-400" /> {142 + i * 37}</span>
                       <span className="flex items-center gap-1"><MessageSquare size={14} fill="currentColor" /> {18 + i * 4}</span>
                     </div>
                     {activeTab === 'zaps' && (
                       <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Play size={24} className="text-primary dark:text-white" fill="currentColor" />
+                        <Play size={24} className="text-slate-900 dark:text-[#F1FAEE]" fill="currentColor" />
                       </div>
                     )}
                  </div>
@@ -307,7 +319,7 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
       {selectedPostDetail && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md animate-fade-in overflow-y-auto">
           <div className={`w-full max-w-lg rounded-[2.5rem] p-6 shadow-2xl animate-scale-up border my-auto ${
-            isGhostMode ? 'bg-[var(--app-primary)] text-[#F1FAEE] border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)]' : 'bg-white text-primary dark:text-white border-black/5'
+            isGhostMode ? 'bg-[var(--app-primary)] text-[#F1FAEE] border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)]' : 'bg-white text-slate-900 dark:text-[#F1FAEE] border-black/5'
           }`}>
             {/* Header */}
             <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
@@ -320,7 +332,7 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
               </div>
               <button 
                 onClick={() => setSelectedPostDetail(null)}
-                className={`p-2 rounded-xl transition-all ${isGhostMode ? 'hover:bg-white/10 text-primary/40 dark:text-white/40' : 'hover:bg-black/5 text-primary/40 dark:text-white/40'}`}
+                className={`p-2 rounded-xl transition-all ${isGhostMode ? 'hover:bg-white/10 text-slate-500 dark:text-slate-400' : 'hover:bg-black/5 text-slate-500 dark:text-slate-400'}`}
               >
                 <X size={20} />
               </button>
@@ -337,30 +349,30 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
                 <button 
                   onClick={handleToggleLikePost}
                   className={`flex items-center gap-1.5 text-xs font-bold transition-all active:scale-90 ${
-                    selectedPostDetail.isLiked ? 'text-red-500' : isGhostMode ? 'text-primary/40 dark:text-white/40 hover:text-primary dark:text-white' : 'text-primary/40 dark:text-white/40 hover:text-primary dark:text-white'
+                    selectedPostDetail.isLiked ? 'text-red-500' : isGhostMode ? 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-[#F1FAEE]' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-[#F1FAEE]'
                   }`}
                 >
                   <Heart size={20} fill={selectedPostDetail.isLiked ? 'currentColor' : 'none'} />
                   <span>{selectedPostDetail.likes}</span>
                 </button>
 
-                <div className={`flex items-center gap-1.5 text-xs font-bold ${isGhostMode ? 'text-primary/40 dark:text-white/40' : 'text-primary/40 dark:text-white/40'}`}>
+                <div className={`flex items-center gap-1.5 text-xs font-bold ${isGhostMode ? 'text-slate-500 dark:text-slate-400' : 'text-slate-500 dark:text-slate-400'}`}>
                   <MessageSquare size={19} />
                   <span>{selectedPostDetail.commentsCount}</span>
                 </div>
 
-                <button className={`transition-all active:scale-90 ${isGhostMode ? 'text-primary/40 dark:text-white/40 hover:text-primary dark:text-white' : 'text-primary/40 dark:text-white/40 hover:text-primary dark:text-white'}`}>
+                <button className={`transition-all active:scale-90 ${isGhostMode ? 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-[#F1FAEE]' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-[#F1FAEE]'}`}>
                   <Share2 size={19} />
                 </button>
               </div>
 
-              <button className={`transition-all active:scale-90 ${isGhostMode ? 'text-primary/40 dark:text-white/40 hover:text-primary dark:text-white' : 'text-primary/40 dark:text-white/40 hover:text-primary dark:text-white'}`}>
+              <button className={`transition-all active:scale-90 ${isGhostMode ? 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-[#F1FAEE]' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-[#F1FAEE]'}`}>
                 <Bookmark size={19} />
               </button>
             </div>
 
             {/* Caption */}
-            <p className={`text-xs font-medium leading-relaxed mb-4 ${isGhostMode ? 'text-primary dark:text-white' : 'text-primary dark:text-white/80'}`}>
+            <p className={`text-xs font-medium leading-relaxed mb-4 ${isGhostMode ? 'text-slate-900 dark:text-[#F1FAEE]' : 'text-slate-500 dark:text-slate-400'}`}>
               {selectedPostDetail.caption}
             </p>
 
@@ -372,7 +384,7 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-[11px]">
                       {comment.user}{' '}
-                      <span className={`font-normal opacity-80 ml-1 ${isGhostMode ? 'text-primary/40 dark:text-white/40' : 'text-primary/40 dark:text-white/40'}`}>{comment.text}</span>
+                      <span className={`font-normal opacity-80 ml-1 ${isGhostMode ? 'text-slate-500 dark:text-slate-400' : 'text-slate-500 dark:text-slate-400'}`}>{comment.text}</span>
                     </p>
                     <p className="text-[9px] opacity-40 font-mono mt-0.5">{comment.time}</p>
                   </div>
@@ -389,7 +401,7 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
                 onKeyDown={(e) => e.key === 'Enter' && handleAddComment()}
                 placeholder="Add a comment..."
                 className={`flex-1 px-4 py-2.5 rounded-xl text-xs focus:outline-none border transition-all ${
-                  isGhostMode ? 'bg-white/10 border-white/10 text-primary dark:text-white placeholder:text-primary/40 dark:text-white/40' : 'bg-primary/5 border-primary/10 text-primary dark:text-white placeholder:text-primary/40 dark:text-white/40'
+                  isGhostMode ? 'bg-white/10 border-white/10 text-slate-900 dark:text-[#F1FAEE] placeholder:text-slate-500 dark:text-slate-400' : 'bg-primary/5 border-primary/10 text-slate-900 dark:text-[#F1FAEE] placeholder:text-slate-500 dark:text-slate-400'
                 }`}
               />
               <button
@@ -407,7 +419,7 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
       {selectedArchivedStory && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-black/70 backdrop-blur-md animate-fade-in">
           <div className={`w-full max-w-sm rounded-[2.5rem] p-6 shadow-2xl animate-scale-up border ${
-            isGhostMode ? 'bg-[var(--app-primary)] text-[#F1FAEE] border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)]' : 'bg-white text-primary dark:text-white border-black/5'
+            isGhostMode ? 'bg-[var(--app-primary)] text-[#F1FAEE] border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)]' : 'bg-white text-slate-900 dark:text-[#F1FAEE] border-black/5'
           }`}>
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-black uppercase tracking-widest flex items-center gap-2">
@@ -423,7 +435,7 @@ export const PersonaPage: React.FC<PersonaPageProps> = React.memo(({
             
             <div className="aspect-[9/16] rounded-2xl overflow-hidden relative mb-4">
               <OptimizedImg src={selectedArchivedStory.imageUrl} alt="Archived story detail" width={300} height={533} loading="lazy" className="w-full h-full object-cover" />
-              <div className="absolute bottom-4 left-4 right-4 bg-black/60 p-3 rounded-xl backdrop-blur-sm text-primary dark:text-white text-xs flex justify-between">
+              <div className="absolute bottom-4 left-4 right-4 bg-black/60 p-3 rounded-xl backdrop-blur-sm text-slate-900 dark:text-[#F1FAEE] text-xs flex justify-between">
                 <span className="flex items-center gap-1"><Eye size={12} /> {selectedArchivedStory.views} Views</span>
                 <span className="flex items-center gap-1 text-red-400"><Heart size={12} fill="currentColor" /> {selectedArchivedStory.likes} Likes</span>
               </div>
