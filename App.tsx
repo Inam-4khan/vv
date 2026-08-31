@@ -12,6 +12,7 @@ import { InstallPrompt } from './src/components/common/InstallPrompt';
 import { useAppState } from './src/context/AppStateContext';
 import { useAuth } from './src/context/AuthContext';
 import { pathToPage, pageToPath } from './src/router/routes';
+import { parseLocalStorage, setLocalStorage, isHushNoteArray } from './src/utils/storage';
 
 export interface AppOutletContext {
   hushNotes: HushNote[];
@@ -26,6 +27,36 @@ export interface AppOutletContext {
   toggleGhostMode: () => void;
   toggleThemeMode: () => void;
 }
+
+interface ServerNoteResponse {
+  id?: string | number;
+  _id?: string | number;
+  userId?: string | number;
+  userUid?: string | number;
+  userName?: string;
+  username?: string;
+  userAvatar?: string | null;
+  avatar?: string | null;
+  text?: string;
+  musicTitle?: string | null;
+  musicArtist?: string | null;
+  createdAt?: string | number | Date;
+  expiresAt?: string | number | Date;
+  lat?: number;
+  lng?: number;
+}
+
+const mapServerToHushNote = (n: ServerNoteResponse): HushNote => ({
+  id: String(n.id ?? n._id ?? `note-${Date.now()}`),
+  userId: String(n.userUid ?? n.userId ?? 'unknown'),
+  username: n.userName ?? n.username ?? 'Explorer',
+  avatar: n.userAvatar ?? n.avatar ?? 'https://picsum.photos/seed/anon/200',
+  text: n.text ?? '',
+  music: n.musicTitle ? { title: n.musicTitle, artist: n.musicArtist ?? '' } : undefined,
+  timestamp: n.createdAt
+    ? new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    : new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+});
 
 export const AppLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -45,51 +76,63 @@ export const AppLayout: React.FC = () => {
 
   const [isGhostTransitioning, setIsGhostTransitioning] = useState(false);
   
-  const [hushNotes, setHushNotes] = useState<HushNote[]>(MOCK_HUSH_NOTES);
+  const [hushNotes, setHushNotes] = useState<HushNote[]>(() =>
+    parseLocalStorage<HushNote[]>('hush_all_notes', isHushNoteArray, MOCK_HUSH_NOTES)
+  );
   const [isLoadingNotes, setIsLoadingNotes] = useState(false);
   const [_hasLoadedNotes, setHasLoadedNotes] = useState(false);
-  const { accessToken } = useAuth();
+  
+  // Guard useAuth safely
+  const auth = useAuth();
+  const accessToken = auth?.accessToken ?? null;
+
+  // Synchronize notes state with local storage for offline resilience
+  useEffect(() => {
+    if (hushNotes && hushNotes.length > 0) {
+      setLocalStorage('hush_all_notes', hushNotes);
+    }
+  }, [hushNotes]);
   
   useEffect(() => {
+    const controller = new AbortController();
+
     const fetchNotes = async () => {
       if (!accessToken) {
-        setHushNotes(MOCK_HUSH_NOTES);
         return;
       }
       setIsLoadingNotes(true);
       try {
         const res = await fetch('/api/notes', {
+          signal: controller.signal,
           headers: { 'Authorization': `Bearer ${accessToken}` }
         });
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data) && data.length > 0) {
-            const formattedNotes = data.map((n: { id: string | number; userUid: string | number; userName: string; userAvatar: string; text: string; musicTitle?: string; musicArtist?: string; createdAt: string | number | Date }) => ({
-              id: String(n.id),
-              userId: String(n.userUid),
-              username: n.userName,
-              avatar: n.userAvatar,
-              text: n.text,
-              music: n.musicTitle ? { title: n.musicTitle, artist: n.musicArtist } : undefined,
-              timestamp: new Date(n.createdAt).toLocaleTimeString()
-            }));
+            const formattedNotes = data.map(mapServerToHushNote);
             setHushNotes(formattedNotes);
             setHasLoadedNotes(true);
-          } else {
+          } else if (Array.isArray(data)) {
             setHushNotes([]);
             setHasLoadedNotes(true);
           }
         } else {
-          throw new Error('Failed to fetch notes');
+          console.warn('Failed to fetch notes from server, status:', res.status);
+          setHasLoadedNotes(false);
         }
-      } catch (err) {
+      } catch (err: unknown) {
+        if ((err as Error)?.name === 'AbortError') {
+          return;
+        }
         console.error('Failed to fetch notes:', err);
         setHasLoadedNotes(false);
       } finally {
         setIsLoadingNotes(false);
       }
     };
+
     fetchNotes();
+    return () => controller.abort();
   }, [accessToken]);
   
 
@@ -124,36 +167,54 @@ export const AppLayout: React.FC = () => {
   }, [location.pathname]);
 
   
-  const [isSavingNote, setIsSavingNote] = useState(false);
+  const [_isSavingNote, setIsSavingNote] = useState(false);
 
   const handleAddHushNote = async (newNote: HushNote) => {
-    // Add optimistically
-    setHushNotes(prev => [newNote, ...prev]);
+    const tempId = `temp-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    const optimisticNote: HushNote = {
+      ...newNote,
+      id: tempId,
+    };
+
+    // 1. Optimistic insert
+    setHushNotes(prev => [optimisticNote, ...prev]);
     showToast('Secret whisper note published!', 'success');
     
     if (accessToken) {
       setIsSavingNote(true);
       try {
+        const payload: Record<string, unknown> = {
+          text: newNote.text,
+          musicTitle: newNote.music?.title,
+          musicArtist: newNote.music?.artist
+        };
+        const noteWithCoords = newNote as HushNote & { lat?: number; lng?: number };
+        if (noteWithCoords.lat != null) payload.lat = noteWithCoords.lat;
+        if (noteWithCoords.lng != null) payload.lng = noteWithCoords.lng;
+
         const res = await fetch('/api/notes', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`
           },
-          body: JSON.stringify({
-            text: newNote.text,
-            lat: 0,
-            lng: 0,
-            musicTitle: newNote.music?.title,
-            musicArtist: newNote.music?.artist
-          })
+          body: JSON.stringify(payload)
         });
-        if (!res.ok) throw new Error('Failed to save note');
+
+        if (!res.ok) {
+          throw new Error(`Server responded with ${res.status}`);
+        }
+
+        const saved = await res.json();
+        const serverNote = mapServerToHushNote(saved);
+
+        // Reconcile temporary optimistic ID with server ID
+        setHushNotes(prev => prev.map(n => (n.id === tempId ? { ...optimisticNote, id: serverNote.id } : n)));
       } catch (e) {
         console.error('Failed to save note:', e);
-        // Rollback: Remove the note if API fails
-        setHushNotes(prev => prev.filter(note => note.id !== newNote.id));
-        showToast('Failed to save note. Rolled back.', 'error');
+        // Rollback: Remove the optimistic note if API fails
+        setHushNotes(prev => prev.filter(note => note.id !== tempId));
+        showToast('Failed to save note to server. Rolled back.', 'error');
       } finally {
         setIsSavingNote(false);
       }
@@ -239,9 +300,9 @@ export const AppLayout: React.FC = () => {
   const isDarkPage = ['launch', 'initial', 'loading'].includes(currentPage) || location.pathname === '/launch' || location.pathname === '/initial' || location.pathname === '/loading';
 
   const getAppBgClass = () => {
-    if (isDarkPage) return 'bg-[var(--app-primary)] text-[#F1FAEE]';
-    if (isGlobalGhostMode) return 'bg-[var(--app-bg-ghost)] text-[#F1FAEE]';
-    return 'bg-[var(--app-bg)] text-slate-900 dark:text-[#F1FAEE]';
+    if (isDarkPage) return 'bg-[var(--app-primary)] text-[var(--text-on-dark)]';
+    if (isGlobalGhostMode) return 'bg-[var(--app-bg-ghost)] text-[var(--text-on-dark)]';
+    return 'bg-[var(--app-bg)] text-slate-900 dark:text-[var(--text-on-dark)]';
   };
 
   const outletContext: AppOutletContext = {
@@ -264,7 +325,7 @@ export const AppLayout: React.FC = () => {
       {/* Skip to Main Content Link for Screen Readers & Keyboard Users */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[500] focus:px-4 focus:py-2 focus:bg-[var(--app-accent)] focus:text-slate-900 dark:text-[#F1FAEE] focus:font-black focus:rounded-xl focus:shadow-2xl focus:outline-none focus:ring-2 focus:ring-white"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[500] focus:px-4 focus:py-2 focus:bg-[var(--app-accent)] focus:text-slate-900 dark:text-[var(--text-on-dark)] focus:font-black focus:rounded-xl focus:shadow-2xl focus:outline-none focus:ring-2 focus:ring-white"
       >
         Skip to main content
       </a>

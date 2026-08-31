@@ -11,6 +11,7 @@
   --app-bg-surface2:#FFF8E1;
   --app-bg-ghost:   #03171C;
   --text-primary:   #0B1720;
+  --text-on-dark:   #F1FAEE;
   --on-bg:          #0B1720;
   --on-bg-muted:    rgba(11,23,32,0.6);
   --on-primary:     #FFF9E6;
@@ -29,6 +30,7 @@
   --app-bg-surface2:#0D3340;
   --app-bg-ghost:   #03171C;
   --text-primary:   #F1FAEE;
+  --text-on-dark:   #F1FAEE;
   --on-bg:          #F1FAEE;
   --on-bg-muted:    rgba(241,250,238,0.6);
   --on-primary:     #F1FAEE;
@@ -45,6 +47,7 @@
   --app-bg:         #03171C;
   --app-bg-surface: #062B34;
   --app-bg-surface2:#0C3B46;
+  --text-on-dark:   #80FFEC;
   --on-bg:          #80FFEC;
   --on-bg-muted:    rgba(128,255,236,0.6);
   --on-primary:     #80FFEC;
