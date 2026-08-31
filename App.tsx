@@ -16,7 +16,7 @@ import { pathToPage, pageToPath } from './src/router/routes';
 export interface AppOutletContext {
   hushNotes: HushNote[];
   isLoadingNotes: boolean;
-  handleAddHushNote: (newNote: HushNote) => void;
+  handleAddHushNote: (newNote: HushNote) => Promise<void>;
   handleStartOnboarding: () => void;
   handleFinishSplash: () => void;
   handleNextSplash: () => void;
@@ -47,32 +47,44 @@ export const AppLayout: React.FC = () => {
   
   const [hushNotes, setHushNotes] = useState<HushNote[]>(MOCK_HUSH_NOTES);
   const [isLoadingNotes, setIsLoadingNotes] = useState(false);
+  const [_hasLoadedNotes, setHasLoadedNotes] = useState(false);
   const { accessToken } = useAuth();
   
   useEffect(() => {
     const fetchNotes = async () => {
-      if (!accessToken) return;
+      if (!accessToken) {
+        setHushNotes(MOCK_HUSH_NOTES);
+        return;
+      }
       setIsLoadingNotes(true);
       try {
         const res = await fetch('/api/notes', {
           headers: { 'Authorization': `Bearer ${accessToken}` }
         });
-        if (!res.ok) throw new Error('Failed to fetch');
-        const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
-          const formattedNotes = data.map((n: any) => ({
-            id: String(n.id),
-            userId: String(n.userUid),
-            username: n.userName,
-            avatar: n.userAvatar,
-            text: n.text,
-            music: n.musicTitle ? { title: n.musicTitle, artist: n.musicArtist } : undefined,
-            timestamp: new Date(n.createdAt).toLocaleTimeString()
-          }));
-          setHushNotes(formattedNotes);
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            const formattedNotes = data.map((n: { id: string | number; userUid: string | number; userName: string; userAvatar: string; text: string; musicTitle?: string; musicArtist?: string; createdAt: string | number | Date }) => ({
+              id: String(n.id),
+              userId: String(n.userUid),
+              username: n.userName,
+              avatar: n.userAvatar,
+              text: n.text,
+              music: n.musicTitle ? { title: n.musicTitle, artist: n.musicArtist } : undefined,
+              timestamp: new Date(n.createdAt).toLocaleTimeString()
+            }));
+            setHushNotes(formattedNotes);
+            setHasLoadedNotes(true);
+          } else {
+            setHushNotes([]);
+            setHasLoadedNotes(true);
+          }
+        } else {
+          throw new Error('Failed to fetch notes');
         }
       } catch (err) {
-        console.error(err);
+        console.error('Failed to fetch notes:', err);
+        setHasLoadedNotes(false);
       } finally {
         setIsLoadingNotes(false);
       }
@@ -136,12 +148,12 @@ export const AppLayout: React.FC = () => {
             musicArtist: newNote.music?.artist
           })
         });
-        if (!res.ok) throw new Error('Failed to fetch');
-      } catch (err) {
-        console.error(err);
-        showToast('Could not save note. Try again.', 'error');
-        // If we want to rollback optimistic update:
-        // setHushNotes(prev => prev.filter(n => n.id !== newNote.id));
+        if (!res.ok) throw new Error('Failed to save note');
+      } catch (e) {
+        console.error('Failed to save note:', e);
+        // Rollback: Remove the note if API fails
+        setHushNotes(prev => prev.filter(note => note.id !== newNote.id));
+        showToast('Failed to save note. Rolled back.', 'error');
       } finally {
         setIsSavingNote(false);
       }

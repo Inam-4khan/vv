@@ -27,7 +27,7 @@ interface HushPageProps {
   onCameraOpen: () => void;
   notes: HushNote[];
   isLoadingNotes?: boolean;
-  onAddNote: (note: HushNote) => void;
+  onAddNote: (note: HushNote) => void | Promise<void>;
 }
 
 // Proximity & Creation time background visual style variations
