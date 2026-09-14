@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { User as UserIcon, Mail, Lock, Eye, EyeOff, Loader2, ArrowLeft } from 'lucide-react';
 import { BrandLogo } from '../../components/common/BrandLogo';
 import { validateSignupForm } from '../utils/validation';
-import { useAuth } from '../context/AuthContext';
+import { AuthContext } from '../context/AuthContext';
 
 export interface SignupProps {
   onSignup?: (data?: any) => void;
@@ -19,7 +19,8 @@ export const Signup: React.FC<SignupProps> = ({
   onNavigate,
   onSuccess,
 }) => {
-  const { login } = useAuth();
+  const auth = React.useContext(AuthContext);
+  const login = auth?.login;
 
   const [formData, setFormData] = useState({
     name: '',
@@ -130,9 +131,9 @@ export const Signup: React.FC<SignupProps> = ({
       if (onSuccess) onSuccess(formData);
 
       if (onNavigate) {
-        onNavigate('/home');
+        onNavigate('/dashboard');
       } else if (typeof window !== 'undefined') {
-        window.history.pushState({}, '', '/home');
+        window.history.pushState({}, '', '/dashboard');
         window.dispatchEvent(new Event('popstate'));
       }
     } catch (err: any) {

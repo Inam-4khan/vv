@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Mail, Lock, Eye, EyeOff, Loader2, ArrowLeft, KeyRound, CheckCircle2 } from 'lucide-react';
 import { BrandLogo } from '../../components/common/BrandLogo';
 import { validateLoginForm } from '../utils/validation';
-import { useAuth } from '../context/AuthContext';
+import { AuthContext } from '../context/AuthContext';
 
 export interface LoginProps {
   onLogin?: (data?: any) => void;
@@ -21,8 +21,8 @@ export const Login: React.FC<LoginProps> = ({
   onSuccess,
   onBack,
 }) => {
-  const auth = useAuth();
-  const { loginWithGoogle } = auth;
+  const auth = React.useContext(AuthContext);
+  const loginWithGoogle = auth?.loginWithGoogle || (async () => {});
 
   const [mode, setMode] = useState<'login' | 'reset'>('login');
 
@@ -125,16 +125,13 @@ export const Login: React.FC<LoginProps> = ({
       // Prefer external handler if provided (tests / host app)
       if (onLogin) {
         onLogin(formData);
-      } else {
-        // Fallback: mark as logged in for demo (replace with real credential flow)
-        // NOTE: In production implement a credential-sign-in in AuthContext and call it here.
-        if (onSuccess) onSuccess(formData);
-        if (onNavigate) {
-          onNavigate('/home');
-        } else if (typeof window !== 'undefined') {
-          window.history.pushState({}, '', '/home');
-          window.dispatchEvent(new Event('popstate'));
-        }
+      }
+      if (onSuccess) onSuccess(formData);
+      if (onNavigate) {
+        onNavigate('/dashboard');
+      } else if (typeof window !== 'undefined') {
+        window.history.pushState({}, '', '/dashboard');
+        window.dispatchEvent(new Event('popstate'));
       }
     } catch (err: any) {
       setSubmitError(err.message || 'Login failed. Please check your credentials.');

@@ -85,7 +85,7 @@ const useAppOutletContext = (): AppOutletContext => {
     return {
       hushNotes: [],
       isLoadingNotes: false,
-      handleAddHushNote: () => {},
+      handleAddHushNote: async () => {},
       handleStartOnboarding: () => {},
       handleFinishSplash: () => {},
       handleNextSplash: () => {},
@@ -202,7 +202,7 @@ const PersonaRoute: React.FC = () => {
   const navigate = useNavigate();
   const { user, isGlobalGhostMode, isDarkMode } = useAppState();
   const { hushNotes, toggleGhostMode, toggleThemeMode } = useAppOutletContext();
-  const activeUser = user || MOCK_USERS[0];
+  const activeUser: User = user ?? MOCK_USERS[0]!;
   return (
     <PersonaPage
       user={activeUser}
@@ -235,7 +235,7 @@ const EditProfileRoute: React.FC = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const { user, setUser, isGlobalGhostMode } = useAppState();
-  const activeUser = user || MOCK_USERS[0];
+  const activeUser: User = user ?? MOCK_USERS[0]!;
   
   return (
     <EditProfilePage
@@ -278,7 +278,7 @@ const SwitchAccountRoute: React.FC = () => {
   const { handleAccountSwitch } = useAppOutletContext();
   return (
     <SwitchAccountPage
-      currentUser={user || MOCK_USERS[0]}
+      currentUser={user ?? MOCK_USERS[0]!}
       onSelect={handleAccountSwitch}
       onBack={() => navigate('/persona')}
     />

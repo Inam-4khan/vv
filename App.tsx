@@ -46,17 +46,22 @@ interface ServerNoteResponse {
   lng?: number;
 }
 
-const mapServerToHushNote = (n: ServerNoteResponse): HushNote => ({
-  id: String(n.id ?? n._id ?? `note-${Date.now()}`),
-  userId: String(n.userUid ?? n.userId ?? 'unknown'),
-  username: n.userName ?? n.username ?? 'Explorer',
-  avatar: n.userAvatar ?? n.avatar ?? 'https://picsum.photos/seed/anon/200',
-  text: n.text ?? '',
-  music: n.musicTitle ? { title: n.musicTitle, artist: n.musicArtist ?? '' } : undefined,
-  timestamp: n.createdAt
-    ? new Date(n.createdAt).toLocaleString()
-    : new Date().toLocaleString()
-});
+const mapServerToHushNote = (n: ServerNoteResponse): HushNote => {
+  const note: HushNote = {
+    id: String(n.id ?? n._id ?? `note-${Date.now()}`),
+    userId: String(n.userUid ?? n.userId ?? 'unknown'),
+    username: n.userName ?? n.username ?? 'Explorer',
+    avatar: n.userAvatar ?? n.avatar ?? 'https://picsum.photos/seed/anon/200',
+    text: n.text ?? '',
+    timestamp: n.createdAt
+      ? new Date(n.createdAt).toLocaleString()
+      : new Date().toLocaleString()
+  };
+  if (n.musicTitle) {
+    note.music = { title: n.musicTitle, artist: n.musicArtist ?? '' };
+  }
+  return note;
+};
 
 export const AppLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -65,6 +70,7 @@ export const AppLayout: React.FC = () => {
   const sidebarRef = React.useRef<HTMLElement>(null);
   const { showToast } = useToast();
   const {
+    user,
     setUser,
     splashIndex,
     setSplashIndex,
@@ -80,6 +86,7 @@ export const AppLayout: React.FC = () => {
     parseLocalStorage<HushNote[]>('hush_all_notes', isHushNoteArray, MOCK_HUSH_NOTES)
   );
   const [isLoadingNotes, setIsLoadingNotes] = useState(false);
+  const [, setHasLoadedNotes] = useState(false);
   
   // Guard useAuth safely
   const auth = useAuth();
@@ -333,6 +340,12 @@ export const AppLayout: React.FC = () => {
           onToggleGhost={toggleGhostMode}
           isDarkMode={isDarkMode}
           onToggleTheme={toggleThemeMode}
+          currentUser={user}
+          onLogout={() => {
+            setUser(null);
+            navigate('/');
+            showToast('Logged out of persona session', 'info');
+          }}
         />
       )}
 

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MOCK_POSTS, MOCK_STORIES, MOCK_USERS } from '../../constants';
 import { 
   Compass, 
@@ -14,12 +15,14 @@ import {
   Sparkles, 
   MapPin, 
   Music, 
-  X 
+  X,
+  Radio
 } from 'lucide-react';
 import { BrandLogo } from '../common/BrandLogo';
 import { OptimizedImg } from '../common/OptimizedImg';
 import { useToast } from '../../src/context/ToastContext';
 import { Post } from '../../types';
+import { DesktopRightSidebar } from '../navigation/DesktopRightSidebar';
 
 interface FlowPageProps {
   onExplore?: () => void;
@@ -37,7 +40,9 @@ const PRESET_MEDIA = [
 ];
 
 export const FlowPage: React.FC<FlowPageProps> = React.memo(({ onExplore, onNotifications, onAddStory, onViewStory, isGhostMode }) => {
+  const navigate = useNavigate();
   const { showToast } = useToast();
+  const [activeFeedTab, setActiveFeedTab] = useState<'forYou' | 'nearby' | 'following'>('forYou');
   const [posts, setPosts] = useState<Post[]>(MOCK_POSTS);
   const [likedPosts, setLikedPosts] = useState<string[]>([]);
   const [savedPosts, setSavedPosts] = useState<string[]>([]);
@@ -245,8 +250,54 @@ export const FlowPage: React.FC<FlowPageProps> = React.memo(({ onExplore, onNoti
         </div>
       </header>
 
-      {/* Stories Bar */}
-      <div className="max-w-2xl mx-auto w-full px-4 pt-5 pb-3">
+      {/* Desktop Responsive Multi-Column Layout Container */}
+      <div className="w-full max-w-7xl mx-auto px-4 lg:px-8 py-4 flex flex-col lg:flex-row gap-8 justify-center items-start">
+        {/* Central Feed Column */}
+        <div className="flex-1 max-w-2xl w-full mx-auto space-y-4 min-w-0">
+          
+          {/* Feed Filter Tabs */}
+          <div className="flex items-center justify-between p-1.5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-xs font-bold select-none">
+            <button
+              type="button"
+              onClick={() => setActiveFeedTab('forYou')}
+              className={`flex-1 py-2 rounded-xl transition-all cursor-pointer ${
+                activeFeedTab === 'forYou'
+                  ? 'bg-white dark:bg-[#0C3B46] text-slate-900 dark:text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              For You
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setActiveFeedTab('nearby');
+                showToast('Filtering feed by proximity mesh (within 1km) 📡', 'info');
+              }}
+              className={`flex-1 py-2 rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                activeFeedTab === 'nearby'
+                  ? 'bg-white dark:bg-[#0C3B46] text-slate-900 dark:text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <Radio size={12} className="text-[var(--app-accent)]" />
+              <span>Nearby (1km)</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveFeedTab('following')}
+              className={`flex-1 py-2 rounded-xl transition-all cursor-pointer ${
+                activeFeedTab === 'following'
+                  ? 'bg-white dark:bg-[#0C3B46] text-slate-900 dark:text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              Following
+            </button>
+          </div>
+
+          {/* Stories Bar */}
+          <div className="w-full pt-1 pb-1">
         <div className="flex items-center justify-between px-1 mb-2.5">
           <span className={`text-[10px] font-black uppercase tracking-[0.25em] ${isGhostMode ? 'text-[var(--app-accent-light)]' : 'text-slate-500 dark:text-slate-400'}`}>
             Live Stories & Vibes
@@ -305,7 +356,7 @@ export const FlowPage: React.FC<FlowPageProps> = React.memo(({ onExplore, onNoti
       </div>
 
       {/* Post Box / Create Post Box */}
-      <div className="max-w-2xl mx-auto w-full px-4 py-3">
+      <div className="w-full py-1">
         <form 
           onSubmit={handleCreatePost}
           className={`p-5 rounded-[2rem] border shadow-lg transition-all ${
@@ -457,7 +508,7 @@ export const FlowPage: React.FC<FlowPageProps> = React.memo(({ onExplore, onNoti
       </div>
 
       {/* Feed Posts */}
-      <div className="max-w-2xl mx-auto w-full px-4 pb-6 space-y-6">
+      <div className="w-full pb-6 space-y-6">
         {posts.map((post) => {
           const author = MOCK_USERS.find(u => u.username === post.username) || MOCK_USERS[0];
           const isLiked = likedPosts.includes(post.id);
@@ -637,6 +688,14 @@ export const FlowPage: React.FC<FlowPageProps> = React.memo(({ onExplore, onNoti
             </article>
           );
         })}
+          </div>
+        </div>
+
+        {/* Desktop Companion Widgets Sidebar */}
+        <DesktopRightSidebar
+          onNavigate={(path) => navigate(path)}
+          onOpenWhisperModal={() => navigate('/hush')}
+        />
       </div>
     </div>
   );

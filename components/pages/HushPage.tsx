@@ -178,10 +178,6 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({
     setQuickReplyText('');
   };
 
-  if (selectedUser) {
-    return <HushChatView user={selectedUser} onBack={() => setSelectedUser(null)} isGhostMode={isGhostMode} />;
-  }
-
   // Filter conversations
   const filteredUsers = MOCK_USERS.filter(u => {
     if (!searchQuery) return true;
@@ -190,74 +186,85 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({
   });
 
   return (
-    <div className={`min-h-full flex flex-col transition-colors duration-500 pb-24 ${
+    <div className={`min-h-full h-full flex flex-col md:flex-row transition-colors duration-500 overflow-hidden ${
       isGhostMode ? 'bg-[var(--app-bg-ghost)] text-[#F1FAEE]' : 'bg-[var(--app-bg)] text-slate-900 dark:text-[#F1FAEE]'
     }`}>
-      {/* Header */}
-      <header className={`p-5 sticky top-0 z-40 shadow-md transition-colors duration-500 text-white ${
-        isGhostMode ? 'bg-[var(--app-bg-ghost)]' : 'bg-[var(--app-primary)]'
-      }`}>
-        <div className="max-w-2xl mx-auto space-y-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2.5">
-              <h1 className="text-xl font-bold font-montserrat tracking-tight leading-none text-white">Hush</h1>
-              <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${
-                isGhostMode ? 'bg-[var(--app-accent)]/20 text-[var(--app-accent-light)] border border-[var(--app-accent)]/30' : 'bg-white/15 text-white'
-              }`}>
-                {isGhostMode ? 'Encrypted Mesh' : 'Proximity Chats'}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <button 
-                onClick={() => setIsNewChatModalOpen(true)}
-                className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95 flex items-center gap-1.5 text-xs font-bold"
-                title="New Whisper"
-              >
-                <MessageSquarePlus size={16} />
-                <span className="hidden sm:inline text-[11px]">New Chat</span>
-              </button>
-              <button 
-                onClick={() => setIsVaultOpen(!isVaultOpen)}
-                className={`p-2 rounded-xl transition-all border border-white/10 flex items-center gap-1.5 ${
-                  isVaultOpen 
-                    ? 'bg-[var(--app-accent)] text-slate-900 font-bold' 
-                    : 'bg-white/10 text-white hover:bg-white/20'
-                }`}
-                title="Secret Vault"
-              >
-                <Lock size={15} />
-                <span className="text-[10px] font-bold uppercase tracking-wider hidden sm:inline">Vault</span>
-              </button>
-              <button 
-                onClick={onCameraOpen}
-                className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95"
-                title="Camera Snap"
-              >
-                <Camera size={16} />
-              </button>
-            </div>
-          </div>
-
-          {/* Search bar */}
-          <div className="relative">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/60" size={16} />
-            <input 
-              type="text" 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search chats, contacts or whispers..." 
-              className="w-full bg-white/10 border border-white/15 py-2 pl-10 pr-4 rounded-xl text-xs text-white placeholder:text-white/50 focus:outline-none focus:bg-white/20 transition-all"
-            />
-            {searchQuery && (
-              <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 hover:text-white">
-                <X size={14} />
-              </button>
-            )}
-          </div>
+      {/* Mobile only: When chat is selected, show mobile full screen chat */}
+      {selectedUser && (
+        <div className="md:hidden h-full w-full flex flex-col flex-1 z-50 fixed inset-0">
+          <HushChatView user={selectedUser} onBack={() => setSelectedUser(null)} isGhostMode={isGhostMode} />
         </div>
-      </header>
+      )}
 
-      <div className="max-w-2xl mx-auto w-full px-4 pt-4">
+      {/* Left Pane: Chats & Notes List */}
+      <div className={`w-full md:w-88 lg:w-96 md:border-r border-black/10 dark:border-white/10 shrink-0 h-full flex flex-col overflow-y-auto pb-24 md:pb-6 ${
+        selectedUser ? 'hidden md:flex' : 'flex'
+      }`}>
+        {/* Header */}
+        <header className={`p-4 sticky top-0 z-40 shadow-sm transition-colors duration-500 text-white ${
+          isGhostMode ? 'bg-[var(--app-bg-ghost)]' : 'bg-[var(--app-primary)]'
+        }`}>
+          <div className="w-full space-y-3">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <h1 className="text-lg font-bold font-montserrat tracking-tight leading-none text-white">Hush</h1>
+                <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${
+                  isGhostMode ? 'bg-[var(--app-accent)]/20 text-[var(--app-accent-light)] border border-[var(--app-accent)]/30' : 'bg-white/15 text-white'
+                }`}>
+                  {isGhostMode ? 'Encrypted Mesh' : 'Proximity Chats'}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <button 
+                  onClick={() => setIsNewChatModalOpen(true)}
+                  className="p-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95 flex items-center gap-1 text-xs font-bold"
+                  title="New Whisper"
+                >
+                  <MessageSquarePlus size={15} />
+                  <span className="hidden sm:inline text-[10px]">New Chat</span>
+                </button>
+                <button 
+                  onClick={() => setIsVaultOpen(!isVaultOpen)}
+                  className={`p-1.5 rounded-xl transition-all border border-white/10 flex items-center gap-1 ${
+                    isVaultOpen 
+                      ? 'bg-[var(--app-accent)] text-slate-900 font-bold' 
+                      : 'bg-white/10 text-white hover:bg-white/20'
+                  }`}
+                  title="Secret Vault"
+                >
+                  <Lock size={14} />
+                  <span className="text-[10px] font-bold uppercase tracking-wider hidden sm:inline">Vault</span>
+                </button>
+                <button 
+                  onClick={onCameraOpen}
+                  className="p-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95"
+                  title="Camera Snap"
+                >
+                  <Camera size={15} />
+                </button>
+              </div>
+            </div>
+
+            {/* Search bar */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/60" size={14} />
+              <input 
+                type="text" 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search chats or whispers..." 
+                className="w-full bg-white/10 border border-white/15 py-1.5 pl-8 pr-3 rounded-xl text-xs text-white placeholder:text-white/50 focus:outline-none focus:bg-white/20 transition-all"
+              />
+              {searchQuery && (
+                <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/60 hover:text-white">
+                  <X size={12} />
+                </button>
+              )}
+            </div>
+          </div>
+        </header>
+
+        <div className="w-full px-3 pt-3 flex-1">
         {/* Horizontal Whisper Notes Bar */}
         <div className="mb-5">
           <div className="flex items-center justify-between px-1 mb-2">
@@ -384,10 +391,12 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({
                 type="button"
                 key={user.id} 
                 onClick={() => setSelectedUser(user)}
-                className={`w-full text-left p-4 rounded-[1.8rem] flex items-center gap-3.5 border shadow-sm transition-all active:scale-[0.99] cursor-pointer group ${
-                  isGhostMode 
-                    ? 'bg-[var(--app-primary)] border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] hover:border-[var(--app-accent)]/40' 
-                    : 'bg-white border-black/5 hover:border-secondary/30 dark:bg-[#0C3B46] dark:border-white/10'
+                className={`w-full text-left p-3.5 rounded-[1.6rem] flex items-center gap-3 border shadow-sm transition-all active:scale-[0.99] cursor-pointer group ${
+                  selectedUser?.id === user.id
+                    ? 'ring-2 ring-[var(--app-accent)] border-[var(--app-accent)] bg-teal-500/15 dark:bg-teal-900/30'
+                    : isGhostMode 
+                      ? 'bg-[var(--app-primary)] border-[color-mix(in_srgb,var(--app-accent)_20%,transparent)] hover:border-[var(--app-accent)]/40' 
+                      : 'bg-white border-black/5 hover:border-secondary/30 dark:bg-[#0C3B46] dark:border-white/10'
                 }`}
               >
                 {/* User Avatar with status dot */}
@@ -450,6 +459,45 @@ export const HushPage: React.FC<HushPageProps> = React.memo(({
           })}
         </div>
       </div>
+    </div>
+
+    {/* Right Pane: Desktop Chat Workspace */}
+    <div className="hidden md:flex flex-1 h-full flex-col overflow-hidden bg-slate-50/60 dark:bg-[#062B34]/30 relative">
+      {selectedUser ? (
+        <HushChatView user={selectedUser} onBack={() => setSelectedUser(null)} isGhostMode={isGhostMode} />
+      ) : (
+        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center select-none space-y-5">
+          <div className="p-6 rounded-3xl bg-[var(--app-primary)]/10 text-[var(--app-accent)] border border-[var(--app-accent)]/25 shadow-xl">
+            <ShieldCheck size={56} />
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-2xl font-black font-montserrat text-slate-800 dark:text-white">
+              Encrypted Mesh Whispers
+            </h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto leading-relaxed">
+              Select a conversation from the left to start chatting, or pick a nearby creator below. All whispers use end-to-end ephemeral 256-bit encryption and auto-destruct.
+            </p>
+          </div>
+          <div className="pt-2 flex flex-col items-center gap-2.5">
+            <p className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
+              Creators nearby ready to whisper
+            </p>
+            <div className="flex flex-wrap gap-2.5 justify-center max-w-md">
+              {MOCK_USERS.slice(0, 3).map(u => (
+                <button
+                  key={u.id}
+                  onClick={() => setSelectedUser(u)}
+                  className="flex items-center gap-2 px-3 py-2 rounded-2xl bg-white dark:bg-white/10 border border-black/5 dark:border-white/10 hover:border-[var(--app-accent)] shadow-sm hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                >
+                  <img src={u.avatar} alt={u.displayName} className="w-7 h-7 rounded-xl object-cover" />
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200">@{u.username}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
 
       {/* Start New Chat Modal */}
       {isNewChatModalOpen && (
@@ -669,7 +717,7 @@ const HushChatView: React.FC<{ user: User; onBack: () => void; isGhostMode?: boo
         isGhostMode ? 'bg-[var(--app-bg-ghost)]' : 'bg-[var(--app-primary)]'
       }`}>
         <div className="flex items-center gap-3">
-          <button onClick={onBack} className="p-1.5 hover:bg-white/10 rounded-full transition-colors">
+          <button onClick={onBack} className="p-1.5 hover:bg-white/10 rounded-full transition-colors md:hidden">
             <ArrowLeft size={20} />
           </button>
           <div className="flex items-center gap-2.5">

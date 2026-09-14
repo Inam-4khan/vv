@@ -12,6 +12,7 @@ export interface AuthContextType {
   accessToken: string | null;
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
+  login?: (userData?: any) => void;
 }
 
 let inMemoryAccessToken: string | null = null;
@@ -77,11 +78,37 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
+  const login = (userData?: any) => {
+    if (userData) {
+      const mockUser: any = {
+        uid: userData.id || '1',
+        email: userData.email,
+        displayName: userData.username || userData.name || 'User',
+        username: userData.username || userData.name || 'User',
+        getIdToken: async () => 'mock-token-demo',
+      };
+      const mockProfile: any = {
+        id: userData.id || '1',
+        email: userData.email,
+        username: userData.username || userData.name || 'User',
+        displayName: userData.username || userData.name || 'User',
+        avatar: userData.avatar || `https://picsum.photos/seed/${userData.username || 'demo'}/200`,
+      };
+      setAccessToken('mock-token-demo');
+      setUser(mockUser);
+      setProfile(mockProfile);
+    }
+  };
+
   const logout = async () => {
-    await signOut(auth);
     setAccessToken(null);
     setUser(null);
     setProfile(null);
+    try {
+      await signOut(auth);
+    } catch {
+      // Ignored for testing or offline environments
+    }
   };
 
   return (
@@ -94,6 +121,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         accessToken: inMemoryAccessToken,
         loginWithGoogle,
         logout,
+        login,
       }}
     >
       {children}
