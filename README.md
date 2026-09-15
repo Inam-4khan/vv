@@ -2,8 +2,9 @@
 
 ![CI Status](https://github.com/vizu-app/vizu/actions/workflows/ci.yml/badge.svg)
 ![Android CI Status](https://github.com/vizu-app/vizu/actions/workflows/android-ci.yml/badge.svg)
+![iOS CI Status](https://github.com/vizu-app/vizu/actions/workflows/ios-ci.yml/badge.svg)
 
-Vizu is a spatial social platform delivering real-time connection feeds, AR vista interactions, persona management, and encrypted Hush whispers.
+Vizu is a spatial social platform delivering real-time connection feeds, AR vista interactions, persona management, and encrypted Hush whispers across Web, Android, and iOS.
 
 ---
 
@@ -11,12 +12,14 @@ Vizu is a spatial social platform delivering real-time connection feeds, AR vist
 
 - **Node.js**: Node 20+ required.
 - **Package Manager**: Use **npm** (`npm install`). **Do not use bun or yarn**. CI runs `npm ci` strictly with `package-lock.json`.
+- **Xcode** (for iOS builds): Xcode 15+ on macOS with CocoaPods.
+- **Android Studio / JDK 17** (for Android builds).
 
 ---
 
 ## 🚀 Continuous Integration (CI)
 
-This monorepo utilizes GitHub Actions for continuous integration across both Web and Android platforms:
+This monorepo utilizes GitHub Actions for continuous integration across Web, Android, and iOS platforms:
 
 ### 1. Web CI (`.github/workflows/ci.yml`)
 - **Triggers**: On `push` and `pull_request` to `main` when files in `src/`, `components/`, or configuration files change.
@@ -37,6 +40,16 @@ This monorepo utilizes GitHub Actions for continuous integration across both Web
   3. Executes `./gradlew lint` for code quality checks.
   4. Executes `./gradlew assembleDebug` to compile debug APK binaries.
 
+### 3. iOS CI (`.github/workflows/ios-ci.yml`)
+- **Triggers**: On `push` and `pull_request` to `main` when files in `ios/`, `src/`, or `components/` change.
+- **Environment**: `macos-latest` with Xcode.
+- **Tasks**:
+  1. Checkouts codebase.
+  2. Sets up Node.js 20.
+  3. Builds web application bundle (`npm run build`).
+  4. Synchronizes native iOS assets (`npx cap sync ios`).
+  5. Compiles iOS application target via `xcodebuild`.
+
 ---
 
 ## 🛠️ Local Development & Testing Commands
@@ -54,6 +67,21 @@ npm test
 
 # Build for production
 npm run build
+```
+
+### iOS Platform
+```bash
+# Build web assets and sync native iOS workspace
+npm run build
+npx cap sync ios
+
+# Open in Xcode
+npx cap open ios
+
+# Or run via CocoaPods / Xcode workspace
+cd ios/App
+pod install
+open App.xcworkspace
 ```
 
 ### Android Platform
